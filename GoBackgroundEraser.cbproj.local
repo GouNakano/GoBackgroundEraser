@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2022/06/07 21:27:16.000.489,=D:\Users\owner\Documents\Embarcadero\Studio\Projects\Project1PCH1.h</Transaction>
+    <Transaction>2022/06/07 21:27:16.000.895,=D:\Users\owner\Documents\Embarcadero\Studio\Projects\Unit1.cpp</Transaction>
+    <Transaction>2023/01/19 13:12:23.000.632,=D:\Users\owner\Documents\Embarcadero\Studio\Projects\Unit1.cpp</Transaction>
+    <Transaction>2023/01/19 13:12:23.000.560,=D:\Users\owner\Documents\Embarcadero\Studio\Projects\Project1PCH1.h</Transaction>
+    <Transaction>2023/09/13 18:53:05.762,=D:\Users\owner\Documents\Embarcadero\Studio\Projects\Project1PCH1.h</Transaction>
+    <Transaction>2023/09/13 18:53:05.883,=D:\Users\owner\Documents\Embarcadero\Studio\Projects\Unit1.cpp</Transaction>
+    <Transaction>2023/09/13 18:55:16.196,D:\Users\owner\Documents\Projects10\GoBackgroundEraser\MainFrm.h=D:\Users\owner\Documents\Embarcadero\Studio\Projects\Unit1.h</Transaction>
+    <Transaction>2023/09/13 18:55:16.196,D:\Users\owner\Documents\Projects10\GoBackgroundEraser\MainFrm.cpp=D:\Users\owner\Documents\Embarcadero\Studio\Projects\Unit1.cpp</Transaction>
+    <Transaction>2023/09/13 18:55:16.196,D:\Users\owner\Documents\Projects10\GoBackgroundEraser\MainFrm.dfm=D:\Users\owner\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2023/09/13 18:55:22.632,D:\Users\owner\Documents\Projects10\GoBackgroundEraser\Project1PCH1.h=D:\Users\owner\Documents\Embarcadero\Studio\Projects\Project1PCH1.h</Transaction>
+    <Transaction>2023/09/13 18:55:35.550,D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraserPCH1.h=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\Project1PCH1.h</Transaction>
+    <Transaction>2023/09/13 18:55:35.568,D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser.cbproj=D:\Users\owner\Documents\Embarcadero\Studio\Projects\Project1.cbproj</Transaction>
+  </Transactions>
+</BorlandProject>
