@@ -55,7 +55,7 @@
         <DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
         <DynamicRTL>true</DynamicRTL>
         <UsePackages>true</UsePackages>
-        <IntermediateOutputDir>.\$(Platform)\$(Config)</IntermediateOutputDir>
+        <IntermediateOutputDir>..\obj</IntermediateOutputDir>
         <FinalOutputDir>.\$(Platform)\$(Config)</FinalOutputDir>
         <BCC_wpar>false</BCC_wpar>
         <BCC_OptimizeForSpeed>true</BCC_OptimizeForSpeed>
@@ -69,8 +69,7 @@
         <Icon_MainIcon>$(BDS)\bin\cbuilder_PROJECTICON.ico</Icon_MainIcon>
         <UWP_CppLogo44>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_44.png</UWP_CppLogo44>
         <UWP_CppLogo150>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_150.png</UWP_CppLogo150>
-        <IncludePath>..\..\..\Projects10\GoBackgroundEraser\;$(IncludePath)</IncludePath>
-        <ILINK_LibraryPath>..\..\..\Projects10\GoBackgroundEraser\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <IncludePath>..\..\..\OpenCV-RS64\opencv_3.2.0\build\install\include;$(IncludePath)</IncludePath>
         <SanitizedProjectName>GoBackgroundEraser</SanitizedProjectName>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
@@ -79,10 +78,18 @@
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_Keys>CompanyName=さくら電算;FileDescription=GoBackgroundEraser;FileVersion=0.1.0.2;InternalName=;LegalCopyright=さくら電算;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=GoBackgroundEraser;ProductVersion=0.1.0;Comments=</VerInfo_Keys>
+        <VerInfo_Locale>1041</VerInfo_Locale>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <BCC_PCHName_Clang>GoBackgroundEraserPCH1.h</BCC_PCHName_Clang>
+        <DynamicRTL>false</DynamicRTL>
+        <UsePackages>false</UsePackages>
+        <VerInfo_MajorVer>0</VerInfo_MajorVer>
+        <VerInfo_MinorVer>1</VerInfo_MinorVer>
+        <VerInfo_Build>2</VerInfo_Build>
+        <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
+        <FinalOutputDir>bin</FinalOutputDir>
+        <ILINK_LibraryPath>D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
         <PackageImports>adortl;appanalytics;bcbie;bcbsmp;bindcomp;bindcompdbx;bindcompfmx;bindcompvcl;bindcompvclsmp;bindcompvclwinx;bindengine;CloudService;CustomIPTransport;dbexpress;dbrtl;dbxcds;DbxClientDriver;DbxCommonDriver;DBXInterBaseDriver;DBXMySQLDriver;DBXSqliteDriver;dsnap;dsnapcon;dsnapxml;FireDAC;FireDACADSDriver;FireDACCommon;FireDACCommonDriver;FireDACCommonODBC;FireDACIBDriver;FireDACMSAccDriver;FireDACMySQLDriver;FireDACPgDriver;FireDACSqliteDriver;fmx;fmxase;fmxdae;fmxFireDAC;fmxobj;FMXTee;FmxTeeUI;ibmonitor;ibxbindings;ibxpress;IndyCore;IndyIPClient;IndyIPCommon;IndyIPServer;IndyProtocols;IndySystem;inet;inetdb;inetdbxpress;QREPPackage;RESTBackendComponents;RESTComponents;rtl;soapmidas;soaprtl;soapserver;SSGOPackage;Tee;TeeDB;TeeUI;tethering;vcl;vclactnband;vcldb;vcldsnap;vcledge;vclFireDAC;vclib;vclie;vclimg;VCLRESTComponents;VclSmp;vcltouch;vclwinx;vclx;xmlrtl;XnsPack;XnsSrchItemEditPack;$(PackageImports)</PackageImports>
@@ -115,7 +122,16 @@
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <BCC_UseClassicCompiler>false</BCC_UseClassicCompiler>
-        <LinkPackageImports>rtl.bpi;vcl.bpi</LinkPackageImports>
+        <DynamicRTL>false</DynamicRTL>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_MajorVer>0</VerInfo_MajorVer>
+        <VerInfo_MinorVer>1</VerInfo_MinorVer>
+        <VerInfo_Build>3</VerInfo_Build>
+        <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
+        <FinalOutputDir>bin</FinalOutputDir>
+        <LinkPackageStatics>rtl.lib;vcl.lib</LinkPackageStatics>
+        <VerInfo_Keys>CompanyName=さくら電算;FileDescription=GoBackgroundEraser;FileVersion=0.1.0.3;InternalName=;LegalCopyright=さくら電算;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=GoBackgroundEraser;ProductVersion=0.1.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <Defines>NDEBUG;$(Defines)</Defines>
@@ -126,6 +142,12 @@
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <BCC_UseClassicCompiler>false</BCC_UseClassicCompiler>
         <BCC_PCHName_Clang>GoBackgroundEraserPCH1.h</BCC_PCHName_Clang>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_MajorVer>0</VerInfo_MajorVer>
+        <VerInfo_MinorVer>1</VerInfo_MinorVer>
+        <VerInfo_Build>2</VerInfo_Build>
+        <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <BCC_PCHName_Clang>GoBackgroundEraserPCH1.h</BCC_PCHName_Clang>
@@ -144,6 +166,178 @@
             <DependentOn>MainFrm.h</DependentOn>
             <BuildOrder>2</BuildOrder>
         </CppCompile>
+        <CppCompile Include="TBGEraser.cpp">
+            <DependentOn>TBGEraser.h</DependentOn>
+            <BuildOrder>3</BuildOrder>
+        </CppCompile>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\libjpegd.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>4</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\libpngd.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>5</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_aruco320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>6</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_bgsegm320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>7</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_bioinspired320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>8</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_calib3d320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>9</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_ccalib320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>10</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_core320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>11</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_datasets320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>12</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_dpn320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>13</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_face320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>14</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_features2d320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>15</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_flann320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>16</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_fuzzy320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>17</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_highgui320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>18</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_imgcodecs320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>19</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_imgproc320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>20</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_line_descriptor320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>21</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_ml320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>22</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_objdetect320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>23</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_optflow320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>24</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_phase_unwrapping320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>25</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_photo320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>26</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_plot320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>27</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_reg320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>28</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_rgbd320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>29</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_saliency320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>30</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_shape320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>31</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_stereo320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>32</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_stitching320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>33</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_structured_light320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>34</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_superres320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>35</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_surface_matching320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>36</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_text320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>37</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_video320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>38</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_videoio320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>39</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_videostab320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>40</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_xfeatures2d320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>41</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_ximgproc320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>42</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_xobjdetect320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>43</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_xphoto320.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>44</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
+        <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\zlibd.lib" Condition="'$(Platform)'=='Win32'">
+            <BuildOrder>45</BuildOrder>
+            <IgnorePath>true</IgnorePath>
+        </LibFiles>
         <FormResources Include="MainFrm.dfm"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
@@ -171,6 +365,11 @@
                 <Source>
                     <Source Name="MainSource">GoBackgroundEraser.cpp</Source>
                 </Source>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcboffice2k270.bpl">Embarcadero C++Builder Office 2000 サーバー パッケージ</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcbofficexp270.bpl">Embarcadero C++Builder Office XP サーバー パッケージ</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\21.0\BPL\GridEx.bpl">GridEx</Excluded_Packages>
+                </Excluded_Packages>
             </CPlusPlusBuilder.Personality>
             <Deployment Version="3">
                 <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'=='true'" LocalName="$(BDS)\bin\cc32270mt.dll" Class="DependencyModule">
@@ -178,18 +377,102 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'=='true'" LocalName="$(BDS)\bin\cc32c270mt.dll" Class="DependencyModule">
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_line_descriptor320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_xfeatures2d320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_ccalib320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_ml320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_imgproc320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_optflow320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_xobjdetect320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'!='true'" LocalName="$(BDS)\bin64\cc64270.dll" Class="DependencyModule">
+                    <Platform Name="Win64">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_features2d320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_dpn320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_imgcodecs320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'=='true'" LocalName="$(BDS)\bin64\cc64270mt.dll" Class="DependencyModule">
+                    <Platform Name="Win64">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_text320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'!='true'" LocalName="$(BDS)\bin\cc32c270.dll" Class="DependencyModule">
                     <Platform Name="Win32">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile Condition="'$(DynamicRTL)'=='true'" LocalName="$(BDS)\Redist\osx32\libcgcrtl.dylib" Class="DependencyModule">
-                    <Platform Name="OSX32">
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_highgui320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile Condition="'$(DynamicRTL)'=='true'" LocalName="$(BDS)\Redist\osx64\libcgstl.dylib" Class="DependencyModule">
-                    <Platform Name="OSX64">
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_bgsegm320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_rgbd320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -203,35 +486,56 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_stereo320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile Condition="'$(DynamicRTL)'=='true'" LocalName="$(BDS)\Redist\osx32\libcgstl.dylib" Class="DependencyModule">
                     <Platform Name="OSX32">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile Condition="'$(UsingDelphiRTL)'=='true'" LocalName="$(BDS)\bin64\borlndmm.dll" Class="DependencyModule">
-                    <Platform Name="Win64">
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName=".\Win32\Debug\GoBackgroundEraser.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_stitching320.lib" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
-                        <RemoteName>GoBackgroundEraser.exe</RemoteName>
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'!='true'" LocalName="$(BDS)\bin64\cc64270.dll" Class="DependencyModule">
-                    <Platform Name="Win64">
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName=".\Win32\Debug\GoBackgroundEraser.tds" Configuration="Debug" Class="DebugSymbols">
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_core320.lib" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
-                        <RemoteName>GoBackgroundEraser.tds</RemoteName>
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'=='true'" LocalName="$(BDS)\bin64\cc64270mt.dll" Class="DependencyModule">
-                    <Platform Name="Win64">
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_calib3d320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_video320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_aruco320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_flann320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_shape320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -240,7 +544,154 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'!='true'" LocalName="$(BDS)\bin\cc32c270.dll" Class="DependencyModule">
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_photo320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_ximgproc320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_datasets320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_saliency320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\zlibd.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_videostab320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_phase_unwrapping320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_xphoto320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_superres320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_plot320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_objdetect320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\libjpegd.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_face320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_videoio320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_fuzzy320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_bioinspired320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile Condition="'$(DynamicRTL)'=='true'" LocalName="$(BDS)\Redist\osx32\libcgcrtl.dylib" Class="DependencyModule">
+                    <Platform Name="OSX32">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile Condition="'$(DynamicRTL)'=='true'" LocalName="$(BDS)\Redist\osx64\libcgstl.dylib" Class="DependencyModule">
+                    <Platform Name="OSX64">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile Condition="'$(UsingDelphiRTL)'=='true'" LocalName="$(BDS)\bin64\borlndmm.dll" Class="DependencyModule">
+                    <Platform Name="Win64">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\libpngd.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_structured_light320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_surface_matching320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_reg320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="bin\GoBackgroundEraser.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>GoBackgroundEraser.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="bin\GoBackgroundEraser.tds" Configuration="Debug" Class="DebugSymbols">
+                    <Platform Name="Win32">
+                        <RemoteName>GoBackgroundEraser.tds</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'=='true'" LocalName="$(BDS)\bin\cc32c270mt.dll" Class="DependencyModule">
                     <Platform Name="Win32">
                         <Overwrite>true</Overwrite>
                     </Platform>

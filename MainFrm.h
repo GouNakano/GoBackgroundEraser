@@ -7,12 +7,14 @@
 #include <Vcl.Controls.hpp>
 #include <Vcl.StdCtrls.hpp>
 #include <Vcl.Forms.hpp>
+#include "TBGEraser.h"
 //---------------------------------------------------------------------------
 class TMainForm : public TForm
 {
 __published:	// IDE で管理されるコンポーネント
-private:	// ユーザー宣言
-public:		// ユーザー宣言
+private:
+    TBGEraser BGEraser;
+public:
 	__fastcall TMainForm(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
