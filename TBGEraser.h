@@ -92,7 +92,7 @@ public:
 	//初期値設定
 	bool init(const std::string& file_name);
 	//入力待ちループ開始
-	bool run();
+	bool run(int PressKey);
 	//処理終了
 	bool end();
 };

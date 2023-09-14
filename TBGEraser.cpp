@@ -67,144 +67,155 @@ bool TBGEraser::init(const std::string& file_name)
 //-------------------------------------------------
 //入力待ち(返却値がfalseの時は終了予定)
 //-------------------------------------------------
-bool TBGEraser::run()
+bool TBGEraser::run(int PressKey)
 {
-//	//入力待ちループ
-//	while(true)
-//	{
-		cv::imshow("output",output);
-		cv::imshow("input" ,img);
+	cv::imshow("output",output);
+	cv::imshow("input" ,img);
 
-		int k = 0xFF & cv::waitKey(1);
-		// キーによる処理分け
-		if(k == 27)
-		{
-			//ESCキー押下で終了
-			return false;
-		}
-		else if(k == '0') // BG drawing
-		{
-			printf(" mark background regions with left mouse button \n");
-			value = DRAW_BG;
-		}
-		else if(k == '1') // FG drawing
-		{
-			printf(" mark foreground regions with left mouse button \n");
-			value = DRAW_FG;
-		}
-		else if(k == '2') // PR_BG drawing
-		{
-			value = DRAW_PR_BG;
-		}
-		else if(k == '3') // PR_FG drawing
-		{
-			value = DRAW_PR_FG;
-		}
-		else if(k == 's') // save image
-		{
-			//保存用Mat
-			cv::Mat save_img = cv::Mat::zeros(img.size(),CV_8UC4);
-			//透明ピクセル
-			cv::Vec4b alpha0(0,0,0,0);
-			//ピクセル
-			cv::Vec4b pixcel;
-			//元ピクセル
-			cv::Vec3b src_px3;
-			cv::Vec4b src_px4;
+	int k;
+	//押下したキーをセット
+	if(PressKey > 0)
+	{
+		//MainFormで押下されたキーをセット
+		k = PressKey;
+		//描画
+		cv::waitKey(1);
+	}
+	else
+	{
+		//OpenCVで押下されたキーをセット
+		k = 0xFF & cv::waitKey(1);
+		k = std::toupper(k);
+	}
+	// キーによる処理分け
+//	if(k == 27)
+	if(k == VK_ESCAPE)
+	{
+		//ESCキー押下で終了
+		return false;
+	}
+	else if(k == '0') // BG drawing
+	{
+		printf(" mark background regions with left mouse button \n");
+		value = DRAW_BG;
+	}
+	else if(k == '1') // FG drawing
+	{
+		printf(" mark foreground regions with left mouse button \n");
+		value = DRAW_FG;
+	}
+	else if(k == '2') // PR_BG drawing
+	{
+		value = DRAW_PR_BG;
+	}
+	else if(k == '3') // PR_FG drawing
+	{
+		value = DRAW_PR_FG;
+	}
+	else if(k == 'S') // save image
+	{
+		//保存用Mat
+		cv::Mat save_img = cv::Mat::zeros(img.size(),CV_8UC4);
+		//透明ピクセル
+		cv::Vec4b alpha0(0,0,0,0);
+		//ピクセル
+		cv::Vec4b pixcel;
+		//元ピクセル
+		cv::Vec3b src_px3;
+		cv::Vec4b src_px4;
 
-			//チャンネル数
-			int ch = img.channels();
+		//チャンネル数
+		int ch = img.channels();
 
-			//アルファチャンネル付きピクセルの設定
-			for(int y = 0;y < save_img.rows;y++)
+		//アルファチャンネル付きピクセルの設定
+		for(int y = 0;y < save_img.rows;y++)
+		{
+			for(int x = 0;x < save_img.cols;x++)
 			{
-				for(int x = 0;x < save_img.cols;x++)
+				//マスクをチェック
+				if(mask2.at<unsigned char>(y,x) == 0)
 				{
-					//マスクをチェック
-					if(mask2.at<unsigned char>(y,x) == 0)
+					//マスクが黒なので透明にする
+					save_img.at<cv::Vec4b>(y,x) = alpha0;
+				}
+				else
+				{
+					//マスクが白なので元画像のピクセル色を設定
+					if(ch == 3)
 					{
-						//マスクが黒なので透明にする
-						save_img.at<cv::Vec4b>(y,x) = alpha0;
+						src_px3 = img2.at<cv::Vec3b>(y,x);
+
+						pixcel[0] = src_px3[0];
+						pixcel[1] = src_px3[1];
+						pixcel[2] = src_px3[2];
+						pixcel[3] = 255;
+						save_img.at<cv::Vec4b>(y,x) = pixcel;
 					}
-					else
+					else if(ch == 4)
 					{
-						//マスクが白なので元画像のピクセル色を設定
-						if(ch == 3)
-						{
-							src_px3 = img2.at<cv::Vec3b>(y,x);
+						src_px4 = img2.at<cv::Vec4b>(y,x);
 
-							pixcel[0] = src_px3[0];
-							pixcel[1] = src_px3[1];
-							pixcel[2] = src_px3[2];
-							pixcel[3] = 255;
-							save_img.at<cv::Vec4b>(y,x) = pixcel;
-						}
-						else if(ch == 4)
-						{
-							src_px4 = img2.at<cv::Vec4b>(y,x);
+						pixcel[0] = src_px4[0];
+						pixcel[1] = src_px4[1];
+						pixcel[2] = src_px4[2];
+						pixcel[3] = 255;
+						save_img.at<cv::Vec4b>(y,x) = pixcel;
+					}
+					else //if(ch == 1)
+					{
+						unsigned char val = img2.at<unsigned char>(y,x);
 
-							pixcel[0] = src_px4[0];
-							pixcel[1] = src_px4[1];
-							pixcel[2] = src_px4[2];
-							pixcel[3] = 255;
-							save_img.at<cv::Vec4b>(y,x) = pixcel;
-						}
-						else //if(ch == 1)
-						{
-							unsigned char val = img2.at<unsigned char>(y,x);
-
-							pixcel[0] = val;
-							pixcel[1] = val;
-							pixcel[2] = val;
-							pixcel[3] = 255;
-							save_img.at<cv::Vec4b>(y,x) = pixcel;
-						}
+						pixcel[0] = val;
+						pixcel[1] = val;
+						pixcel[2] = val;
+						pixcel[3] = 255;
+						save_img.at<cv::Vec4b>(y,x) = pixcel;
 					}
 				}
 			}
+		}
 
-			cv::imwrite("output.png",save_img);
-			printf(" Result saved as image \n");
-		}
-		else if(k == 'r') // reset everything
+		cv::imwrite("output.png",save_img);
+		printf(" Result saved as image \n");
+	}
+	else if(k == 'R') // reset everything
+	{
+		printf("resetting \n");
+		rect = cv::Rect(0,0,1,1);
+		drawing      = false;
+		rectangle    = false;
+		rect_or_mask = 100;
+		rect_over    = false;
+		value        = DRAW_FG;
+		img          = img2.clone();
+		mask         = cv::Mat::zeros(cv::Size(img.cols,img.rows),CV_8UC1); // mask initialized to PR_BG
+		output       = cv::Mat::zeros(img.size(),CV_8UC1);                  // output image to be shown
+	}
+	else if(k == 'N') // segment the image
+	{
+		printf(""" For finer touchups, mark foreground and background after pressing keys 0-3 and again press 'n' \n""");
+		if (rect_or_mask == 0)         // grabcut with rect
 		{
-			printf("resetting \n");
-			rect = cv::Rect(0,0,1,1);
-			drawing      = false;
-			rectangle    = false;
-			rect_or_mask = 100;
-			rect_over    = false;
-			value        = DRAW_FG;
-			img          = img2.clone();
-			mask         = cv::Mat::zeros(cv::Size(img.cols,img.rows),CV_8UC1); // mask initialized to PR_BG
-			output       = cv::Mat::zeros(img.size(),CV_8UC1);                  // output image to be shown
+			bgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
+			fgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
+			cv::grabCut(img2,mask,rect,bgdmodel,fgdmodel,1,cv::GC_INIT_WITH_RECT);
+			rect_or_mask = 1;
 		}
-		else if(k == 'n') // segment the image
+		else if(rect_or_mask == 1) // grabcut with mask
 		{
-			printf(""" For finer touchups, mark foreground and background after pressing keys 0-3 and again press 'n' \n""");
-			if (rect_or_mask == 0)         // grabcut with rect
-			{
-				bgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
-				fgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
-				cv::grabCut(img2,mask,rect,bgdmodel,fgdmodel,1,cv::GC_INIT_WITH_RECT);
-				rect_or_mask = 1;
-			}
-			else if(rect_or_mask == 1) // grabcut with mask
-			{
-				bgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
-				fgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
-				cv::grabCut(img2,mask,rect,bgdmodel,fgdmodel,1,cv::GC_INIT_WITH_MASK);
-			}
+			bgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
+			fgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
+			cv::grabCut(img2,mask,rect,bgdmodel,fgdmodel,1,cv::GC_INIT_WITH_MASK);
 		}
-		//前景部分を白にしたマスクを作成
-		mask2 = cv::Mat::zeros(mask.size(),CV_8UC1);
-		setNewValFromVal(mask,mask2,255,1);
-		setNewValFromVal(mask,mask2,255,3);
+	}
+	//前景部分を白にしたマスクを作成
+	mask2 = cv::Mat::zeros(mask.size(),CV_8UC1);
+	setNewValFromVal(mask,mask2,255,1);
+	setNewValFromVal(mask,mask2,255,3);
 
-		//元画像にマスクを適用
-		output = 0;
-		img2.copyTo(output,mask2);
-//	}
+	//元画像にマスクを適用
+	output = 0;
+	img2.copyTo(output,mask2);
 
 	return true;
 }

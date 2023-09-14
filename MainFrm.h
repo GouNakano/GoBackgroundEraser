@@ -16,8 +16,10 @@ __published:	// IDE で管理されるコンポーネント
 	TTimer *BGEraseTimer;
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall BGEraseTimerTimer(TObject *Sender);
+	void __fastcall FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
 private:
-    TBGEraser BGEraser;
+	TBGEraser BGEraser;
+	int       PressKey;
 public:
 	__fastcall TMainForm(TComponent* Owner);
 };
