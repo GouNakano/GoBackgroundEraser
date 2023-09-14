@@ -8,7 +8,6 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
-TBGEraser *pBGEraser;
 
 //-------------------------------------------------
 //コンストラクタ
@@ -25,8 +24,6 @@ TBGEraser::TBGEraser()
 	BLACK = cv::Scalar(0,0,0);
 	// 前景かもしれないに対する色
 	WHITE = cv::Scalar(255,255,255);
-	//自身のポインタを設定
-	pBGEraser = this;
 }
 //-------------------------------------------------
 //デストラクタ
@@ -41,51 +38,49 @@ bool TBGEraser::init(const std::string& file_name)
 {
 	//フラグの設定
 	rect         = cv::Rect(0,0,1,1);
-	drawing      = false;    // flag for drawing curves
-	rectangle    = false;    // flag for drawing rect
-	rect_over    = false;    // flag to check if rect drawn
-	rect_or_mask = 100;      // flag for selecting rect or mask mode
-	value        = DRAW_FG;  // drawing initialized to FG
-	thickness    = 3;        // brush thickness
+	drawing      = false;    // 曲線描画のフラグ
+	rectangle    = false;    // 描画範囲矩形のフラグ
+	rect_over    = false;    // 四角形が描画されたかどうかを確認するフラグ
+	rect_or_mask = 100;      // レククトモードまたはマスクモードを選択するためのフラグ
+	value        = DRAW_FG;  // 図面が前景に初期化されました
+	thickness    = 3;        // ブラシの太さ
 
 	DRAW_BG   .set(BLACK,0);
 	DRAW_FG   .set(WHITE,1);
 	DRAW_PR_FG.set(GREEN,3);
 	DRAW_PR_BG.set(RED  ,2);
 
-	printf("No input image given, so loading default image, ../data/lena.jpg \n");
-	printf("Correct Usage: python grabcut.py <filename> \n");
-
 	img    = cv::imread(file_name);
-	img2   = img.clone();                                         // a copy of original image
-	mask   = cv::Mat::zeros(cv::Size(img.cols,img.rows),CV_8UC1); // mask initialized to PR_BG
-	output = cv::Mat::zeros(img.size(),CV_8UC1);                  // output image to be shown
-	// input and output windows
+	img2   = img.clone();                                         // 元の画像のコピー
+	mask   = cv::Mat::zeros(cv::Size(img.cols,img.rows),CV_8UC1); // マスクは背景かもしれないに初期化されました
+	output = cv::Mat::zeros(img.size(),CV_8UC1);                  // 表示される出力画像
+	//入出力ウィンドウ
 	cv::namedWindow("output");
 	cv::namedWindow("input");
-	cv::setMouseCallback("input",TBGEraser::onmouse);
+	cv::setMouseCallback("input",TBGEraser::onmouse,this);
 	cv::moveWindow("input",img.cols+10,90);
-	printf(" Instructions: \n");
-	printf(" Draw a rectangle around the object using right mouse button \n");
+	printf(" 説明: \n");
+	printf(" マウスの右ボタンを使用してオブジェクトの周囲に長方形を描きます。\n");
 
 	return true;
 }
 //-------------------------------------------------
-//入力待ちループ開始
+//入力待ち(返却値がfalseの時は終了予定)
 //-------------------------------------------------
 bool TBGEraser::run()
 {
-	//入力待ちループ
-	while(true)
-	{
+//	//入力待ちループ
+//	while(true)
+//	{
 		cv::imshow("output",output);
 		cv::imshow("input" ,img);
 
 		int k = 0xFF & cv::waitKey(1);
-		// key bindings
-		if(k == 27)         // esc to exit
+		// キーによる処理分け
+		if(k == 27)
 		{
-			break;
+			//ESCキー押下で終了
+			return false;
 		}
 		else if(k == '0') // BG drawing
 		{
@@ -209,7 +204,7 @@ bool TBGEraser::run()
 		//元画像にマスクを適用
 		output = 0;
 		img2.copyTo(output,mask2);
-	}
+//	}
 
 	return true;
 }
@@ -272,61 +267,64 @@ bool TBGEraser::setNewValFromSamePixcel(const cv::Mat& mat1,const cv::Mat& mat2,
 //-------------------------------------------------
 void TBGEraser::onmouse(int event,int x,int y,int flags,void *param)
 {
+	//自身を得る
+	TBGEraser *pMe = static_cast<TBGEraser *>(param);
+
 	// Draw Rectangle
 	if(event == cv::EVENT_RBUTTONDOWN)
 	{
-		pBGEraser->rectangle = true;
-		pBGEraser->ix = x;
-		pBGEraser->iy = y;
+		pMe->rectangle = true;
+		pMe->ix = x;
+		pMe->iy = y;
 	}
 	else if(event == cv::EVENT_MOUSEMOVE)
 	{
-		if(pBGEraser->rectangle == true)
+		if(pMe->rectangle == true)
 		{
-			pBGEraser->img = pBGEraser->img2.clone();
-			cv::rectangle(pBGEraser->img,cv::Point(pBGEraser->ix,pBGEraser->iy),cv::Point(x,y),pBGEraser->BLUE,2);
-			pBGEraser->rect = cv::Rect(std::min(pBGEraser->ix,x),std::min(pBGEraser->iy,y),abs(pBGEraser->ix-x),abs(pBGEraser->iy-y));
-			pBGEraser->rect_or_mask = 0;
+			pMe->img = pMe->img2.clone();
+			cv::rectangle(pMe->img,cv::Point(pMe->ix,pMe->iy),cv::Point(x,y),pMe->BLUE,2);
+			pMe->rect = cv::Rect(std::min(pMe->ix,x),std::min(pMe->iy,y),abs(pMe->ix-x),abs(pMe->iy-y));
+			pMe->rect_or_mask = 0;
 		}
 	}
 	else if(event == cv::EVENT_RBUTTONUP)
 	{
-		pBGEraser->rectangle = false;
-		pBGEraser->rect_over = true;
-		cv::rectangle(pBGEraser->img,cv::Point(pBGEraser->ix,pBGEraser->iy),cv::Point(x,y),pBGEraser->BLUE,2);
-		pBGEraser->rect = cv::Rect(std::min(pBGEraser->ix,x),std::min(pBGEraser->iy,y),abs(pBGEraser->ix-x),abs(pBGEraser->iy-y));
-		pBGEraser->rect_or_mask = 0;
+		pMe->rectangle = false;
+		pMe->rect_over = true;
+		cv::rectangle(pMe->img,cv::Point(pMe->ix,pMe->iy),cv::Point(x,y),pMe->BLUE,2);
+		pMe->rect = cv::Rect(std::min(pMe->ix,x),std::min(pMe->iy,y),abs(pMe->ix-x),abs(pMe->iy-y));
+		pMe->rect_or_mask = 0;
 		printf(" Now press the key 'n' a few times until no further change \n");
 	}
 	//draw touchup curves
 	if(event == cv::EVENT_LBUTTONDOWN)
 	{
-		if(pBGEraser->rect_over == false)
+		if(pMe->rect_over == false)
 		{
 			printf("first draw rectangle \n");
 		}
 		else
 		{
-			pBGEraser->drawing = true;
-			cv::circle(pBGEraser->img ,cv::Point(x,y),pBGEraser->thickness,pBGEraser->value.color,-1);
-			cv::circle(pBGEraser->mask,cv::Point(x,y),pBGEraser->thickness,pBGEraser->value.val,-1);
+			pMe->drawing = true;
+			cv::circle(pMe->img ,cv::Point(x,y),pMe->thickness,pMe->value.color,-1);
+			cv::circle(pMe->mask,cv::Point(x,y),pMe->thickness,pMe->value.val,-1);
 		}
 	}
 	else if(event == cv::EVENT_MOUSEMOVE)
 	{
-		if(pBGEraser->drawing == true)
+		if(pMe->drawing == true)
 		{
-			cv::circle(pBGEraser->img ,cv::Point(x,y),pBGEraser->thickness,pBGEraser->value.color,-1);
-			cv::circle(pBGEraser->mask,cv::Point(x,y),pBGEraser->thickness,pBGEraser->value.val,-1);
+			cv::circle(pMe->img ,cv::Point(x,y),pMe->thickness,pMe->value.color,-1);
+			cv::circle(pMe->mask,cv::Point(x,y),pMe->thickness,pMe->value.val,-1);
 		}
 	}
 	else if(event == cv::EVENT_LBUTTONUP)
 	{
-		if(pBGEraser->drawing == true)
+		if(pMe->drawing == true)
 		{
-			pBGEraser->drawing = false;
-			cv::circle(pBGEraser->img,cv::Point(x,y) ,pBGEraser->thickness,pBGEraser->value.color,-1);
-			cv::circle(pBGEraser->mask,cv::Point(x,y),pBGEraser->thickness,pBGEraser->value.val,-1);
+			pMe->drawing = false;
+			cv::circle(pMe->img,cv::Point(x,y) ,pMe->thickness,pMe->value.color,-1);
+			cv::circle(pMe->mask,cv::Point(x,y),pMe->thickness,pMe->value.val,-1);
 		}
 	}
 }
