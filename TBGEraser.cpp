@@ -88,7 +88,6 @@ bool TBGEraser::run(int PressKey)
 		k = std::toupper(k);
 	}
 	// キーによる処理分け
-//	if(k == 27)
 	if(k == VK_ESCAPE)
 	{
 		//ESCキー押下で終了

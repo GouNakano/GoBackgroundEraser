@@ -16,6 +16,15 @@ object MainForm: TMainForm
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
+  object updateBtn: TBitBtn
+    Left = 16
+    Top = 8
+    Width = 121
+    Height = 25
+    Caption = #26356#26032
+    TabOrder = 0
+    OnClick = updateBtnClick
+  end
   object BGEraseTimer: TTimer
     Enabled = False
     Interval = 10

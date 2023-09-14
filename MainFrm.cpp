@@ -46,5 +46,12 @@ void __fastcall TMainForm::FormKeyDown(TObject *Sender, WORD &Key, TShiftState S
 {
 	PressKey = (Key & 0xFF);
 }
+//-------------------------------------------------
+//背景削除表示更新ボタン
+//-------------------------------------------------
+void __fastcall TMainForm::updateBtnClick(TObject *Sender)
+{
+	PressKey = 'N';
+}
 //---------------------------------------------------------------------------
 
