@@ -225,15 +225,17 @@ bool TBGEraser::end()
 //-------------------------------------------------
 bool TBGEraser::segmentImage()
 {
-	if (rect_or_mask == 0)         // grabcut with rect
+	if (rect_or_mask == 0)
 	{
+		//矩形領域内の情報を基に初期値を決める
 		bgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
 		fgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
 		cv::grabCut(img2,mask,rect,bgdmodel,fgdmodel,1,cv::GC_INIT_WITH_RECT);
 		rect_or_mask = 1;
 	}
-	else if(rect_or_mask == 1) // grabcut with mask
+	else if(rect_or_mask == 1)
 	{
+		//前景/背景を指定する線を基に初期値を決める
 		bgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
 		fgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
 		cv::grabCut(img2,mask,rect,bgdmodel,fgdmodel,1,cv::GC_INIT_WITH_MASK);

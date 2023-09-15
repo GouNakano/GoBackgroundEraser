@@ -17,19 +17,19 @@ File_14=TSourceModule,'D:\Users\owner\Documents\Projects10\TEST\TEST056\File1.cp
 
 [Modules]
 Module0=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
-Module1=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\GoBackgroundEraser.cbproj
-Module2=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
+Module1=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
+Module2=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\GoBackgroundEraser.cbproj
 Count=3
 EditWindowCount=1
 
 [D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp]
 ModuleType=TSourceModule
 
-[D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\GoBackgroundEraser.cbproj]
-ModuleType=TBaseProject
-
 [D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp]
 ModuleType=TSourceModule
+
+[D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\GoBackgroundEraser.cbproj]
+ModuleType=TBaseProject
 
 [EditWindow0]
 ViewCount=3
@@ -80,20 +80,20 @@ EditViewName=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackground
 [View1]
 CustomEditViewType=TEditView
 Module=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
-CursorX=39
-CursorY=36
-TopLine=35
+CursorX=29
+CursorY=55
+TopLine=34
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
+EditViewName=Borland.FormDesignerView
 
 [View2]
 CustomEditViewType=TEditView
 Module=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
-CursorX=1
-CursorY=171
-TopLine=121
+CursorX=38
+CursorY=299
+TopLine=249
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -240,6 +240,11 @@ LRDockWidth=1896
 Dockable=1
 StayOnTop=0
 SplitPos=111
+
+[PropInspDesignerSelection]
+ArrangeBy=Name
+SelectedItem=Caption,OnKeyDown
+ExpandedItems=Anchors=0,BorderIcons=0,Constraints=0,LiveBindings=0,"LiveBinding デザイナ=0",CustomTitleBar=0,Font=0,GlassFrame=0,HorzScrollBar=0,Margins=0,Padding=0,StyleElements=0,Touch=0,VertScrollBar=0
 
 [frmDesignPreview]
 PercentageSizes=1
