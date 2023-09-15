@@ -16,24 +16,24 @@ File_13=TSourceModule,'D:\Users\owner\Documents\Projects10\TEST\TEST072\File1.cp
 File_14=TSourceModule,'D:\Users\owner\Documents\Projects10\TEST\TEST056\File1.cpp',0,1,15,1,22,0,0,,
 
 [Modules]
-Module0=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
+Module0=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
 Module1=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\GoBackgroundEraser.cbproj
-Module2=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
+Module2=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
 Count=3
 EditWindowCount=1
 
-[D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp]
+[D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp]
 ModuleType=TSourceModule
 
 [D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\GoBackgroundEraser.cbproj]
 ModuleType=TBaseProject
 
-[D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp]
+[D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp]
 ModuleType=TSourceModule
 
 [EditWindow0]
 ViewCount=3
-CurrentEditView=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
+CurrentEditView=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
 View0=0
 View1=1
 View2=2
@@ -80,9 +80,9 @@ EditViewName=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackground
 [View1]
 CustomEditViewType=TEditView
 Module=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
-CursorX=1
-CursorY=6
-TopLine=1
+CursorX=39
+CursorY=36
+TopLine=35
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -92,8 +92,8 @@ EditViewName=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackground
 CustomEditViewType=TEditView
 Module=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
 CursorX=1
-CursorY=8
-TopLine=1
+CursorY=171
+TopLine=121
 LeftCol=1
 Elisions=
 Bookmarks=

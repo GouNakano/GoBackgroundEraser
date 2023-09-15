@@ -51,7 +51,8 @@ void __fastcall TMainForm::FormKeyDown(TObject *Sender, WORD &Key, TShiftState S
 //-------------------------------------------------
 void __fastcall TMainForm::updateBtnClick(TObject *Sender)
 {
-	PressKey = 'N';
+	//”wŒiíœ‚ği‚ß‚é
+	BGEraser.segmentImage();
 }
 //---------------------------------------------------------------------------
 

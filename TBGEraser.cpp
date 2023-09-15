@@ -190,23 +190,6 @@ bool TBGEraser::run(int PressKey)
 		mask         = cv::Mat::zeros(cv::Size(img.cols,img.rows),CV_8UC1); // mask initialized to PR_BG
 		output       = cv::Mat::zeros(img.size(),CV_8UC1);                  // output image to be shown
 	}
-	else if(k == 'N') // segment the image
-	{
-		printf(""" For finer touchups, mark foreground and background after pressing keys 0-3 and again press 'n' \n""");
-		if (rect_or_mask == 0)         // grabcut with rect
-		{
-			bgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
-			fgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
-			cv::grabCut(img2,mask,rect,bgdmodel,fgdmodel,1,cv::GC_INIT_WITH_RECT);
-			rect_or_mask = 1;
-		}
-		else if(rect_or_mask == 1) // grabcut with mask
-		{
-			bgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
-			fgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
-			cv::grabCut(img2,mask,rect,bgdmodel,fgdmodel,1,cv::GC_INIT_WITH_MASK);
-		}
-	}
 	//前景部分を白にしたマスクを作成
 	mask2 = cv::Mat::zeros(mask.size(),CV_8UC1);
 	setNewValFromVal(mask,mask2,255,1);
@@ -225,6 +208,66 @@ bool TBGEraser::end()
 {
 	//全てのOpenCVウィンドウを閉じる
 	cv::destroyAllWindows();
+
+	//前景部分を白にしたマスクを作成
+	mask2 = cv::Mat::zeros(mask.size(),CV_8UC1);
+	setNewValFromVal(mask,mask2,255,1);
+	setNewValFromVal(mask,mask2,255,3);
+
+	//元画像にマスクを適用
+	output = 0;
+	img2.copyTo(output,mask2);
+
+	return true;
+}
+//-------------------------------------------------
+//背景削除を進める
+//-------------------------------------------------
+bool TBGEraser::segmentImage()
+{
+	if (rect_or_mask == 0)         // grabcut with rect
+	{
+		bgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
+		fgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
+		cv::grabCut(img2,mask,rect,bgdmodel,fgdmodel,1,cv::GC_INIT_WITH_RECT);
+		rect_or_mask = 1;
+	}
+	else if(rect_or_mask == 1) // grabcut with mask
+	{
+		bgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
+		fgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
+		cv::grabCut(img2,mask,rect,bgdmodel,fgdmodel,1,cv::GC_INIT_WITH_MASK);
+	}
+	//マスクを更新して出力画像を作成する
+	updateMaskAndOutputImage();
+	//描画更新
+	updateDisplayWindow();
+
+	return true;
+}
+//-------------------------------------------------
+//マスクを更新して出力画像を作成する
+//-------------------------------------------------
+bool TBGEraser::updateMaskAndOutputImage()
+{
+	//前景部分を白にしたマスクを作成
+	mask2 = cv::Mat::zeros(mask.size(),CV_8UC1);
+	setNewValFromVal(mask,mask2,255,1);
+	setNewValFromVal(mask,mask2,255,3);
+	//元画像にマスクを適用
+	output = 0;
+	img2.copyTo(output,mask2);
+
+	return true;
+}
+//-------------------------------------------------
+//描画更新
+//-------------------------------------------------
+bool TBGEraser::updateDisplayWindow()
+{
+	cv::imshow("output",output);
+	cv::imshow("input" ,img);
+	cv::waitKey(30);
 
 	return true;
 }

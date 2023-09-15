@@ -80,6 +80,10 @@ private:
 	bool setNewValFromVal(const cv::Mat& src,cv::Mat& dst,int new_val,int v);
 	//mat1,mat2の同じ値の所をnew_valその他を0にする
 	bool setNewValFromSamePixcel(const cv::Mat& mat1,const cv::Mat& mat2,cv::Mat& dst,int new_val);
+	//マスクを更新して出力画像を作成する
+	bool updateMaskAndOutputImage();
+	//描画更新
+	bool updateDisplayWindow();
 public:
 	//マウスイベント
 	static void onmouse(int event,int x,int y,int flags,void *param);
@@ -95,6 +99,8 @@ public:
 	bool run(int PressKey);
 	//処理終了
 	bool end();
+	//背景削除を進める
+	bool segmentImage();
 };
 
 #endif
