@@ -18,41 +18,77 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 //-------------------------------------------------
 void __fastcall TMainForm::FormShow(TObject *Sender)
 {
-	//初期化
-	PressKey = 0;
 	//背景除去オブジェクトの初期化
 	BGEraser.init("messi5.png");
-	//背景削除タイマー起動
-	BGEraseTimer->Enabled = true;
-}
-//-------------------------------------------------
-//背景削除タイマー
-//-------------------------------------------------
-void __fastcall TMainForm::BGEraseTimerTimer(TObject *Sender)
-{
-	//背景削除タイマー停止
-	BGEraseTimer->Enabled = false;
-	//入力待ち
-	BGEraser.run(PressKey);
-	//押下したキーを初期化
-	PressKey = 0;
-	//背景削除タイマー再開
-	BGEraseTimer->Enabled = true;
-}
-//-------------------------------------------------
-//キーダウンイベント
-//-------------------------------------------------
-void __fastcall TMainForm::FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift)
-{
-	PressKey = (Key & 0xFF);
+	//描画更新
+	BGEraser.updateDisplayWindow();
+	//モード表示
+	dispMode("GoBackgroundEraser起動");
 }
 //-------------------------------------------------
 //背景削除表示更新ボタン
 //-------------------------------------------------
 void __fastcall TMainForm::updateBtnClick(TObject *Sender)
 {
+	//状態表示
+	dispMode("背景除去画像表示更新中");
 	//背景削除を進める
-	BGEraser.segmentImage();
+	if(BGEraser.segmentImage() == false)
+	{
+		//失敗状態表示
+		dispMode("背景除去画像表示更新失敗");
+	}
+	//状態表示
+	dispMode("背景除去画像表示更新完了");
+}
+//-------------------------------------------------
+//保存ボタン
+//-------------------------------------------------
+void __fastcall TMainForm::saveBtnClick(TObject *Sender)
+{
+	//背景削除画像の保存
+	BGEraser.saveBGErasedImage("output.png");
+}
+//-------------------------------------------------
+//リセットボタン
+//-------------------------------------------------
+void __fastcall TMainForm::resetBtnClick(TObject *Sender)
+{
+	//編集結果を無効にしてリセットする
+	BGEraser.resetState();
+}
+//-------------------------------------------------
+//モード表示
+//-------------------------------------------------
+void TMainForm::dispMode(const std::string& mode_str)
+{
+	//状態表示ラベルの文字列更新
+	ModeLabel->Caption = mode_str.c_str();
+	Application->ProcessMessages();
+}
+//-------------------------------------------------
+//背景指定モードにする
+//-------------------------------------------------
+void __fastcall TMainForm::specifyBGBtnClick(TObject *Sender)
+{
+	//背景指定モードにする
+	if(BGEraser.setSpecifyBackgroundMode() == true)
+	{
+		//モード表示
+		dispMode("背景指定モード");
+	}
+}
+//-------------------------------------------------
+//前景指定モードにする
+//-------------------------------------------------
+void __fastcall TMainForm::specifyFGBtnClick(TObject *Sender)
+{
+	//前景指定モードにする
+	if(BGEraser.setSpecifyForegroundMode() == true)
+	{
+		//モード表示
+		dispMode("前景指定モード");
+	}
 }
 //---------------------------------------------------------------------------
 

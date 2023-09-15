@@ -1,5 +1,4 @@
 //---------------------------------------------------------------------------
-
 #ifndef MainFrmH
 #define MainFrmH
 //---------------------------------------------------------------------------
@@ -14,15 +13,23 @@
 class TMainForm : public TForm
 {
 __published:	// IDE で管理されるコンポーネント
-	TTimer *BGEraseTimer;
 	TBitBtn *updateBtn;
+	TBitBtn *saveBtn;
+	TBitBtn *resetBtn;
+	TLabel *ModeLabel;
+	TBitBtn *specifyBGBtn;
+	TBitBtn *specifyFGBtn;
 	void __fastcall FormShow(TObject *Sender);
-	void __fastcall BGEraseTimerTimer(TObject *Sender);
-	void __fastcall FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
 	void __fastcall updateBtnClick(TObject *Sender);
+	void __fastcall saveBtnClick(TObject *Sender);
+	void __fastcall resetBtnClick(TObject *Sender);
+	void __fastcall specifyBGBtnClick(TObject *Sender);
+	void __fastcall specifyFGBtnClick(TObject *Sender);
 private:
 	TBGEraser BGEraser;
-	int       PressKey;
+private:
+	//モード表示
+	void dispMode(const std::string& mode_str);
 public:
 	__fastcall TMainForm(TComponent* Owner);
 };

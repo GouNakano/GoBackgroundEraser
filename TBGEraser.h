@@ -73,8 +73,6 @@ public:
 
 	TmaskInf   DRAW_BG;
 	TmaskInf   DRAW_FG;
-	TmaskInf   DRAW_PR_FG;
-	TmaskInf   DRAW_PR_BG;
 private:
 	//srcの特定の値(v)のピクセルをnew_val、その他は変更しない
 	bool setNewValFromVal(const cv::Mat& src,cv::Mat& dst,int new_val,int v);
@@ -82,8 +80,6 @@ private:
 	bool setNewValFromSamePixcel(const cv::Mat& mat1,const cv::Mat& mat2,cv::Mat& dst,int new_val);
 	//マスクを更新して出力画像を作成する
 	bool updateMaskAndOutputImage();
-	//描画更新
-	bool updateDisplayWindow();
 public:
 	//マウスイベント
 	static void onmouse(int event,int x,int y,int flags,void *param);
@@ -95,12 +91,20 @@ public:
 public:
 	//初期値設定
 	bool init(const std::string& file_name);
-	//入力待ちループ開始
-	bool run(int PressKey);
+	//描画更新
+	bool updateDisplayWindow(int millisecond=1);
 	//処理終了
 	bool end();
 	//背景削除を進める
 	bool segmentImage();
+	//背景除去画像をpngファイルに保存する
+	bool saveBGErasedImage(const std::string& file_name);
+	//リセットして最初に戻す
+	bool resetState();
+	//背景指定モードにする
+	bool setSpecifyBackgroundMode();
+	//背景指定モードにする
+	bool setSpecifyForegroundMode();
 };
 
 #endif

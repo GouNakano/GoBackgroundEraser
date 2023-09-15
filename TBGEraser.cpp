@@ -14,16 +14,16 @@
 //-------------------------------------------------
 TBGEraser::TBGEraser()
 {
-	// 変換範囲の矩形の色
-	BLUE = cv::Scalar(255,0,0);
-	// 背景に対する色
-	RED  = cv::Scalar(0,0,255);
-	// 前景に対する色
-	GREEN = cv::Scalar(0,255,0);
-	// 背景かもしれないに対する色
+	//変換範囲の矩形の色
+	BLUE  = cv::Scalar(255,0,0);
+	//背景に対する色
 	BLACK = cv::Scalar(0,0,0);
-	// 前景かもしれないに対する色
+	//前景に対する色
 	WHITE = cv::Scalar(255,255,255);
+	//背景かもしれないに対する色
+	RED   = cv::Scalar(0,0,255);
+	//前景かもしれないに対する色
+	GREEN  = cv::Scalar(0,255,0);
 }
 //-------------------------------------------------
 //デストラクタ
@@ -47,8 +47,6 @@ bool TBGEraser::init(const std::string& file_name)
 
 	DRAW_BG   .set(BLACK,0);
 	DRAW_FG   .set(WHITE,1);
-	DRAW_PR_FG.set(GREEN,3);
-	DRAW_PR_BG.set(RED  ,2);
 
 	img    = cv::imread(file_name);
 	img2   = img.clone();                                         // 元の画像のコピー
@@ -59,145 +57,8 @@ bool TBGEraser::init(const std::string& file_name)
 	cv::namedWindow("input");
 	cv::setMouseCallback("input",TBGEraser::onmouse,this);
 	cv::moveWindow("input",img.cols+10,90);
-	printf(" 説明: \n");
-	printf(" マウスの右ボタンを使用してオブジェクトの周囲に長方形を描きます。\n");
-
-	return true;
-}
-//-------------------------------------------------
-//入力待ち(返却値がfalseの時は終了予定)
-//-------------------------------------------------
-bool TBGEraser::run(int PressKey)
-{
-	cv::imshow("output",output);
-	cv::imshow("input" ,img);
-
-	int k;
-	//押下したキーをセット
-	if(PressKey > 0)
-	{
-		//MainFormで押下されたキーをセット
-		k = PressKey;
-		//描画
-		cv::waitKey(1);
-	}
-	else
-	{
-		//OpenCVで押下されたキーをセット
-		k = 0xFF & cv::waitKey(1);
-		k = std::toupper(k);
-	}
-	// キーによる処理分け
-	if(k == VK_ESCAPE)
-	{
-		//ESCキー押下で終了
-		return false;
-	}
-	else if(k == '0') // BG drawing
-	{
-		printf(" mark background regions with left mouse button \n");
-		value = DRAW_BG;
-	}
-	else if(k == '1') // FG drawing
-	{
-		printf(" mark foreground regions with left mouse button \n");
-		value = DRAW_FG;
-	}
-	else if(k == '2') // PR_BG drawing
-	{
-		value = DRAW_PR_BG;
-	}
-	else if(k == '3') // PR_FG drawing
-	{
-		value = DRAW_PR_FG;
-	}
-	else if(k == 'S') // save image
-	{
-		//保存用Mat
-		cv::Mat save_img = cv::Mat::zeros(img.size(),CV_8UC4);
-		//透明ピクセル
-		cv::Vec4b alpha0(0,0,0,0);
-		//ピクセル
-		cv::Vec4b pixcel;
-		//元ピクセル
-		cv::Vec3b src_px3;
-		cv::Vec4b src_px4;
-
-		//チャンネル数
-		int ch = img.channels();
-
-		//アルファチャンネル付きピクセルの設定
-		for(int y = 0;y < save_img.rows;y++)
-		{
-			for(int x = 0;x < save_img.cols;x++)
-			{
-				//マスクをチェック
-				if(mask2.at<unsigned char>(y,x) == 0)
-				{
-					//マスクが黒なので透明にする
-					save_img.at<cv::Vec4b>(y,x) = alpha0;
-				}
-				else
-				{
-					//マスクが白なので元画像のピクセル色を設定
-					if(ch == 3)
-					{
-						src_px3 = img2.at<cv::Vec3b>(y,x);
-
-						pixcel[0] = src_px3[0];
-						pixcel[1] = src_px3[1];
-						pixcel[2] = src_px3[2];
-						pixcel[3] = 255;
-						save_img.at<cv::Vec4b>(y,x) = pixcel;
-					}
-					else if(ch == 4)
-					{
-						src_px4 = img2.at<cv::Vec4b>(y,x);
-
-						pixcel[0] = src_px4[0];
-						pixcel[1] = src_px4[1];
-						pixcel[2] = src_px4[2];
-						pixcel[3] = 255;
-						save_img.at<cv::Vec4b>(y,x) = pixcel;
-					}
-					else //if(ch == 1)
-					{
-						unsigned char val = img2.at<unsigned char>(y,x);
-
-						pixcel[0] = val;
-						pixcel[1] = val;
-						pixcel[2] = val;
-						pixcel[3] = 255;
-						save_img.at<cv::Vec4b>(y,x) = pixcel;
-					}
-				}
-			}
-		}
-
-		cv::imwrite("output.png",save_img);
-		printf(" Result saved as image \n");
-	}
-	else if(k == 'R') // reset everything
-	{
-		printf("resetting \n");
-		rect = cv::Rect(0,0,1,1);
-		drawing      = false;
-		rectangle    = false;
-		rect_or_mask = 100;
-		rect_over    = false;
-		value        = DRAW_FG;
-		img          = img2.clone();
-		mask         = cv::Mat::zeros(cv::Size(img.cols,img.rows),CV_8UC1); // mask initialized to PR_BG
-		output       = cv::Mat::zeros(img.size(),CV_8UC1);                  // output image to be shown
-	}
-	//前景部分を白にしたマスクを作成
-	mask2 = cv::Mat::zeros(mask.size(),CV_8UC1);
-	setNewValFromVal(mask,mask2,255,1);
-	setNewValFromVal(mask,mask2,255,3);
-
-	//元画像にマスクを適用
-	output = 0;
-	img2.copyTo(output,mask2);
+	printf("説明: \n");
+	printf("マウスの右ボタンを使用してオブジェクトの周囲に長方形を描きます。\n");
 
 	return true;
 }
@@ -248,6 +109,135 @@ bool TBGEraser::segmentImage()
 	return true;
 }
 //-------------------------------------------------
+//背景除去画像をpngファイルに保存する
+//-------------------------------------------------
+bool TBGEraser::saveBGErasedImage(const std::string& file_name)
+{
+	//最後の . の位置を得る
+	std::string::size_type pos = file_name.find_last_of(".");
+	//見つかったか
+	if(pos == std::string::npos)
+	{
+		return false;
+	}
+	//拡張子の切り出し
+	std::string extname = file_name.substr(pos,file_name.size()-pos);
+	//拡張子を大文字にする
+	std::transform(extname.begin(),extname.end(),extname.begin(),std::toupper);
+	//拡張子が.PNGかチェック
+	if(extname != ".PNG")
+	{
+		return false;
+	}
+	//保存用Mat
+	cv::Mat save_img = cv::Mat::zeros(img.size(),CV_8UC4);
+	//透明ピクセル
+	cv::Vec4b alpha0(0,0,0,0);
+	//ピクセル
+	cv::Vec4b pixcel;
+	//元ピクセル
+	cv::Vec3b src_px3;
+	cv::Vec4b src_px4;
+
+	//チャンネル数
+	int ch = img.channels();
+
+	//アルファチャンネル付きピクセルの設定
+	for(int y = 0;y < save_img.rows;y++)
+	{
+		for(int x = 0;x < save_img.cols;x++)
+		{
+			//マスクをチェック
+			if(mask2.at<unsigned char>(y,x) == 0)
+			{
+				//マスクが黒なので透明にする
+				save_img.at<cv::Vec4b>(y,x) = alpha0;
+			}
+			else
+			{
+				//マスクが白なので元画像のピクセル色を設定
+				if(ch == 3)
+				{
+					src_px3 = img2.at<cv::Vec3b>(y,x);
+
+					pixcel[0] = src_px3[0];
+					pixcel[1] = src_px3[1];
+					pixcel[2] = src_px3[2];
+					pixcel[3] = 255;
+					save_img.at<cv::Vec4b>(y,x) = pixcel;
+				}
+				else if(ch == 4)
+				{
+					src_px4 = img2.at<cv::Vec4b>(y,x);
+
+					pixcel[0] = src_px4[0];
+					pixcel[1] = src_px4[1];
+					pixcel[2] = src_px4[2];
+					pixcel[3] = 255;
+					save_img.at<cv::Vec4b>(y,x) = pixcel;
+				}
+				else //if(ch == 1)
+				{
+					unsigned char val = img2.at<unsigned char>(y,x);
+
+					pixcel[0] = val;
+					pixcel[1] = val;
+					pixcel[2] = val;
+					pixcel[3] = 255;
+					save_img.at<cv::Vec4b>(y,x) = pixcel;
+				}
+			}
+		}
+	}
+	//画像の保存
+	if(cv::imwrite(file_name,save_img) == false)
+	{
+		return false;
+	}
+	return true;
+}
+//-------------------------------------------------
+//リセットして最初に戻す
+//-------------------------------------------------
+bool TBGEraser::resetState()
+{
+	rect         = cv::Rect(0,0,1,1);
+	drawing      = false;
+	rectangle    = false;
+	rect_or_mask = 100;
+	rect_over    = false;
+	value        = DRAW_FG;
+	img          = img2.clone();
+	mask         = cv::Mat::zeros(cv::Size(img.cols,img.rows),CV_8UC1);
+	output       = cv::Mat::zeros(img.size(),CV_8UC1);
+	//マスクを更新して出力画像を作成する
+	updateMaskAndOutputImage();
+	//描画更新
+	updateDisplayWindow();
+
+	return true;
+}
+//-------------------------------------------------
+//背景指定モードにする
+//-------------------------------------------------
+bool TBGEraser::setSpecifyBackgroundMode()
+{
+	//背景指定モード
+	value = DRAW_BG;
+
+	return true;
+}
+//-------------------------------------------------
+//前景指定モードにする
+//-------------------------------------------------
+bool TBGEraser::setSpecifyForegroundMode()
+{
+	//前景指定モード
+	value = DRAW_FG;
+
+	return true;
+}
+//-------------------------------------------------
 //マスクを更新して出力画像を作成する
 //-------------------------------------------------
 bool TBGEraser::updateMaskAndOutputImage()
@@ -265,11 +255,12 @@ bool TBGEraser::updateMaskAndOutputImage()
 //-------------------------------------------------
 //描画更新
 //-------------------------------------------------
-bool TBGEraser::updateDisplayWindow()
+bool TBGEraser::updateDisplayWindow(int millisecond)
 {
 	cv::imshow("output",output);
 	cv::imshow("input" ,img);
-	cv::waitKey(30);
+	//与えれた時間で表示更新
+	cv::waitKey(millisecond);
 
 	return true;
 }
@@ -278,7 +269,6 @@ bool TBGEraser::updateDisplayWindow()
 //-------------------------------------------------
 bool TBGEraser::setNewValFromVal(const cv::Mat& src,cv::Mat& dst,int new_val,int v)
 {
-
 	for(int row=0;row < src.rows;row++)
 	{
 		const unsigned char *psrc = src.ptr<unsigned char>(row);
@@ -340,6 +330,8 @@ void TBGEraser::onmouse(int event,int x,int y,int flags,void *param)
 			cv::rectangle(pMe->img,cv::Point(pMe->ix,pMe->iy),cv::Point(x,y),pMe->BLUE,2);
 			pMe->rect = cv::Rect(std::min(pMe->ix,x),std::min(pMe->iy,y),abs(pMe->ix-x),abs(pMe->iy-y));
 			pMe->rect_or_mask = 0;
+			pMe->updateMaskAndOutputImage();
+			pMe->updateDisplayWindow();
 		}
 	}
 	else if(event == cv::EVENT_RBUTTONUP)
@@ -349,20 +341,23 @@ void TBGEraser::onmouse(int event,int x,int y,int flags,void *param)
 		cv::rectangle(pMe->img,cv::Point(pMe->ix,pMe->iy),cv::Point(x,y),pMe->BLUE,2);
 		pMe->rect = cv::Rect(std::min(pMe->ix,x),std::min(pMe->iy,y),abs(pMe->ix-x),abs(pMe->iy-y));
 		pMe->rect_or_mask = 0;
-		printf(" Now press the key 'n' a few times until no further change \n");
+		pMe->updateMaskAndOutputImage();
+		pMe->updateDisplayWindow();
 	}
-	//draw touchup curves
+	//タッチアップカーブを描く
 	if(event == cv::EVENT_LBUTTONDOWN)
 	{
 		if(pMe->rect_over == false)
 		{
-			printf("first draw rectangle \n");
+			printf("最初に長方形を描画します\n");
 		}
 		else
 		{
 			pMe->drawing = true;
 			cv::circle(pMe->img ,cv::Point(x,y),pMe->thickness,pMe->value.color,-1);
 			cv::circle(pMe->mask,cv::Point(x,y),pMe->thickness,pMe->value.val,-1);
+			pMe->updateMaskAndOutputImage();
+			pMe->updateDisplayWindow();
 		}
 	}
 	else if(event == cv::EVENT_MOUSEMOVE)
@@ -371,6 +366,8 @@ void TBGEraser::onmouse(int event,int x,int y,int flags,void *param)
 		{
 			cv::circle(pMe->img ,cv::Point(x,y),pMe->thickness,pMe->value.color,-1);
 			cv::circle(pMe->mask,cv::Point(x,y),pMe->thickness,pMe->value.val,-1);
+			pMe->updateMaskAndOutputImage();
+			pMe->updateDisplayWindow();
 		}
 	}
 	else if(event == cv::EVENT_LBUTTONUP)
@@ -380,6 +377,8 @@ void TBGEraser::onmouse(int event,int x,int y,int flags,void *param)
 			pMe->drawing = false;
 			cv::circle(pMe->img,cv::Point(x,y) ,pMe->thickness,pMe->value.color,-1);
 			cv::circle(pMe->mask,cv::Point(x,y),pMe->thickness,pMe->value.val,-1);
+			pMe->updateMaskAndOutputImage();
+			pMe->updateDisplayWindow();
 		}
 	}
 }
