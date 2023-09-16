@@ -81,9 +81,6 @@ private:
 	//mat1,mat2の同じ値の所をnew_valその他を0にする
 	bool setNewValFromSamePixcel(const cv::Mat& mat1,const cv::Mat& mat2,cv::Mat& dst,int new_val);
 public:
-	//マウスイベント
-	static void onmouse(int event,int x,int y,int flags,void *param);
-public:
 	//コンストラクタ
 	TBGEraser();
 	//デストラクタ

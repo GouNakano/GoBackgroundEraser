@@ -15,15 +15,11 @@ const TmaskInf TBGEraser::DRAW_BACKGROUND(cv::Scalar(  0,  0,  0), 0);
 const TmaskInf TBGEraser::DRAW_FOREGROUND(cv::Scalar(255,255,255), 1);
 const TmaskInf TBGEraser::DRAW_RECTANGLE (cv::Scalar(255,  0,  0),-1);
 
-
-
 //-------------------------------------------------
 //コンストラクタ
 //-------------------------------------------------
 TBGEraser::TBGEraser()
 {
-//	//変換範囲の矩形の色
-//	BLUE  = cv::Scalar(255,0,0);
 }
 //-------------------------------------------------
 //デストラクタ
@@ -45,15 +41,14 @@ bool TBGEraser::init(const std::string& file_name)
 	value        = DRAW_FOREGROUND; // 図面が前景に初期化されました
 	thickness    = 3;               // ブラシの太さ
 
-	img    = cv::imread(file_name);
-	img2   = img.clone();                                         // 元の画像のコピー
-	mask   = cv::Mat::zeros(cv::Size(img.cols,img.rows),CV_8UC1); // マスクは背景かもしれないに初期化されました
-	output = cv::Mat::zeros(img.size(),CV_8UC1);                  // 表示される出力画像
+	img     = cv::imread(file_name);
+	img_org = img.clone();                                         // 元の画像のコピー
+	mask    = cv::Mat::zeros(cv::Size(img.cols,img.rows),CV_8UC1); // マスクは背景かもしれないに初期化されました
+	output  = cv::Mat::zeros(img.size(),CV_8UC1);                  // 表示される出力画像
 	//入出力ウィンドウ
 	cv::namedWindow("output");
-	cv::namedWindow("input");
-	cv::setMouseCallback("input",TBGEraser::onmouse,this);
-	cv::moveWindow("input",img.cols+10,90);
+//	cv::namedWindow("input");
+//	cv::setMouseCallback("input",TBGEraser::onmouse,this);
 	printf("説明: \n");
 	printf("マウスの右ボタンを使用してオブジェクトの周囲に長方形を描きます。\n");
 
@@ -74,7 +69,7 @@ bool TBGEraser::end()
 
 	//元画像にマスクを適用
 	output = 0;
-	img2.copyTo(output,mask2);
+	img_org.copyTo(output,mask2);
 
 	return true;
 }
@@ -88,7 +83,7 @@ bool TBGEraser::segmentImage()
 		//矩形領域内の情報を基に初期値を決める
 		bgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
 		fgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
-		cv::grabCut(img2,mask,rect,bgdmodel,fgdmodel,1,cv::GC_INIT_WITH_RECT);
+		cv::grabCut(img_org,mask,rect,bgdmodel,fgdmodel,1,cv::GC_INIT_WITH_RECT);
 		rect_or_mask = 1;
 	}
 	else if(rect_or_mask == 1)
@@ -96,7 +91,7 @@ bool TBGEraser::segmentImage()
 		//前景/背景を指定する線を基に初期値を決める
 		bgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
 		fgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
-		cv::grabCut(img2,mask,rect,bgdmodel,fgdmodel,1,cv::GC_INIT_WITH_MASK);
+		cv::grabCut(img_org,mask,rect,bgdmodel,fgdmodel,1,cv::GC_INIT_WITH_MASK);
 	}
 	//マスクを更新して出力画像を作成する
 	updateMaskAndOutputImage();
@@ -155,7 +150,7 @@ bool TBGEraser::saveBGErasedImage(const std::string& file_name)
 				//マスクが白なので元画像のピクセル色を設定
 				if(ch == 3)
 				{
-					src_px3 = img2.at<cv::Vec3b>(y,x);
+					src_px3 = img_org.at<cv::Vec3b>(y,x);
 
 					pixcel[0] = src_px3[0];
 					pixcel[1] = src_px3[1];
@@ -165,7 +160,7 @@ bool TBGEraser::saveBGErasedImage(const std::string& file_name)
 				}
 				else if(ch == 4)
 				{
-					src_px4 = img2.at<cv::Vec4b>(y,x);
+					src_px4 = img_org.at<cv::Vec4b>(y,x);
 
 					pixcel[0] = src_px4[0];
 					pixcel[1] = src_px4[1];
@@ -175,7 +170,7 @@ bool TBGEraser::saveBGErasedImage(const std::string& file_name)
 				}
 				else //if(ch == 1)
 				{
-					unsigned char val = img2.at<unsigned char>(y,x);
+					unsigned char val = img_org.at<unsigned char>(y,x);
 
 					pixcel[0] = val;
 					pixcel[1] = val;
@@ -204,7 +199,7 @@ bool TBGEraser::resetState()
 	rect_or_mask = 100;
 	rect_over    = false;
 	value        = DRAW_FOREGROUND;
-	img          = img2.clone();
+	img          = img_org.clone();
 	mask         = cv::Mat::zeros(cv::Size(img.cols,img.rows),CV_8UC1);
 	output       = cv::Mat::zeros(img.size(),CV_8UC1);
 	//描画更新
@@ -248,18 +243,66 @@ bool TBGEraser::getOutputMat(cv::Mat& output_mat)
 	return true;
 }
 //-------------------------------------------------
+//出力マスクを得る
+//-------------------------------------------------
+bool TBGEraser::getOutputMasktMat(cv::Mat& mask_mat)
+{
+	//内容の有無チェック
+	if(mask.rows == 0 || mask.cols == 0)
+	{
+		return false;
+	}
+	//出力Matのコピーをセット
+	mask_mat = mask.clone();
+
+	return true;
+}
+//-------------------------------------------------
+//元画像Matを得る
+//-------------------------------------------------
+bool TBGEraser::getOriginalMat(cv::Mat& original_mat)
+{
+	//内容の有無チェック
+	if(img_org.rows == 0 || img_org.cols == 0)
+	{
+		return false;
+	}
+	//元画像Matのコピーをセット
+	original_mat = img_org.clone();
+
+	return true;
+}
+//-------------------------------------------------
+//元マスクを得る
+//-------------------------------------------------
+bool TBGEraser::getOriginalMaskMat(cv::Mat& original_mask_mat)
+{
+	//内容の有無チェック
+	if(mask.rows == 0 || mask.cols == 0)
+	{
+		mask = cv::Mat::zeros(img_org.size(),CV_8UC1);
+	}
+	//元マスクMatのコピーをセット
+	original_mask_mat = mask.clone();
+
+	return true;
+}
+//-------------------------------------------------
 //マスクを更新して出力画像を作成する
 //-------------------------------------------------
 bool TBGEraser::updateMaskAndOutputImage()
 {
-	//前景部分を白にしたマスクを作成
-	mask2 = cv::Mat::zeros(mask.size(),CV_8UC1);
-	setNewValFromVal(mask,mask2,255,1);
-	setNewValFromVal(mask,mask2,255,3);
-	//元画像にマスクを適用
-	output = 0;
-	img2.copyTo(output,mask2);
-
+	//maskが有効であるかチェック
+	if(mask.rows > 0 && mask.cols > 0)
+	{
+		//前景部分を白にしたマスクを作成
+		mask2 = cv::Mat::zeros(mask.size(),CV_8UC1);
+		setNewValFromVal(mask,mask2,255,1);
+		setNewValFromVal(mask,mask2,255,3);
+		//元画像にマスクを適用
+		output = 0;
+		img_org.copyTo(output,mask2);
+	}
 	return true;
 }
 //-------------------------------------------------
@@ -268,7 +311,7 @@ bool TBGEraser::updateMaskAndOutputImage()
 bool TBGEraser::updateDisplayWindow(int millisecond)
 {
 //	cv::imshow("output",output);
-	cv::imshow("input" ,img);
+//	cv::imshow("input" ,img);
 	//与えれた時間で表示更新
 	cv::waitKey(millisecond);
 
@@ -336,7 +379,7 @@ void TBGEraser::onmouse(int event,int x,int y,int flags,void *param)
 	{
 		if(pMe->rectangle == true)
 		{
-			pMe->img = pMe->img2.clone();
+			pMe->img = pMe->img_org.clone();
 			cv::rectangle(pMe->img,cv::Point(pMe->ix,pMe->iy),cv::Point(x,y),pMe->DRAW_RECTANGLE.color,2);
 			pMe->rect = cv::Rect(std::min(pMe->ix,x),std::min(pMe->iy,y),abs(pMe->ix-x),abs(pMe->iy-y));
 			pMe->rect_or_mask = 0;
