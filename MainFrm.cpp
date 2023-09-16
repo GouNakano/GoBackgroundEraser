@@ -222,18 +222,6 @@ bool TMainForm::adjustOriginalPointFromDrawPoint(const cv::Point& draw_point,cv:
 	return true;
 }
 //---------------------------------------------------------------------------
-void __fastcall TMainForm::TimerTimer(TObject *Sender)
-{
-//	//出力表示Mat作成
-//	cv::Mat dispMat;
-//	BGEraser.getOutputMat(dispMat);
-//	cv::resize(dispMat,dispMat,win_sz);
-//	//描画更新
-//	BGEraser.updateDisplayWindow();
-//	cv::imshow("output",dispMat);
-//	cv::waitKey(1);
-}
-//-------------------------------------------------
 //マウスイベント
 //-------------------------------------------------
 void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
@@ -246,8 +234,6 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 	if(event == cv::EVENT_RBUTTONDOWN)
 	{
 		pMe->rectangle = true;
-		pMe->ix = x;
-		pMe->iy = y;
 		pMainFrm->ix = x;
 		pMainFrm->iy = y;
 	}
@@ -259,7 +245,7 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 			pMainFrm->makeDrawMatFromOrignalMat();
 			//矩形を描く
 			cv::rectangle(pMainFrm->disp_mat,cv::Point(pMainFrm->ix,pMainFrm->iy),cv::Point(x,y),pMe->DRAW_RECTANGLE.color,2);
-			pMe->rect_or_mask = 0;
+			pMe->rect_or_mask = TBGEraser::tmRect;
 			//メイン表示パネルの表示更新
 			pMainFrm->updateDispFromDrawMat();
 		}
@@ -272,16 +258,15 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 		cv::Rect sel_rect;
 		cv::Rect adj_rect;
 
-		sel_rect = cv::Rect(std::min(pMe->ix,x),std::min(pMe->iy,y),abs(pMe->ix-x),abs(pMe->iy-y));
+		sel_rect = cv::Rect(std::min(pMainFrm->ix,x),std::min(pMainFrm->iy,y),abs(pMainFrm->ix-x),abs(pMainFrm->iy-y));
 
 		//表示用矩形を元画像の大きさに合わせる
 		if(pMainFrm->adjustRectFromDrawRect(sel_rect,adj_rect) == true)
 		{
 			cv::rectangle(pMe->img,adj_rect,pMe->DRAW_RECTANGLE.color,2);
-			pMe->rect = adj_rect;
-			pMe->rect_or_mask = 0;
+			pMe->rect         = adj_rect;
+			pMe->rect_or_mask = TBGEraser::tmRect;
 			pMe->updateMaskAndOutputImage();
-			pMe->updateDisplayWindow();
 		}
 	}
 	//タッチアップカーブを描く
@@ -293,54 +278,42 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 		}
 		else
 		{
-			pMe->drawing = true;
-//			cv::circle(pMe->img ,cv::Point(x,y),pMe->thickness,pMe->value.color,-1);
-//			cv::circle(pMe->mask,cv::Point(x,y),pMe->thickness,pMe->value.val,-1);
-//			pMe->updateMaskAndOutputImage();
-//			pMe->updateDisplayWindow();
+			pMe->setDrawing(true);
 			//描画更新
-			cv::circle(pMainFrm->disp_mat     ,cv::Point(x,y),pMe->thickness,pMe->value.color,-1);
+			cv::circle(pMainFrm->disp_mat,cv::Point(x,y),pMe->getThickness(),pMe->value.color,-1);
 			//マスク更新
 			cv::Point adjust_point;
 			pMainFrm->adjustOriginalPointFromDrawPoint(cv::Point(x,y),adjust_point);
-			cv::circle(pMainFrm->disp_mask_mat,adjust_point,pMe->thickness,pMe->value.val,-1);
+			cv::circle(pMainFrm->disp_mask_mat,adjust_point,pMe->getThickness(),pMe->value.val,-1);
 			//メイン表示パネルの表示更新
 			pMainFrm->updateDispFromDrawMat();
 		}
 	}
 	else if(event == cv::EVENT_MOUSEMOVE)
 	{
-		if(pMe->drawing == true)
+		if(pMe->getDrawing() == true)
 		{
-//			cv::circle(pMe->img ,cv::Point(x,y),pMe->thickness,pMe->value.color,-1);
-//			cv::circle(pMe->mask,cv::Point(x,y),pMe->thickness,pMe->value.val,-1);
-//			pMe->updateMaskAndOutputImage();
-//			pMe->updateDisplayWindow();
 			//描画更新
-			cv::circle(pMainFrm->disp_mat,cv::Point(x,y),pMe->thickness,pMe->value.color,-1);
+			cv::circle(pMainFrm->disp_mat,cv::Point(x,y),pMe->getThickness(),pMe->value.color,-1);
 			//マスク更新
 			cv::Point adjust_point;
 			pMainFrm->adjustOriginalPointFromDrawPoint(cv::Point(x,y),adjust_point);
-			cv::circle(pMainFrm->disp_mask_mat,adjust_point,pMe->thickness,pMe->value.val,-1);
+			cv::circle(pMainFrm->disp_mask_mat,adjust_point,pMe->getThickness(),pMe->value.val,-1);
 			//メイン表示パネルの表示更新
 			pMainFrm->updateDispFromDrawMat();
 		}
 	}
 	else if(event == cv::EVENT_LBUTTONUP)
 	{
-		if(pMe->drawing == true)
+		if(pMe->getDrawing() == true)
 		{
-			pMe->drawing = false;
-//			cv::circle(pMe->img,cv::Point(x,y) ,pMe->thickness,pMe->value.color,-1);
-//			cv::circle(pMe->mask,cv::Point(x,y),pMe->thickness,pMe->value.val,-1);
-//			pMe->updateMaskAndOutputImage();
-//			pMe->updateDisplayWindow();
+			pMe->setDrawing(false);
 			//描画更新
-			cv::circle(pMainFrm->disp_mat     ,cv::Point(x,y),pMe->thickness,pMe->value.color,-1);
+			cv::circle(pMainFrm->disp_mat,cv::Point(x,y),pMe->getThickness(),pMe->value.color,-1);
 			//マスク更新
 			cv::Point adjust_point;
 			pMainFrm->adjustOriginalPointFromDrawPoint(cv::Point(x,y),adjust_point);
-			cv::circle(pMainFrm->disp_mask_mat,adjust_point,pMe->thickness,pMe->value.val,-1);
+			cv::circle(pMainFrm->disp_mask_mat,adjust_point,pMe->getThickness(),pMe->value.val,-1);
 			//メイン表示パネルの表示更新
 			pMainFrm->updateDispFromDrawMat();
 		}

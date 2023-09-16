@@ -29,7 +29,6 @@ __published:	// IDE で管理されるコンポーネント
 	TPanel *Panel1;
 	TStatusBar *StatusBar1;
 	TPanel *MainPanel;
-	TTimer *Timer;
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall updateBtnClick(TObject *Sender);
 	void __fastcall saveBtnClick(TObject *Sender);
@@ -37,7 +36,6 @@ __published:	// IDE で管理されるコンポーネント
 	void __fastcall specifyBGBtnClick(TObject *Sender);
 	void __fastcall specifyFGBtnClick(TObject *Sender);
 	void __fastcall MainPanelResize(TObject *Sender);
-	void __fastcall TimerTimer(TObject *Sender);
 private:
 	//マウスイベント
 	static void onmouse(int event,int x,int y,int flags,void *param);

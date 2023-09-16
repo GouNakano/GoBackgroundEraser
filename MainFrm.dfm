@@ -125,11 +125,4 @@ object MainForm: TMainForm
       Caption = #12504#12523#12503'&H)'
     end
   end
-  object Timer: TTimer
-    Enabled = False
-    Interval = 100
-    OnTimer = TimerTimer
-    Left = 864
-    Top = 19
-  end
 end
