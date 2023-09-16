@@ -20,10 +20,24 @@ void __fastcall TMainForm::FormShow(TObject *Sender)
 {
 	//背景除去オブジェクトの初期化
 	BGEraser.init("messi5.png");
+	//ウィンドウの結合
+	hWnd1        = (HWND)cvGetWindowHandle("output");
+	hWnd1_parent = ::GetParent(hWnd1);
+	::SetParent(hWnd1,MainPanel->Handle);
+	::ShowWindow(hWnd1_parent,SW_HIDE);
+	win_sz = {MainPanel->Width,MainPanel->Height};
+	//出力表示Mat作成
+	cv::Mat dispMat;
+	BGEraser.getOutputMat(dispMat);
+	cv::resize(dispMat,dispMat,win_sz);
 	//描画更新
 	BGEraser.updateDisplayWindow();
+	cv::imshow("output",dispMat);
+	cv::waitKey(30);
 	//モード表示
 	dispMode("GoBackgroundEraser起動");
+
+Timer->Enabled = true;
 }
 //-------------------------------------------------
 //背景削除表示更新ボタン
@@ -89,6 +103,40 @@ void __fastcall TMainForm::specifyFGBtnClick(TObject *Sender)
 		//モード表示
 		dispMode("前景指定モード");
 	}
+}
+//-------------------------------------------------
+//メイン表示パネルのサイズ変更
+//-------------------------------------------------
+void __fastcall TMainForm::MainPanelResize(TObject *Sender)
+{
+	//親パネルのサイズ
+	int w = MainPanel->Width;
+	int h = MainPanel->Height;
+	win_sz = {MainPanel->Width,MainPanel->Height};
+	//出力表示Mat作成
+	cv::Mat dispMat;
+	if(BGEraser.getOutputMat(dispMat) == false)
+	{
+		//表示内容が空なので処理しない
+		return;
+	}
+	cv::resize(dispMat,dispMat,win_sz);
+	//描画更新
+	cv::imshow("output",dispMat);
+	cv::waitKey(1);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::TimerTimer(TObject *Sender)
+{
+	//出力表示Mat作成
+	cv::Mat dispMat;
+	BGEraser.getOutputMat(dispMat);
+	cv::resize(dispMat,dispMat,win_sz);
+	//描画更新
+	BGEraser.updateDisplayWindow();
+	cv::imshow("output",dispMat);
+	cv::waitKey(1);
 }
 //---------------------------------------------------------------------------
 

@@ -1,42 +1,37 @@
 ﻿[Closed Files]
-File_0=TSourceModule,'D:\Users\owner\Documents\Projects10\TEST72\main.cpp',0,1,129,1,175,0,0,,
-File_1=TSourceModule,'D:\Users\owner\Documents\Projects10\GoBackgroundEraser\TEST72\main.cpp',0,1,167,51,207,0,0,,
-File_2=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\src\arithm.cpp',0,1,217,1,241,0,0,,
-File_3=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\include\opencv2\core\cvstd.hpp',0,1,737,1,764,0,0,,
-File_4=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\src\matrix.cpp',0,1,1744,1,1768,0,0,,
-File_5=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\build\install\include\opencv2\core\cvstd.hpp',0,1,593,1,623,0,0,,
-File_6=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\src\system.cpp',0,1,622,1,661,0,0,,
-File_7=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\include\opencv2\core.hpp',0,1,95,1,109,0,0,,
-File_8=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\include\opencv2\core\mat.inl.hpp',0,1,1250,1,1287,0,0,,
-File_9=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\build\install\include\opencv2\core\mat.inl.hpp',0,1,47,1,71,0,0,,
-File_10=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\build\install\include\opencv2\core\types.hpp',0,1,1541,1,1565,0,0,,
-File_11=TSourceModule,'D:\Users\owner\Documents\Projects10\TEST072\File1.cpp',0,1,65,2,98,0,0,,
-File_12=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\imgproc\src\grabcut.cpp',0,1,534,1,528,0,0,,
-File_13=TSourceModule,'D:\Users\owner\Documents\Projects10\TEST\TEST072\File1.cpp',0,1,31,1,47,0,0,,
-File_14=TSourceModule,'D:\Users\owner\Documents\Projects10\TEST\TEST056\File1.cpp',0,1,15,1,22,0,0,,
+File_0=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\src\system.cpp',0,1,778,1,806,0,0,,
+File_1=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\highgui\src\window_w32.cpp',0,1,703,1,727,0,0,,
+File_2=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\highgui\src\window.cpp',0,1,543,19,565,0,0,,
+File_3=TSourceModule,'c:\program files (x86)\embarcadero\studio\21.0\SOURCE\RTL\SYS\GETMEM.INC',0,1,1968,1,2011,0,0,,
+File_4=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\build\install\include\opencv2\core\cvstd.hpp',0,1,593,1,623,0,0,,
+File_5=TSourceModule,'c:\program files (x86)\embarcadero\studio\21.0\SOURCE\RTL\SYS\System.pas',0,1,5065,1,5091,0,0,,
+File_6=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\include\opencv2\core\cvstd.hpp',0,1,737,1,764,0,0,,
+File_7=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\src\stl.cpp',0,1,25,1,56,0,0,,
+File_8=TSourceModule,'D:\Users\owner\Documents\Projects10\TEST72\main.cpp',0,1,129,1,175,0,0,,
+File_9=TSourceModule,'D:\Users\owner\Documents\Projects10\GoBackgroundEraser\TEST72\main.cpp',0,1,167,51,207,0,0,,
+File_10=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\src\arithm.cpp',0,1,217,1,241,0,0,,
+File_11=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\src\matrix.cpp',0,1,1744,1,1768,0,0,,
+File_12=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\include\opencv2\core.hpp',0,1,95,1,109,0,0,,
+File_13=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\include\opencv2\core\mat.inl.hpp',0,1,1250,1,1287,0,0,,
+File_14=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\build\install\include\opencv2\core\mat.inl.hpp',0,1,47,1,71,0,0,,
 
 [Modules]
-Module0=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
-Module1=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\GoBackgroundEraser.cbproj
-Module2=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
-Count=3
+Module0=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
+Module1=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
+Count=2
 EditWindowCount=1
-
-[D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp]
-ModuleType=TSourceModule
-
-[D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\GoBackgroundEraser.cbproj]
-ModuleType=TBaseProject
 
 [D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp]
 ModuleType=TSourceModule
 
+[D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp]
+ModuleType=TSourceModule
+
 [EditWindow0]
-ViewCount=3
-CurrentEditView=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
+ViewCount=2
+CurrentEditView=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
 View0=0
 View1=1
-View2=2
 PercentageSizes=1
 Create=1
 Visible=1
@@ -68,36 +63,25 @@ BottomMiddelPanelData=0000080001020200000009000000446F636B5369746530100000004772
 
 [View0]
 CustomEditViewType=TEditView
-Module=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\GoBackgroundEraser.cpp
-CursorX=1
-CursorY=6
-TopLine=1
-LeftCol=1
-Elisions=
-Bookmarks=
-EditViewName=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\GoBackgroundEraser.cpp
-
-[View1]
-CustomEditViewType=TEditView
 Module=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
-CursorX=39
-CursorY=36
-TopLine=35
+CursorX=5
+CursorY=32
+TopLine=3
 LeftCol=1
 Elisions=
 Bookmarks=
 EditViewName=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
 
-[View2]
+[View1]
 CustomEditViewType=TEditView
 Module=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
 CursorX=1
-CursorY=171
-TopLine=121
+CursorY=246
+TopLine=213
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
+EditViewName=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.h
 
 [Watches]
 Count=0
@@ -235,7 +219,7 @@ MaxLeft=-1
 MaxTop=-1
 ClientWidth=1896
 ClientHeight=3183
-TBDockHeight=5192
+TBDockHeight=9010
 LRDockWidth=1896
 Dockable=1
 StayOnTop=0
@@ -653,7 +637,7 @@ MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
 ClientHeight=4510
-TBDockHeight=4596
+TBDockHeight=9010
 LRDockWidth=2000
 Dockable=1
 StayOnTop=0
@@ -677,7 +661,7 @@ MaxLeft=-1
 MaxTop=-1
 ClientWidth=1896
 ClientHeight=3471
-TBDockHeight=3548
+TBDockHeight=9010
 LRDockWidth=1896
 Dockable=1
 StayOnTop=0
@@ -701,7 +685,7 @@ MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
 ClientHeight=2144
-TBDockHeight=4144
+TBDockHeight=9010
 LRDockWidth=2000
 Dockable=1
 StayOnTop=0

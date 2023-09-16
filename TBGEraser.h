@@ -48,12 +48,13 @@ public:
 class TBGEraser
 {
 public:
-	cv::Scalar BLUE;    // 変換範囲の矩形の色
-	cv::Scalar RED;     // 背景に対する色
-	cv::Scalar GREEN;   // 前景に対する色
-	cv::Scalar BLACK;   // 背景かもしれないに対する色
-	cv::Scalar WHITE;   // 前景かもしれないに対する色
-
+	//前景を描くモードの値
+	static const TmaskInf DRAW_BACKGROUND;
+	//背景くモードの値
+	static const TmaskInf DRAW_FOREGROUND;
+	//変換範囲の矩形の色
+	static const TmaskInf DRAW_RECTANGLE;
+private:
 	cv::Mat    img;
 	cv::Mat    img2;
 	cv::Mat    mask;
@@ -61,6 +62,7 @@ public:
 	cv::Mat    output;
 	cv::Mat    bgdmodel;
 	cv::Mat    fgdmodel;
+	cv::Mat    disp_mat;
 	bool       drawing;
 	TmaskInf   value;
 	bool       rectangle;
@@ -71,8 +73,6 @@ public:
 	bool       rect_over;
 	int        thickness;
 
-	TmaskInf   DRAW_BG;
-	TmaskInf   DRAW_FG;
 private:
 	//srcの特定の値(v)のピクセルをnew_val、その他は変更しない
 	bool setNewValFromVal(const cv::Mat& src,cv::Mat& dst,int new_val,int v);
@@ -105,6 +105,8 @@ public:
 	bool setSpecifyBackgroundMode();
 	//背景指定モードにする
 	bool setSpecifyForegroundMode();
+	//出力Matを得る
+	bool getOutputMat(cv::Mat& output_mat);
 };
 
 #endif

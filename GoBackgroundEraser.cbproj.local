@@ -39,8 +39,8 @@
     <Transaction>2023/09/14 15:45:00.000.894,=D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_stereo320.lib</Transaction>
     <Transaction>2023/09/14 15:45:00.000.181,=D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_phase_unwrapping320.lib</Transaction>
     <Transaction>2023/09/14 15:45:00.000.503,=D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_reg320.lib</Transaction>
-    <Transaction>2023/09/14 15:45:00.000.428,=D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_plot320.lib</Transaction>
     <Transaction>2023/09/14 15:45:00.000.373,=D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_photo320.lib</Transaction>
+    <Transaction>2023/09/14 15:45:00.000.428,=D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_plot320.lib</Transaction>
     <Transaction>2023/09/14 15:45:00.000.129,=D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_optflow320.lib</Transaction>
     <Transaction>2023/09/14 15:45:00.000.727,=D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_saliency320.lib</Transaction>
     <Transaction>2023/09/14 15:45:01.000.137,=D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_structured_light320.lib</Transaction>

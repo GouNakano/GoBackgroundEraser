@@ -8,22 +8,18 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
+//-------------------------------------------------
+//固定値
+//-------------------------------------------------
+const TmaskInf TBGEraser::DRAW_BACKGROUND(cv::Scalar(  0,  0,  0), 0);
+const TmaskInf TBGEraser::DRAW_FOREGROUND(cv::Scalar(255,255,255), 1);
+const TmaskInf TBGEraser::DRAW_RECTANGLE (cv::Scalar(255,  0,  0),-1);
 
 //-------------------------------------------------
 //コンストラクタ
 //-------------------------------------------------
 TBGEraser::TBGEraser()
 {
-	//変換範囲の矩形の色
-	BLUE  = cv::Scalar(255,0,0);
-	//背景に対する色
-	BLACK = cv::Scalar(0,0,0);
-	//前景に対する色
-	WHITE = cv::Scalar(255,255,255);
-	//背景かもしれないに対する色
-	RED   = cv::Scalar(0,0,255);
-	//前景かもしれないに対する色
-	GREEN  = cv::Scalar(0,255,0);
 }
 //-------------------------------------------------
 //デストラクタ
@@ -38,15 +34,12 @@ bool TBGEraser::init(const std::string& file_name)
 {
 	//フラグの設定
 	rect         = cv::Rect(0,0,1,1);
-	drawing      = false;    // 曲線描画のフラグ
-	rectangle    = false;    // 描画範囲矩形のフラグ
-	rect_over    = false;    // 四角形が描画されたかどうかを確認するフラグ
-	rect_or_mask = 100;      // レククトモードまたはマスクモードを選択するためのフラグ
-	value        = DRAW_FG;  // 図面が前景に初期化されました
-	thickness    = 3;        // ブラシの太さ
-
-	DRAW_BG   .set(BLACK,0);
-	DRAW_FG   .set(WHITE,1);
+	drawing      = false;           // 曲線描画のフラグ
+	rectangle    = false;           // 描画範囲矩形のフラグ
+	rect_over    = false;           // 四角形が描画されたかどうかを確認するフラグ
+	rect_or_mask = 100;             // レククトモードまたはマスクモードを選択するためのフラグ
+	value        = DRAW_FOREGROUND; // 図面が前景に初期化されました
+	thickness    = 3;               // ブラシの太さ
 
 	img    = cv::imread(file_name);
 	img2   = img.clone();                                         // 元の画像のコピー
@@ -206,12 +199,10 @@ bool TBGEraser::resetState()
 	rectangle    = false;
 	rect_or_mask = 100;
 	rect_over    = false;
-	value        = DRAW_FG;
+	value        = DRAW_FOREGROUND;
 	img          = img2.clone();
 	mask         = cv::Mat::zeros(cv::Size(img.cols,img.rows),CV_8UC1);
 	output       = cv::Mat::zeros(img.size(),CV_8UC1);
-	//マスクを更新して出力画像を作成する
-	updateMaskAndOutputImage();
 	//描画更新
 	updateDisplayWindow();
 
@@ -223,7 +214,7 @@ bool TBGEraser::resetState()
 bool TBGEraser::setSpecifyBackgroundMode()
 {
 	//背景指定モード
-	value = DRAW_BG;
+	value = DRAW_BACKGROUND;
 
 	return true;
 }
@@ -233,7 +224,22 @@ bool TBGEraser::setSpecifyBackgroundMode()
 bool TBGEraser::setSpecifyForegroundMode()
 {
 	//前景指定モード
-	value = DRAW_FG;
+	value = DRAW_FOREGROUND;
+
+	return true;
+}
+//-------------------------------------------------
+//出力Matを得る
+//-------------------------------------------------
+bool TBGEraser::getOutputMat(cv::Mat& output_mat)
+{
+	//内容の有無チェック
+	if(output.rows == 0 || output.cols == 0)
+	{
+		return false;
+	}
+	//出力Matのコピーをセット
+	output_mat = output.clone();
 
 	return true;
 }
@@ -257,7 +263,7 @@ bool TBGEraser::updateMaskAndOutputImage()
 //-------------------------------------------------
 bool TBGEraser::updateDisplayWindow(int millisecond)
 {
-	cv::imshow("output",output);
+//	cv::imshow("output",output);
 	cv::imshow("input" ,img);
 	//与えれた時間で表示更新
 	cv::waitKey(millisecond);
@@ -327,7 +333,7 @@ void TBGEraser::onmouse(int event,int x,int y,int flags,void *param)
 		if(pMe->rectangle == true)
 		{
 			pMe->img = pMe->img2.clone();
-			cv::rectangle(pMe->img,cv::Point(pMe->ix,pMe->iy),cv::Point(x,y),pMe->BLUE,2);
+			cv::rectangle(pMe->img,cv::Point(pMe->ix,pMe->iy),cv::Point(x,y),pMe->DRAW_RECTANGLE.color,2);
 			pMe->rect = cv::Rect(std::min(pMe->ix,x),std::min(pMe->iy,y),abs(pMe->ix-x),abs(pMe->iy-y));
 			pMe->rect_or_mask = 0;
 			pMe->updateMaskAndOutputImage();
@@ -338,7 +344,7 @@ void TBGEraser::onmouse(int event,int x,int y,int flags,void *param)
 	{
 		pMe->rectangle = false;
 		pMe->rect_over = true;
-		cv::rectangle(pMe->img,cv::Point(pMe->ix,pMe->iy),cv::Point(x,y),pMe->BLUE,2);
+		cv::rectangle(pMe->img,cv::Point(pMe->ix,pMe->iy),cv::Point(x,y),pMe->DRAW_RECTANGLE.color,2);
 		pMe->rect = cv::Rect(std::min(pMe->ix,x),std::min(pMe->iy,y),abs(pMe->ix-x),abs(pMe->iy-y));
 		pMe->rect_or_mask = 0;
 		pMe->updateMaskAndOutputImage();
