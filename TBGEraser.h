@@ -65,10 +65,8 @@ public:
 	cv::Mat    img;
 	cv::Mat    img_org;
 	cv::Mat    output;
-	bool       rectangle;
 	cv::Rect   rect;
 	typMode    rect_or_mask;
-	bool       rect_over;
 	TmaskInf   value;
 
 private:

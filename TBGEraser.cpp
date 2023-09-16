@@ -35,8 +35,6 @@ bool TBGEraser::init(const std::string& file_name)
 	//フラグの設定
 	rect         = cv::Rect(0,0,1,1);
 	drawing      = false;           // 曲線描画のフラグ
-	rectangle    = false;           // 描画範囲矩形のフラグ
-	rect_over    = false;           // 四角形が描画されたかどうかを確認するフラグ
 	rect_or_mask = tmRect;          // レククトモードまたはマスクモードを選択するためのフラグ
 	value        = DRAW_FOREGROUND; // 図面が前景に初期化されました
 	thickness    = 3;               // ブラシの太さ
@@ -173,9 +171,7 @@ bool TBGEraser::resetState()
 {
 	rect         = cv::Rect(0,0,1,1);
 	drawing      = false;
-	rectangle    = false;
 	rect_or_mask = tmRect;
-	rect_over    = false;
 	value        = DRAW_FOREGROUND;
 	img          = img_org.clone();
 	mask         = cv::Mat::zeros(cv::Size(img.cols,img.rows),CV_8UC1);

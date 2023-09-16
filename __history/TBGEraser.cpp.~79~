@@ -35,9 +35,8 @@ bool TBGEraser::init(const std::string& file_name)
 	//フラグの設定
 	rect         = cv::Rect(0,0,1,1);
 	drawing      = false;           // 曲線描画のフラグ
-	rectangle    = false;           // 描画範囲矩形のフラグ
 	rect_over    = false;           // 四角形が描画されたかどうかを確認するフラグ
-	rect_or_mask = 100;             // レククトモードまたはマスクモードを選択するためのフラグ
+	rect_or_mask = tmRect;          // レククトモードまたはマスクモードを選択するためのフラグ
 	value        = DRAW_FOREGROUND; // 図面が前景に初期化されました
 	thickness    = 3;               // ブラシの太さ
 
@@ -47,29 +46,8 @@ bool TBGEraser::init(const std::string& file_name)
 	output  = cv::Mat::zeros(img.size(),CV_8UC1);                  // 表示される出力画像
 	//入出力ウィンドウ
 	cv::namedWindow("output");
-//	cv::namedWindow("input");
-//	cv::setMouseCallback("input",TBGEraser::onmouse,this);
 	printf("説明: \n");
 	printf("マウスの右ボタンを使用してオブジェクトの周囲に長方形を描きます。\n");
-
-	return true;
-}
-//-------------------------------------------------
-//処理終了
-//-------------------------------------------------
-bool TBGEraser::end()
-{
-	//全てのOpenCVウィンドウを閉じる
-	cv::destroyAllWindows();
-
-	//前景部分を白にしたマスクを作成
-	mask2 = cv::Mat::zeros(mask.size(),CV_8UC1);
-	setNewValFromVal(mask,mask2,255,1);
-	setNewValFromVal(mask,mask2,255,3);
-
-	//元画像にマスクを適用
-	output = 0;
-	img_org.copyTo(output,mask2);
 
 	return true;
 }
@@ -78,25 +56,24 @@ bool TBGEraser::end()
 //-------------------------------------------------
 bool TBGEraser::segmentImage()
 {
-	if (rect_or_mask == 0)
+	if(rect_or_mask == tmRect)
 	{
 		//矩形領域内の情報を基に初期値を決める
-		bgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
-		fgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
+		cv::Mat bgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
+		cv::Mat fgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
 		cv::grabCut(img_org,mask,rect,bgdmodel,fgdmodel,1,cv::GC_INIT_WITH_RECT);
-		rect_or_mask = 1;
+		//マスク更新モードに移行
+		rect_or_mask = tmMask;
 	}
-	else if(rect_or_mask == 1)
+	else if(rect_or_mask == tmMask)
 	{
-		//前景/背景を指定する線を基に初期値を決める
-		bgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
-		fgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
+		//マスク更新で背景除去を行う
+		cv::Mat bgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
+		cv::Mat fgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
 		cv::grabCut(img_org,mask,rect,bgdmodel,fgdmodel,1,cv::GC_INIT_WITH_MASK);
 	}
 	//マスクを更新して出力画像を作成する
 	updateMaskAndOutputImage();
-	//描画更新
-	updateDisplayWindow();
 
 	return true;
 }
@@ -195,15 +172,12 @@ bool TBGEraser::resetState()
 {
 	rect         = cv::Rect(0,0,1,1);
 	drawing      = false;
-	rectangle    = false;
-	rect_or_mask = 100;
+	rect_or_mask = tmRect;
 	rect_over    = false;
 	value        = DRAW_FOREGROUND;
 	img          = img_org.clone();
 	mask         = cv::Mat::zeros(cv::Size(img.cols,img.rows),CV_8UC1);
 	output       = cv::Mat::zeros(img.size(),CV_8UC1);
-	//描画更新
-	updateDisplayWindow();
 
 	return true;
 }
@@ -297,8 +271,8 @@ bool TBGEraser::updateMaskAndOutputImage()
 	{
 		//前景部分を白にしたマスクを作成
 		mask2 = cv::Mat::zeros(mask.size(),CV_8UC1);
-		setNewValFromVal(mask,mask2,255,1);
-		setNewValFromVal(mask,mask2,255,3);
+		setNewValFromVal(mask,mask2,255,cv::GC_FGD);     //明らかな前景
+		setNewValFromVal(mask,mask2,255,cv::GC_PR_FGD);  //前景かもしれない
 		//元画像にマスクを適用
 		output = 0;
 		img_org.copyTo(output,mask2);
@@ -306,16 +280,25 @@ bool TBGEraser::updateMaskAndOutputImage()
 	return true;
 }
 //-------------------------------------------------
-//描画更新
+//描画幅を取得
 //-------------------------------------------------
-bool TBGEraser::updateDisplayWindow(int millisecond)
+int TBGEraser::getThickness()
 {
-//	cv::imshow("output",output);
-//	cv::imshow("input" ,img);
-	//与えれた時間で表示更新
-	cv::waitKey(millisecond);
-
-	return true;
+	return thickness;
+}
+//-------------------------------------------------
+//マスク描画モードの有無
+//-------------------------------------------------
+bool TBGEraser::getDrawing()
+{
+	return drawing;
+}
+//-------------------------------------------------
+//マスク描画モードの有無をセット
+//-------------------------------------------------
+void TBGEraser::setDrawing(bool is_draw)
+{
+	drawing = is_draw;
 }
 //-------------------------------------------------
 //srcの特定の値(v)のピクセルをnew_val、その他は変更しない
@@ -330,28 +313,6 @@ bool TBGEraser::setNewValFromVal(const cv::Mat& src,cv::Mat& dst,int new_val,int
 		for(int col = 0;col < src.cols;col++)
 		{
 			if(psrc[col] == v)
-			{
-				//白にする
-				pdst[col] = new_val;
-			}
-		}
-	}
-	return true;
-}
-//-------------------------------------------------
-//mat1,mat2の同じ値の所をnew_valその他を0にする
-//-------------------------------------------------
-bool TBGEraser::setNewValFromSamePixcel(const cv::Mat& mat1,const cv::Mat& mat2,cv::Mat& dst,int new_val)
-{
-	for(int row=0;row < mat1.rows;row++)
-	{
-		const unsigned char *p1   = mat1.ptr<unsigned char>(row);
-		const unsigned char *p2   = mat2.ptr<unsigned char>(row);
-		unsigned char       *pdst = dst .ptr<unsigned char>(row);
-
-		for(int col = 0;col < mat1.cols;col++)
-		{
-			if(p1[col] == p2[col])
 			{
 				//白にする
 				pdst[col] = new_val;

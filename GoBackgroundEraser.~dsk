@@ -1,35 +1,35 @@
 ﻿[Closed Files]
-File_0=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\src\system.cpp',0,1,778,1,806,0,0,,
-File_1=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\highgui\src\window_w32.cpp',0,1,703,1,727,0,0,,
-File_2=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\highgui\src\window.cpp',0,1,543,19,565,0,0,,
-File_3=TSourceModule,'c:\program files (x86)\embarcadero\studio\21.0\SOURCE\RTL\SYS\GETMEM.INC',0,1,1968,1,2011,0,0,,
-File_4=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\build\install\include\opencv2\core\cvstd.hpp',0,1,593,1,623,0,0,,
-File_5=TSourceModule,'c:\program files (x86)\embarcadero\studio\21.0\SOURCE\RTL\SYS\System.pas',0,1,5065,1,5091,0,0,,
-File_6=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\include\opencv2\core\cvstd.hpp',0,1,737,1,764,0,0,,
-File_7=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\src\stl.cpp',0,1,25,1,56,0,0,,
-File_8=TSourceModule,'D:\Users\owner\Documents\Projects10\TEST72\main.cpp',0,1,129,1,175,0,0,,
-File_9=TSourceModule,'D:\Users\owner\Documents\Projects10\GoBackgroundEraser\TEST72\main.cpp',0,1,167,51,207,0,0,,
-File_10=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\src\arithm.cpp',0,1,217,1,241,0,0,,
-File_11=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\src\matrix.cpp',0,1,1744,1,1768,0,0,,
-File_12=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\include\opencv2\core.hpp',0,1,95,1,109,0,0,,
-File_13=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\include\opencv2\core\mat.inl.hpp',0,1,1250,1,1287,0,0,,
-File_14=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\build\install\include\opencv2\core\mat.inl.hpp',0,1,47,1,71,0,0,,
+File_0=TSourceModule,'c:\program files (x86)\embarcadero\studio\21.0\SOURCE\VCL\Vcl.Controls.pas',0,1,7573,56,7594,0,0,,
+File_1=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\build\install\include\opencv2\core\types.hpp',0,1,1667,1,1691,0,0,,
+File_2=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\imgproc\src\drawing.cpp',0,1,1835,1,1869,0,0,,
+File_3=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\build\install\include\opencv2\core\mat.inl.hpp',0,1,1227,1,1251,0,0,,
+File_4=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\imgproc\src\imgwarp.cpp',0,1,3461,57,3494,0,0,,
+File_5=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\src\system.cpp',0,1,778,1,806,0,0,,
+File_6=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\highgui\src\window_w32.cpp',0,1,703,1,727,0,0,,
+File_7=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\highgui\src\window.cpp',0,1,543,19,565,0,0,,
+File_8=TSourceModule,'c:\program files (x86)\embarcadero\studio\21.0\SOURCE\RTL\SYS\GETMEM.INC',0,1,1968,1,2011,0,0,,
+File_9=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\build\install\include\opencv2\core\cvstd.hpp',0,1,593,1,623,0,0,,
+File_10=TSourceModule,'c:\program files (x86)\embarcadero\studio\21.0\SOURCE\RTL\SYS\System.pas',0,1,5065,1,5091,0,0,,
+File_11=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\include\opencv2\core\cvstd.hpp',0,1,737,1,764,0,0,,
+File_12=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\core\src\stl.cpp',0,1,25,1,56,0,0,,
+File_13=TSourceModule,'D:\Users\owner\Documents\Projects10\TEST72\main.cpp',0,1,129,1,175,0,0,,
+File_14=TSourceModule,'D:\Users\owner\Documents\Projects10\GoBackgroundEraser\TEST72\main.cpp',0,1,167,51,207,0,0,,
 
 [Modules]
-Module0=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
-Module1=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
+Module0=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
+Module1=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
 Count=2
 EditWindowCount=1
-
-[D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp]
-ModuleType=TSourceModule
 
 [D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp]
 ModuleType=TSourceModule
 
+[D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp]
+ModuleType=TSourceModule
+
 [EditWindow0]
 ViewCount=2
-CurrentEditView=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
+CurrentEditView=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
 View0=0
 View1=1
 PercentageSizes=1
@@ -64,9 +64,9 @@ BottomMiddelPanelData=0000080001020200000009000000446F636B5369746530100000004772
 [View0]
 CustomEditViewType=TEditView
 Module=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
-CursorX=5
-CursorY=32
-TopLine=3
+CursorX=68
+CursorY=248
+TopLine=243
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -75,9 +75,9 @@ EditViewName=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackground
 [View1]
 CustomEditViewType=TEditView
 Module=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
-CursorX=1
-CursorY=246
-TopLine=213
+CursorX=23
+CursorY=303
+TopLine=176
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -224,6 +224,11 @@ LRDockWidth=1896
 Dockable=1
 StayOnTop=0
 SplitPos=111
+
+[PropInspDesignerSelection]
+ArrangeBy=Name
+SelectedItem=Caption,Images
+ExpandedItems=Constraints=0,Font=0,"LiveBinding デザイナ=0",LiveBindings=0,Margins=0,Padding=0,Anchors=0,BevelEdges=0,BorderIcons=0
 
 [frmDesignPreview]
 PercentageSizes=1

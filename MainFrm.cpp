@@ -230,54 +230,26 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 	TMainForm *pMainFrm = static_cast<TMainForm *>(param);
 	TBGEraser *pMe      = static_cast<TBGEraser *>(&pMainFrm->BGEraser);
 
-	// Draw Rectangle
-	if(event == cv::EVENT_RBUTTONDOWN)
-	{
-		pMe->rectangle = true;
-		pMainFrm->ix = x;
-		pMainFrm->iy = y;
-	}
-	else if(event == cv::EVENT_MOUSEMOVE)
-	{
-		if(pMe->rectangle == true)
-		{
-			//元画像の表示画像を作成する
-			pMainFrm->makeDrawMatFromOrignalMat();
-			//矩形を描く
-			cv::rectangle(pMainFrm->disp_mat,cv::Point(pMainFrm->ix,pMainFrm->iy),cv::Point(x,y),pMe->DRAW_RECTANGLE.color,2);
-			pMe->rect_or_mask = TBGEraser::tmRect;
-			//メイン表示パネルの表示更新
-			pMainFrm->updateDispFromDrawMat();
-		}
-	}
-	else if(event == cv::EVENT_RBUTTONUP)
-	{
-		pMe->rectangle = false;
-		pMe->rect_over = true;
-		//選択矩形の大きさを補正して渡す
-		cv::Rect sel_rect;
-		cv::Rect adj_rect;
-
-		sel_rect = cv::Rect(std::min(pMainFrm->ix,x),std::min(pMainFrm->iy,y),abs(pMainFrm->ix-x),abs(pMainFrm->iy-y));
-
-		//表示用矩形を元画像の大きさに合わせる
-		if(pMainFrm->adjustRectFromDrawRect(sel_rect,adj_rect) == true)
-		{
-			cv::rectangle(pMe->img,adj_rect,pMe->DRAW_RECTANGLE.color,2);
-			pMe->rect         = adj_rect;
-			pMe->rect_or_mask = TBGEraser::tmRect;
-			pMe->updateMaskAndOutputImage();
-		}
-	}
-	//タッチアップカーブを描く
+	//各マウスボタンごとの処理
 	if(event == cv::EVENT_LBUTTONDOWN)
 	{
-		if(pMe->rect_over == false)
+		if(pMe->rect_or_mask == TBGEraser::tmRect)
 		{
-			printf("最初に長方形を描画します\n");
+			if(pMe->getDrawing() == false)
+			{
+				pMainFrm->ix = x;
+				pMainFrm->iy = y;
+				//元画像の表示画像を作成する
+				pMainFrm->makeDrawMatFromOrignalMat();
+				//メイン表示パネルの表示更新
+				pMainFrm->updateDispFromDrawMat();
+				//描画中にする
+				pMe->setDrawing(true);
+			}
 		}
 		else
 		{
+			//描画中にする
 			pMe->setDrawing(true);
 			//描画更新
 			cv::circle(pMainFrm->disp_mat,cv::Point(x,y),pMe->getThickness(),pMe->value.color,-1);
@@ -291,31 +263,70 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 	}
 	else if(event == cv::EVENT_MOUSEMOVE)
 	{
-		if(pMe->getDrawing() == true)
+		if(pMe->rect_or_mask == TBGEraser::tmRect)
 		{
-			//描画更新
-			cv::circle(pMainFrm->disp_mat,cv::Point(x,y),pMe->getThickness(),pMe->value.color,-1);
-			//マスク更新
-			cv::Point adjust_point;
-			pMainFrm->adjustOriginalPointFromDrawPoint(cv::Point(x,y),adjust_point);
-			cv::circle(pMainFrm->disp_mask_mat,adjust_point,pMe->getThickness(),pMe->value.val,-1);
-			//メイン表示パネルの表示更新
-			pMainFrm->updateDispFromDrawMat();
+			if(pMe->getDrawing() == true)
+			{
+				//元画像の表示画像を作成する
+				pMainFrm->makeDrawMatFromOrignalMat();
+				//矩形を描く
+				cv::rectangle(pMainFrm->disp_mat,cv::Point(pMainFrm->ix,pMainFrm->iy),cv::Point(x,y),pMe->DRAW_RECTANGLE.color,2);
+				pMe->rect_or_mask = TBGEraser::tmRect;
+				//メイン表示パネルの表示更新
+				pMainFrm->updateDispFromDrawMat();
+			}
+		}
+		else
+		{
+			if(pMe->getDrawing() == true)
+			{
+				//描画更新
+				cv::circle(pMainFrm->disp_mat,cv::Point(x,y),pMe->getThickness(),pMe->value.color,-1);
+				//マスク更新
+				cv::Point adjust_point;
+				pMainFrm->adjustOriginalPointFromDrawPoint(cv::Point(x,y),adjust_point);
+				cv::circle(pMainFrm->disp_mask_mat,adjust_point,pMe->getThickness(),pMe->value.val,-1);
+				//メイン表示パネルの表示更新
+				pMainFrm->updateDispFromDrawMat();
+			}
 		}
 	}
 	else if(event == cv::EVENT_LBUTTONUP)
 	{
-		if(pMe->getDrawing() == true)
+		if(pMe->rect_or_mask == TBGEraser::tmRect)
 		{
+			//描画終了
 			pMe->setDrawing(false);
-			//描画更新
-			cv::circle(pMainFrm->disp_mat,cv::Point(x,y),pMe->getThickness(),pMe->value.color,-1);
-			//マスク更新
-			cv::Point adjust_point;
-			pMainFrm->adjustOriginalPointFromDrawPoint(cv::Point(x,y),adjust_point);
-			cv::circle(pMainFrm->disp_mask_mat,adjust_point,pMe->getThickness(),pMe->value.val,-1);
-			//メイン表示パネルの表示更新
-			pMainFrm->updateDispFromDrawMat();
+
+			//選択矩形の大きさを補正して渡す
+			cv::Rect sel_rect;
+			cv::Rect adj_rect;
+
+			sel_rect = cv::Rect(std::min(pMainFrm->ix,x),std::min(pMainFrm->iy,y),abs(pMainFrm->ix-x),abs(pMainFrm->iy-y));
+
+			//表示用矩形を元画像の大きさに合わせる
+			if(pMainFrm->adjustRectFromDrawRect(sel_rect,adj_rect) == true)
+			{
+				cv::rectangle(pMe->img,adj_rect,pMe->DRAW_RECTANGLE.color,2);
+				pMe->rect         = adj_rect;
+				pMe->rect_or_mask = TBGEraser::tmRect;
+				pMe->updateMaskAndOutputImage();
+			}
+		}
+		else
+		{
+			if(pMe->getDrawing() == true)
+			{
+				pMe->setDrawing(false);
+				//描画更新
+				cv::circle(pMainFrm->disp_mat,cv::Point(x,y),pMe->getThickness(),pMe->value.color,-1);
+				//マスク更新
+				cv::Point adjust_point;
+				pMainFrm->adjustOriginalPointFromDrawPoint(cv::Point(x,y),adjust_point);
+				cv::circle(pMainFrm->disp_mask_mat,adjust_point,pMe->getThickness(),pMe->value.val,-1);
+				//メイン表示パネルの表示更新
+				pMainFrm->updateDispFromDrawMat();
+			}
 		}
 	}
 }
