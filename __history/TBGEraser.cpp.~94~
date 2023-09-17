@@ -1,0 +1,339 @@
+//---------------------------------------------------------------------------
+#pragma hdrstop
+
+#include <opencv2/opencv.hpp>
+#include <windows.h>
+#include <stdio.h>
+#include "TBGEraser.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+
+//-------------------------------------------------
+//固定値
+//-------------------------------------------------
+const TmaskInf TBGEraser::DRAW_BACKGROUND(cv::Scalar(  0,  0,  0), 0);
+const TmaskInf TBGEraser::DRAW_FOREGROUND(cv::Scalar(255,255,255), 1);
+const TmaskInf TBGEraser::DRAW_RECTANGLE (cv::Scalar(255,  0,  0),-1);
+
+//-------------------------------------------------
+//コンストラクタ
+//-------------------------------------------------
+TBGEraser::TBGEraser()
+{
+}
+//-------------------------------------------------
+//デストラクタ
+//-------------------------------------------------
+TBGEraser::~TBGEraser()
+{
+}
+//-------------------------------------------------
+//初期値設定
+//-------------------------------------------------
+bool TBGEraser::init()
+{
+	//フラグの設定
+	rect         = cv::Rect(0,0,0,0);
+	drawing      = false;           // 曲線描画のフラグ
+	rect_or_mask = tmNone;          // マウス動作モードのフラグ
+	value        = DRAW_BACKGROUND; // 書き込みモードを背景に初期化
+	thickness    = 3;               // ブラシの太さ
+	//入出力ウィンドウ
+	cv::namedWindow("output");
+	printf("マウスの右ボタンを使用してオブジェクトの周囲に長方形を描きます。\n");
+
+	return true;
+}
+//-------------------------------------------------
+//画像の読込
+//-------------------------------------------------
+bool TBGEraser::readImage(const std::string& file_name)
+{
+	//画像の読込
+	img = cv::imread(file_name);
+	//読み込みチェック
+	if(img.cols == 0 || img.rows == 0)
+	{
+		//画像読込失敗
+		return false;
+	}
+	//画像に対するMatの初期設定
+	rect         = cv::Rect(0,0,0,0);
+	drawing      = false;           // 曲線描画のフラグ
+	rect_or_mask = tmNone;                                              // マウス動作モードのフラグ
+	img_org      = img.clone();                                         // 元の画像のコピー
+	mask         = cv::Mat::zeros(cv::Size(img.cols,img.rows),CV_8UC1); // マスクは背景に初期化
+	output       = cv::Mat::zeros(img.size(),CV_8UC3);                  // 表示される出力画像
+
+	return true;
+}
+//-------------------------------------------------
+//背景削除を進める
+//-------------------------------------------------
+bool TBGEraser::segmentImage()
+{
+	if(rect_or_mask == tmRect)
+	{
+		//矩形領域内の情報を基に初期値を決める
+		cv::Mat bgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
+		cv::Mat fgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
+		cv::grabCut(img_org,mask,rect,bgdmodel,fgdmodel,1,cv::GC_INIT_WITH_RECT);
+		//マスク更新モードに移行
+		rect_or_mask = tmMask;
+	}
+	else if(rect_or_mask == tmMask)
+	{
+		//マスク更新で背景除去を行う
+		cv::Mat bgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
+		cv::Mat fgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
+		cv::grabCut(img_org,mask,rect,bgdmodel,fgdmodel,1,cv::GC_INIT_WITH_MASK);
+	}
+	//マスクを更新して出力画像を作成する
+	updateMaskAndOutputImage();
+
+	return true;
+}
+//-------------------------------------------------
+//背景除去画像をpngファイルに保存する
+//-------------------------------------------------
+bool TBGEraser::saveBGErasedImage(const std::string& file_name)
+{
+	//最後の . の位置を得る
+	std::string::size_type pos = file_name.find_last_of(".");
+	//見つかったか
+	if(pos == std::string::npos)
+	{
+		return false;
+	}
+	//拡張子の切り出し
+	std::string extname = file_name.substr(pos,file_name.size()-pos);
+	//拡張子を大文字にする
+	std::transform(extname.begin(),extname.end(),extname.begin(),std::toupper);
+	//拡張子が.PNGかチェック
+	if(extname != ".PNG")
+	{
+		return false;
+	}
+	//保存用Mat
+	cv::Mat save_img = cv::Mat::zeros(img.size(),CV_8UC4);
+	//透明ピクセル
+	cv::Vec4b alpha0(0,0,0,0);
+	//ピクセル
+	cv::Vec4b pixcel;
+	//元ピクセル
+	cv::Vec3b src_px3;
+	cv::Vec4b src_px4;
+
+	//チャンネル数
+	int ch = img.channels();
+
+	//アルファチャンネル付きピクセルの設定
+	for(int y = 0;y < save_img.rows;y++)
+	{
+		for(int x = 0;x < save_img.cols;x++)
+		{
+			//マスクをチェック
+			if(mask2.at<unsigned char>(y,x) == 0)
+			{
+				//マスクが黒なので透明にする
+				save_img.at<cv::Vec4b>(y,x) = alpha0;
+			}
+			else
+			{
+				//マスクが白なので元画像のピクセル色を設定
+				if(ch == 3)
+				{
+					src_px3 = img_org.at<cv::Vec3b>(y,x);
+
+					pixcel[0] = src_px3[0];
+					pixcel[1] = src_px3[1];
+					pixcel[2] = src_px3[2];
+					pixcel[3] = 255;
+					save_img.at<cv::Vec4b>(y,x) = pixcel;
+				}
+				else if(ch == 4)
+				{
+					src_px4 = img_org.at<cv::Vec4b>(y,x);
+
+					pixcel[0] = src_px4[0];
+					pixcel[1] = src_px4[1];
+					pixcel[2] = src_px4[2];
+					pixcel[3] = 255;
+					save_img.at<cv::Vec4b>(y,x) = pixcel;
+				}
+				else //if(ch == 1)
+				{
+					unsigned char val = img_org.at<unsigned char>(y,x);
+
+					pixcel[0] = val;
+					pixcel[1] = val;
+					pixcel[2] = val;
+					pixcel[3] = 255;
+					save_img.at<cv::Vec4b>(y,x) = pixcel;
+				}
+			}
+		}
+	}
+	//画像の保存
+	if(cv::imwrite(file_name,save_img) == false)
+	{
+		return false;
+	}
+	return true;
+}
+//-------------------------------------------------
+//リセットして最初に戻す
+//-------------------------------------------------
+bool TBGEraser::resetState()
+{
+	rect         = cv::Rect(0,0,1,1);
+	drawing      = false;
+	rect_or_mask = tmRect;
+	value        = DRAW_FOREGROUND;
+	img          = img_org.clone();
+	mask         = cv::Mat::zeros(cv::Size(img.cols,img.rows),CV_8UC1);
+	output       = cv::Mat::zeros(img.size(),CV_8UC1);
+
+	return true;
+}
+//-------------------------------------------------
+//背景指定モードにする
+//-------------------------------------------------
+bool TBGEraser::setSpecifyBackgroundMode()
+{
+	//背景指定モード
+	value = DRAW_BACKGROUND;
+
+	return true;
+}
+//-------------------------------------------------
+//前景指定モードにする
+//-------------------------------------------------
+bool TBGEraser::setSpecifyForegroundMode()
+{
+	//前景指定モード
+	value = DRAW_FOREGROUND;
+
+	return true;
+}
+//-------------------------------------------------
+//出力Matを得る
+//-------------------------------------------------
+bool TBGEraser::getOutputMat(cv::Mat& output_mat)
+{
+	//内容の有無チェック
+	if(output.rows == 0 || output.cols == 0)
+	{
+		return false;
+	}
+	//出力Matのコピーをセット
+	output_mat = output.clone();
+
+	return true;
+}
+//-------------------------------------------------
+//出力マスクを得る
+//-------------------------------------------------
+bool TBGEraser::getOutputMasktMat(cv::Mat& mask_mat)
+{
+	//内容の有無チェック
+	if(mask.rows == 0 || mask.cols == 0)
+	{
+		return false;
+	}
+	//出力Matのコピーをセット
+	mask_mat = mask.clone();
+
+	return true;
+}
+//-------------------------------------------------
+//元画像Matを得る
+//-------------------------------------------------
+bool TBGEraser::getOriginalMat(cv::Mat& original_mat)
+{
+	//内容の有無チェック
+	if(img_org.rows == 0 || img_org.cols == 0)
+	{
+		return false;
+	}
+	//元画像Matのコピーをセット
+	original_mat = img_org.clone();
+
+	return true;
+}
+//-------------------------------------------------
+//元マスクを得る
+//-------------------------------------------------
+bool TBGEraser::getOriginalMaskMat(cv::Mat& original_mask_mat)
+{
+	//内容の有無チェック
+	if(mask.rows == 0 || mask.cols == 0)
+	{
+		mask = cv::Mat::zeros(img_org.size(),CV_8UC1);
+	}
+	//元マスクMatのコピーをセット
+	original_mask_mat = mask.clone();
+
+	return true;
+}
+//-------------------------------------------------
+//マスクを更新して出力画像を作成する
+//-------------------------------------------------
+bool TBGEraser::updateMaskAndOutputImage()
+{
+	//maskが有効であるかチェック
+	if(mask.rows > 0 && mask.cols > 0)
+	{
+		//前景部分を白にしたマスクを作成
+		mask2 = cv::Mat::zeros(mask.size(),CV_8UC1);
+		setNewValFromVal(mask,mask2,255,cv::GC_FGD);     //明らかな前景
+		setNewValFromVal(mask,mask2,255,cv::GC_PR_FGD);  //前景かもしれない
+		//元画像にマスクを適用
+		output = 0;
+		img_org.copyTo(output,mask2);
+	}
+	return true;
+}
+//-------------------------------------------------
+//描画幅を取得
+//-------------------------------------------------
+int TBGEraser::getThickness()
+{
+	return thickness;
+}
+//-------------------------------------------------
+//マスク描画モードの有無
+//-------------------------------------------------
+bool TBGEraser::getDrawing()
+{
+	return drawing;
+}
+//-------------------------------------------------
+//マスク描画モードの有無をセット
+//-------------------------------------------------
+void TBGEraser::setDrawing(bool is_draw)
+{
+	drawing = is_draw;
+}
+//-------------------------------------------------
+//srcの特定の値(v)のピクセルをnew_val、その他は変更しない
+//-------------------------------------------------
+bool TBGEraser::setNewValFromVal(const cv::Mat& src,cv::Mat& dst,int new_val,int v)
+{
+	for(int row=0;row < src.rows;row++)
+	{
+		const unsigned char *psrc = src.ptr<unsigned char>(row);
+		unsigned char       *pdst = dst.ptr<unsigned char>(row);
+
+		for(int col = 0;col < src.cols;col++)
+		{
+			if(psrc[col] == v)
+			{
+				//白にする
+				pdst[col] = new_val;
+			}
+		}
+	}
+	return true;
+}
+

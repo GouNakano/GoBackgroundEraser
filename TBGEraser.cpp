@@ -30,23 +30,40 @@ TBGEraser::~TBGEraser()
 //-------------------------------------------------
 //初期値設定
 //-------------------------------------------------
-bool TBGEraser::init(const std::string& file_name)
+bool TBGEraser::init()
 {
 	//フラグの設定
-	rect         = cv::Rect(0,0,1,1);
+	rect         = cv::Rect(0,0,0,0);
 	drawing      = false;           // 曲線描画のフラグ
-	rect_or_mask = tmRect;          // レククトモードまたはマスクモードを選択するためのフラグ
-	value        = DRAW_FOREGROUND; // 図面が前景に初期化されました
+	rect_or_mask = tmNone;          // マウス動作モードのフラグ
+	value        = DRAW_BACKGROUND; // 書き込みモードを背景に初期化
 	thickness    = 3;               // ブラシの太さ
-
-	img     = cv::imread(file_name);
-	img_org = img.clone();                                         // 元の画像のコピー
-	mask    = cv::Mat::zeros(cv::Size(img.cols,img.rows),CV_8UC1); // マスクは背景かもしれないに初期化されました
-	output  = cv::Mat::zeros(img.size(),CV_8UC1);                  // 表示される出力画像
 	//入出力ウィンドウ
 	cv::namedWindow("output");
-	printf("説明: \n");
 	printf("マウスの右ボタンを使用してオブジェクトの周囲に長方形を描きます。\n");
+
+	return true;
+}
+//-------------------------------------------------
+//画像の読込
+//-------------------------------------------------
+bool TBGEraser::readImage(const std::string& file_name)
+{
+	//画像の読込
+	img = cv::imread(file_name);
+	//読み込みチェック
+	if(img.cols == 0 || img.rows == 0)
+	{
+		//画像読込失敗
+		return false;
+	}
+	//画像に対するMatの初期設定
+	rect         = cv::Rect(0,0,0,0);
+	drawing      = false;                                               // 曲線描画のフラグ
+	rect_or_mask = tmNone;                                              // マウス動作モードのフラグ
+	img_org      = img.clone();                                         // 元の画像のコピー
+	mask         = cv::Mat::zeros(cv::Size(img.cols,img.rows),CV_8UC1); // マスクは背景に初期化
+	output       = cv::Mat::zeros(img.size(),CV_8UC3);                  // 表示される出力画像
 
 	return true;
 }
@@ -215,6 +232,21 @@ bool TBGEraser::getOutputMat(cv::Mat& output_mat)
 	return true;
 }
 //-------------------------------------------------
+//出力Matをセット
+//-------------------------------------------------
+bool TBGEraser::setOutputMat(cv::Mat& output_mat)
+{
+	//内容の有無チェック
+	if(output_mat.rows == 0 || output_mat.cols == 0)
+	{
+		return false;
+	}
+	//出力Matのコピーをセット
+	output = output_mat.clone();
+
+	return true;
+}
+//-------------------------------------------------
 //出力マスクを得る
 //-------------------------------------------------
 bool TBGEraser::getOutputMasktMat(cv::Mat& mask_mat)
@@ -226,6 +258,21 @@ bool TBGEraser::getOutputMasktMat(cv::Mat& mask_mat)
 	}
 	//出力Matのコピーをセット
 	mask_mat = mask.clone();
+
+	return true;
+}
+//-------------------------------------------------
+//出力マスクをセット
+//-------------------------------------------------
+bool TBGEraser::setOutputMasktMat(cv::Mat& mask_mat)
+{
+	//内容の有無チェック
+	if(mask_mat.rows == 0 || mask_mat.cols == 0)
+	{
+		return false;
+	}
+	//出力Matのコピーをセット
+	mask = mask_mat.clone();
 
 	return true;
 }

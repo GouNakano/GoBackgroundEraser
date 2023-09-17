@@ -69,8 +69,9 @@
         <Icon_MainIcon>$(BDS)\bin\cbuilder_PROJECTICON.ico</Icon_MainIcon>
         <UWP_CppLogo44>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_44.png</UWP_CppLogo44>
         <UWP_CppLogo150>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_150.png</UWP_CppLogo150>
-        <IncludePath>..\..\..\OpenCV-RS64\opencv_3.2.0\build\install\include;$(IncludePath)</IncludePath>
+        <IncludePath>..\..\..\Common\;..\..\..\OpenCV-RS64\opencv_3.2.0\build\install\include;$(IncludePath)</IncludePath>
         <SanitizedProjectName>GoBackgroundEraser</SanitizedProjectName>
+        <ILINK_LibraryPath>..\..\..\Common\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <PackageImports>adortl;appanalytics;bcbie;bcbsmp;bindcomp;bindcompdbx;bindcompfmx;bindcompvcl;bindcompvclsmp;bindcompvclwinx;bindengine;CloudService;CustomIPTransport;dbexpress;dbrtl;dbxcds;DbxClientDriver;DbxCommonDriver;DBXInterBaseDriver;DBXMySQLDriver;DBXSqliteDriver;dsnap;dsnapcon;dsnapxml;FireDAC;FireDACADSDriver;FireDACCommon;FireDACCommonDriver;FireDACCommonODBC;FireDACIBDriver;FireDACMSAccDriver;FireDACMySQLDriver;FireDACPgDriver;FireDACSqliteDriver;fmx;fmxase;fmxdae;fmxFireDAC;fmxobj;FMXTee;FmxTeeUI;ibmonitor;ibxbindings;ibxpress;IndyCore;IndyIPClient;IndyIPCommon;IndyIPServer;IndyProtocols;IndySystem;inet;inetdb;inetdbxpress;QREPPackage;RESTBackendComponents;RESTComponents;rtl;soapmidas;soaprtl;soapserver;SSGOPackage;svn;Tee;TeeDB;TeeUI;tethering;vcl;vclactnband;vcldb;vcldsnap;vcledge;vclFireDAC;vclib;vclie;vclimg;VCLRESTComponents;VclSmp;vcltouch;vclwinx;vclx;xmlrtl;XnsPack;XnsSrchItemEditPack;$(PackageImports)</PackageImports>
@@ -127,11 +128,11 @@
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_MajorVer>0</VerInfo_MajorVer>
         <VerInfo_MinorVer>1</VerInfo_MinorVer>
-        <VerInfo_Build>3</VerInfo_Build>
+        <VerInfo_Build>4</VerInfo_Build>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
         <FinalOutputDir>bin</FinalOutputDir>
         <LinkPackageStatics>rtl.lib;vcl.lib</LinkPackageStatics>
-        <VerInfo_Keys>CompanyName=さくら電算;FileDescription=GoBackgroundEraser;FileVersion=0.1.0.3;InternalName=;LegalCopyright=さくら電算;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=GoBackgroundEraser;ProductVersion=0.1.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=さくら電算;FileDescription=GoBackgroundEraser;FileVersion=0.1.0.4;InternalName=;LegalCopyright=さくら電算;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=GoBackgroundEraser;ProductVersion=0.1.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <Defines>NDEBUG;$(Defines)</Defines>
@@ -153,6 +154,10 @@
         <BCC_PCHName_Clang>GoBackgroundEraserPCH1.h</BCC_PCHName_Clang>
     </PropertyGroup>
     <ItemGroup>
+        <CppCompile Include="..\..\..\Common\nsDebug.cpp">
+            <DependentOn>..\..\..\Common\nsDebug.h</DependentOn>
+            <BuildOrder>47</BuildOrder>
+        </CppCompile>
         <CppCompile Include="GoBackgroundEraser.cpp">
             <BuildOrder>0</BuildOrder>
         </CppCompile>
@@ -166,9 +171,21 @@
             <DependentOn>MainFrm.h</DependentOn>
             <BuildOrder>2</BuildOrder>
         </CppCompile>
+        <CppCompile Include="OrgImgDispFrm.cpp">
+            <Form>OrgImgDispForm</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>OrgImgDispFrm.h</DependentOn>
+            <BuildOrder>46</BuildOrder>
+        </CppCompile>
         <CppCompile Include="TBGEraser.cpp">
             <DependentOn>TBGEraser.h</DependentOn>
             <BuildOrder>3</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="Unit1.cpp">
+            <Form>Form1</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>Unit1.h</DependentOn>
+            <BuildOrder>48</BuildOrder>
         </CppCompile>
         <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\libjpegd.lib" Condition="'$(Platform)'=='Win32'">
             <BuildOrder>4</BuildOrder>
@@ -338,7 +355,9 @@
             <BuildOrder>45</BuildOrder>
             <IgnorePath>true</IgnorePath>
         </LibFiles>
+        <FormResources Include="OrgImgDispFrm.dfm"/>
         <FormResources Include="MainFrm.dfm"/>
+        <FormResources Include="Unit1.dfm"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -459,14 +478,14 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_highgui320.lib" Configuration="Debug" Class="ProjectFile">
+                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'!='true'" LocalName="$(BDS)\bin\cc32c270.dll" Class="DependencyModule">
                     <Platform Name="Win32">
-                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'!='true'" LocalName="$(BDS)\bin\cc32c270.dll" Class="DependencyModule">
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_highgui320.lib" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -551,18 +570,18 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_ximgproc320.lib" Configuration="Debug" Class="ProjectFile">
-                    <Platform Name="Win32">
-                        <RemoteDir>.\</RemoteDir>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile Condition="'$(DynamicRTL)'=='true'" LocalName="$(BDS)\Redist\osx64\libcgcrtl.dylib" Class="DependencyModule">
                     <Platform Name="OSX64">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_photo320.lib" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_ximgproc320.lib" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>

@@ -1,0 +1,31 @@
+object OrgImgDispForm: TOrgImgDispForm
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  Caption = #20803#30011#20687
+  ClientHeight = 319
+  ClientWidth = 565
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnCreate = FormCreate
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object ImageBasePanel: TPanel
+    Left = 0
+    Top = 0
+    Width = 565
+    Height = 319
+    Align = alClient
+    TabOrder = 0
+    ExplicitLeft = 24
+    ExplicitTop = 40
+    ExplicitWidth = 185
+    ExplicitHeight = 41
+  end
+end
