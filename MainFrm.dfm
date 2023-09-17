@@ -10,7 +10,7 @@ object MainForm: TMainForm
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  Menu = MainMenu1
+  Menu = MainMenu
   OldCreateOrder = False
   OnShow = FormShow
   PixelsPerInch = 96
@@ -22,7 +22,6 @@ object MainForm: TMainForm
     Height = 103
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 935
     object updateBtn: TBitBtn
       Left = 432
       Top = 6
@@ -30,7 +29,6 @@ object MainForm: TMainForm
       Height = 56
       Caption = #26356#26032
       TabOrder = 0
-      OnClick = updateBtnClick
     end
     object saveBtn: TBitBtn
       Left = 208
@@ -103,7 +101,6 @@ object MainForm: TMainForm
       Align = alBottom
       BevelOuter = bvLowered
       TabOrder = 8
-      ExplicitWidth = 933
       object ModeLabel: TLabel
         Left = 113
         Top = 7
@@ -152,7 +149,6 @@ object MainForm: TMainForm
     BevelInner = bvLowered
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 935
   end
   object StatusBar1: TStatusBar
     Left = 0
@@ -160,8 +156,6 @@ object MainForm: TMainForm
     Width = 994
     Height = 19
     Panels = <>
-    ExplicitTop = 545
-    ExplicitWidth = 935
   end
   object MainPanel: TPanel
     Left = 0
@@ -170,10 +164,8 @@ object MainForm: TMainForm
     Height = 508
     Align = alClient
     TabOrder = 3
-    ExplicitWidth = 935
-    ExplicitHeight = 440
   end
-  object MainMenu1: TMainMenu
+  object MainMenu: TMainMenu
     Left = 228
     Top = 100
     object N1: TMenuItem
@@ -190,52 +182,13 @@ object MainForm: TMainForm
         ShortCut = 16474
         OnClick = UndoMemuClick
       end
-    end
-  end
-  object MainMenu: TMainMenu
-    Left = 92
-    Top = 119
-    object F1: TMenuItem
-      Caption = #12501#12449#12452#12523'(&F)'
-      object LoadImageMenu: TMenuItem
-        Caption = #30011#20687#35501#36796
-      end
-      object MenuItem1: TMenuItem
-        Caption = '-'
-      end
       object N2: TMenuItem
-        Caption = #30011#20687#20445#23384
-        ShortCut = 16467
-      end
-      object N3: TMenuItem
-        Caption = '-'
-      end
-      object EndMenu: TMenuItem
-        Caption = #32066#20102
-      end
-    end
-    object E1: TMenuItem
-      Caption = #32232#38598'(&E)'
-      ShortCut = 16474
-      object undoMenu: TMenuItem
-        Caption = #20803#12395#25147#12377
-        ShortCut = 16450
-      end
-      object N5: TMenuItem
         Caption = '-'
       end
       object UpdateMenu: TMenuItem
         Caption = #26356#26032
-      end
-    end
-    object H1: TMenuItem
-      Caption = #12504#12523#12503'&H)'
-      object N4: TMenuItem
-        Caption = #12496#12540#12472#12519#12531#24773#22577
-      end
-      object aaaaaa1: TMenuItem
-        Caption = 'aaaaaa'
-        ShortCut = 16474
+        ShortCut = 13
+        OnClick = updateBtnClick
       end
     end
   end

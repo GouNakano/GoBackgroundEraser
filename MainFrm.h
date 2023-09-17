@@ -18,7 +18,7 @@
 class TMainForm : public TForm
 {
 __published:	// IDE で管理されるコンポーネント
-	TMainMenu *MainMenu1;
+	TMainMenu *MainMenu;
 	TMenuItem *N1;
 	TMenuItem *ZZZZZ1;
 	TPanel *MenuPanel;
@@ -37,23 +37,11 @@ __published:	// IDE で管理されるコンポーネント
 	TPanel *Panel1;
 	TStatusBar *StatusBar1;
 	TPanel *MainPanel;
-	TMainMenu *MainMenu;
-	TMenuItem *F1;
-	TMenuItem *LoadImageMenu;
-	TMenuItem *MenuItem1;
-	TMenuItem *N2;
-	TMenuItem *N3;
-	TMenuItem *EndMenu;
-	TMenuItem *E1;
-	TMenuItem *undoMenu;
-	TMenuItem *N5;
-	TMenuItem *UpdateMenu;
-	TMenuItem *H1;
-	TMenuItem *N4;
-	TMenuItem *aaaaaa1;
 	TOpenPictureDialog *OpenPictureDialog;
 	TMenuItem *N6;
 	TMenuItem *UndoMemu;
+	TMenuItem *N2;
+	TMenuItem *UpdateMenu;
 	void __fastcall ZZZZZ1Click(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall LoadImageBtnClick(TObject *Sender);
