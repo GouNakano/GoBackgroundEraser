@@ -3,7 +3,6 @@
 #include <vcl.h>
 #pragma hdrstop
 
-#include "nsDebug.h"
 #include "OrgImgDispFrm.h"
 #include "MainFrm.h"
 //---------------------------------------------------------------------------
@@ -15,9 +14,12 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 	: TForm(Owner)
 {
 }
-//-------------------------------------------------
-//フォームが表示されるとき
-//-------------------------------------------------
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::ZZZZZ1Click(TObject *Sender)
+{
+//
+}
+//---------------------------------------------------------------------------
 void __fastcall TMainForm::FormShow(TObject *Sender)
 {
 	//背景除去オブジェクトの初期化
@@ -42,149 +44,6 @@ void __fastcall TMainForm::FormShow(TObject *Sender)
 	cv::setMouseCallback("output",TMainForm::onmouse,this);
 	//モード表示
 	dispMode("GoBackgroundEraser起動");
-}
-//-------------------------------------------------
-//背景削除表示更新ボタン
-//-------------------------------------------------
-void __fastcall TMainForm::updateBtnClick(TObject *Sender)
-{
-	//モードチェック
-	if(BGEraser.rect_or_mask == TBGEraser::tmNone)
-	{
-		//状態表示
-		dispMode("背景除去範囲を指定してから更新を行ってください");
-		return;
-	}
-	//状態表示
-	dispMode("背景除去画像表示更新中");
-	//現在の値をスタックに積む
-	histStack.push({original_mat.clone(),original_mask_mat.clone(),BGEraser.rect_or_mask});
-	//表示用マスクをオリジナルの大きさにする
-	disp_mask_mat.copyTo(BGEraser.mask);
-	//背景削除を進める
-	if(BGEraser.segmentImage() == false)
-	{
-		//処理が失敗したのでスタックを戻す
-		histStack.pop();
-		//失敗状態表示
-		dispMode("背景除去画像表示更新失敗");
-	}
-	//背景除去結果画像を取得
-	BGEraser.getOutputMat(original_mat);
-	//背景除去結果マスクを取得
-	BGEraser.getOutputMasktMat(original_mask_mat);
-	//元画像の表示画像を作成する
-	makeDrawMatFromOrignalMat();
-	//作業用マスクMatを作成する
-	disp_mask_mat = original_mask_mat.clone();
-	//描画用Matで表示更新
-	updateDispFromDrawMat();
-	//状態表示
-	dispMode("背景除去画像表示更新完了");
-}
-//-------------------------------------------------
-//保存ボタン
-//-------------------------------------------------
-void __fastcall TMainForm::saveBtnClick(TObject *Sender)
-{
-	//背景削除画像の保存
-	BGEraser.saveBGErasedImage("output.png");
-}
-//-------------------------------------------------
-//元に戻すボタン
-//-------------------------------------------------
-void __fastcall TMainForm::undoBtnClick(TObject *Sender)
-{
-	//スタックの数をチェック
-	if(histStack.size() < 1)
-	{
-		//スタックが無いので処理しない
-		return;
-	}
-	//最後にスタックに積んだ要素を得る
-	std::tuple<cv::Mat,cv::Mat,TBGEraser::typMode>& last_stck = histStack.top();
-
-	cv::Mat&            last_original_mat      = std::get<0>(last_stck);
-	cv::Mat&            last_original_mask_mat = std::get<1>(last_stck);
-	TBGEraser::typMode& last_mode              = std::get<2>(last_stck);
-	//背景除去結果画像をセット
-	BGEraser.setOutputMat(last_original_mat);
-	//背景除去結果マスクを取得
-	BGEraser.setOutputMasktMat(last_original_mask_mat);
-	//背景除去結果画像を取得
-	BGEraser.getOutputMat(original_mat);
-	//背景除去結果マスクを取得
-	BGEraser.getOutputMasktMat(original_mask_mat);
-	//元画像の表示画像を作成する
-	makeDrawMatFromOrignalMat();
-	//作業用マスクMatを作成する
-	disp_mask_mat = original_mask_mat.clone();
-	//モードセット
-	BGEraser.rect_or_mask = last_mode;
-	//描画用Matで表示更新
-	updateDispFromDrawMat();
-	//スタックからpopする
-	histStack.pop();
-
-//	//編集結果を無効にしてリセットする
-//	BGEraser.resetState();
-}
-//-------------------------------------------------
-//モード表示
-//-------------------------------------------------
-void TMainForm::dispMode(const std::string& mode_str)
-{
-	//状態表示ラベルの文字列更新
-	ModeLabel->Caption = mode_str.c_str();
-	Application->ProcessMessages();
-}
-//-------------------------------------------------
-//背景指定モードにする
-//-------------------------------------------------
-void __fastcall TMainForm::specifyBGBtnClick(TObject *Sender)
-{
-	//モードチェック
-	if(BGEraser.rect_or_mask != TBGEraser::tmMask)
-	{
-		//モード表示
-		dispMode("マスク編集モードではありません、範囲指定を行って更新を先に行ってください");
-		return;
-	}
-	//背景指定モードにする
-	if(BGEraser.setSpecifyBackgroundMode() == true)
-	{
-		//モード表示
-		dispMode("背景指定モードに移行しました");
-	}
-}
-//-------------------------------------------------
-//前景指定モードにする
-//-------------------------------------------------
-void __fastcall TMainForm::specifyFGBtnClick(TObject *Sender)
-{
-	//モードチェック
-	if(BGEraser.rect_or_mask != TBGEraser::tmMask)
-	{
-		//モード表示
-		dispMode("マスク編集モードではありません、範囲指定を行って更新を先に行ってください");
-		return;
-	}
-	//前景指定モードにする
-	if(BGEraser.setSpecifyForegroundMode() == true)
-	{
-		//モード表示
-		dispMode("前景指定モードに移行しました");
-	}
-}
-//-------------------------------------------------
-//メイン表示パネルのサイズ変更
-//-------------------------------------------------
-void __fastcall TMainForm::MainPanelResize(TObject *Sender)
-{
-	//元画像の表示画像を作成する
-	makeDrawMatFromOrignalMat();
-	//描画用Matで表示更新
-	updateDispFromDrawMat();
 }
 //-------------------------------------------------
 //画像の表示の大きさに合わせた描画用画像を作成する
@@ -221,6 +80,29 @@ void TMainForm::updateDispFromDrawMat()
 	cv::waitKey(1);
 }
 //-------------------------------------------------
+//モード表示
+//-------------------------------------------------
+void TMainForm::dispMode(const std::string& mode_str)
+{
+	//状態表示ラベルの文字列更新
+	ModeLabel->Caption = mode_str.c_str();
+	Application->ProcessMessages();
+}
+//-------------------------------------------------
+//表示用画像から元画像への座標変換
+//-------------------------------------------------
+bool TMainForm::adjustOriginalPointFromDrawPoint(const cv::Point& draw_point,cv::Point& adjust_point)
+{
+	//比率を算出
+	double w_ratio = static_cast<double>(original_mat.cols) / static_cast<double>(MainPanel->Width);
+	double h_ratio = static_cast<double>(original_mat.rows) / static_cast<double>(MainPanel->Height);
+	//座標を変換する
+	adjust_point.x = static_cast<int>(draw_point.x * w_ratio);
+	adjust_point.y = static_cast<int>(draw_point.y * h_ratio);
+
+	return true;
+}
+//-------------------------------------------------
 //表示用矩形を元画像の大きさに合わせる
 //-------------------------------------------------
 bool TMainForm::adjustRectFromDrawRect(const cv::Rect& draw_rect,cv::Rect& adjust_rect)
@@ -241,34 +123,6 @@ bool TMainForm::adjustRectFromDrawRect(const cv::Rect& draw_rect,cv::Rect& adjus
 	adjust_rect.y      = static_cast<int>(draw_rect.y      * h_ratio);
 	adjust_rect.width  = static_cast<int>(draw_rect.width  * w_ratio);
 	adjust_rect.height = static_cast<int>(draw_rect.height * h_ratio);
-
-	return true;
-}
-//-------------------------------------------------
-//表示用画像を元画像の大きさに合わせる
-//-------------------------------------------------
-bool TMainForm::adjustDispMatFromDrawMat(const cv::Mat& draw_mat,cv::Mat& adjust_mat)
-{
-	if(draw_mat.rows == 0 || draw_mat.cols == 0)
-	{
-		return false;
-	}
-	//リサイズ
-	cv::resize(draw_mat,adjust_mat,original_mat.size());
-
-	return true;
-}
-//-------------------------------------------------
-//表示用画像から元画像への座標変換
-//-------------------------------------------------
-bool TMainForm::adjustOriginalPointFromDrawPoint(const cv::Point& draw_point,cv::Point& adjust_point)
-{
-	//比率を算出
-	double w_ratio = static_cast<double>(original_mat.cols) / static_cast<double>(MainPanel->Width);
-	double h_ratio = static_cast<double>(original_mat.rows) / static_cast<double>(MainPanel->Height);
-	//座標を変換する
-	adjust_point.x = static_cast<int>(draw_point.x * w_ratio);
-	adjust_point.y = static_cast<int>(draw_point.y * h_ratio);
 
 	return true;
 }
@@ -382,23 +236,6 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 	}
 }
 //---------------------------------------------------------------------------
-//元画像の表示
-//---------------------------------------------------------------------------
-void __fastcall TMainForm::dispOrigImgBtnClick(TObject *Sender)
-{
-	//画像取り込まれているかチェック
-	if(original_mat.empty() == true || original_mat.cols == 0 || original_mat.rows == 0)
-	{
-		//エラー表示
-		MessageBoxA(Handle,"画像が読み込まれていません。","GoBackgroundEraser",MB_OK | MB_ICONERROR);
-		return;
-	}
-	//Matのセット
-	OrgImgDispForm->setDisplayMat(original_mat);
-	//元画像のウィンドウをモーダレスで表示
-	OrgImgDispForm->Show();
-}
-//---------------------------------------------------------------------------
 //画像読込ボタン
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::LoadImageBtnClick(TObject *Sender)
@@ -430,6 +267,22 @@ void __fastcall TMainForm::LoadImageBtnClick(TObject *Sender)
 	updateDispFromDrawMat();
 }
 //---------------------------------------------------------------------------
+//wstringからstringに変換
+//---------------------------------------------------------------------------
+std::string TMainForm::wstring2string(const std::wstring& wstr)
+{
+	//Unicodeからマルチバイトへの変換
+	int in_length = (int)wstr.length();
+	int out_length = WideCharToMultiByte(CP_ACP,0,wstr.c_str(),in_length,0,0,0,0);
+	std::string result(out_length, '\0');
+	if(out_length > 0)
+	{
+		WideCharToMultiByte(CP_ACP,0,wstr.c_str(),in_length,&result[0],out_length,0,0);
+	}
+	//std::stringへの変換結果を返却
+	return result;
+}
+//---------------------------------------------------------------------------
 //範囲指定モードボタン
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::SelRectBtnClick(TObject *Sender)
@@ -459,6 +312,147 @@ void __fastcall TMainForm::SelRectBtnClick(TObject *Sender)
 	//モード表示
 	dispMode("範囲指定モードに移行しました");
 }
+//-------------------------------------------------
+//背景指定モードにする
+//-------------------------------------------------
+void __fastcall TMainForm::specifyBGBtnClick(TObject *Sender)
+{
+	//モードチェック
+	if(BGEraser.rect_or_mask != TBGEraser::tmMask)
+	{
+		//モード表示
+		dispMode("マスク編集モードではありません、範囲指定を行って更新を先に行ってください");
+		return;
+	}
+	//背景指定モードにする
+	if(BGEraser.setSpecifyBackgroundMode() == true)
+	{
+		//モード表示
+		dispMode("背景指定モードに移行しました");
+	}
+}
+//-------------------------------------------------
+//前景指定モードにする
+//-------------------------------------------------
+void __fastcall TMainForm::specifyFGBtnClick(TObject *Sender)
+{
+	//モードチェック
+	if(BGEraser.rect_or_mask != TBGEraser::tmMask)
+	{
+		//モード表示
+		dispMode("マスク編集モードではありません、範囲指定を行って更新を先に行ってください");
+		return;
+	}
+	//前景指定モードにする
+	if(BGEraser.setSpecifyForegroundMode() == true)
+	{
+		//モード表示
+		dispMode("前景指定モードに移行しました");
+	}
+}
+//---------------------------------------------------------------------------
+//元画像の表示
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::dispOrigImgBtnClick(TObject *Sender)
+{
+	//画像取り込まれているかチェック
+	if(original_mat.empty() == true || original_mat.cols == 0 || original_mat.rows == 0)
+	{
+		//エラー表示
+		MessageBoxA(Handle,"画像が読み込まれていません。","GoBackgroundEraser",MB_OK | MB_ICONERROR);
+		return;
+	}
+	//Matのセット
+	OrgImgDispForm->setDisplayMat(original_mat);
+	//元画像のウィンドウをモーダレスで表示
+	OrgImgDispForm->Show();
+}
+//-------------------------------------------------
+//元に戻すボタン
+//-------------------------------------------------
+void __fastcall TMainForm::undoBtnClick(TObject *Sender)
+{
+	//スタックの数をチェック
+	if(histStack.size() < 1)
+	{
+		//スタックが無いので処理しない
+		return;
+	}
+	//最後にスタックに積んだ要素を得る
+	std::tuple<cv::Mat,cv::Mat,TBGEraser::typMode>& last_stck = histStack.top();
+
+	cv::Mat&            last_original_mat      = std::get<0>(last_stck);
+	cv::Mat&            last_original_mask_mat = std::get<1>(last_stck);
+	TBGEraser::typMode& last_mode              = std::get<2>(last_stck);
+	//背景除去結果画像をセット
+	BGEraser.setOutputMat(last_original_mat);
+	//背景除去結果マスクを取得
+	BGEraser.setOutputMasktMat(last_original_mask_mat);
+	//背景除去結果画像を取得
+	BGEraser.getOutputMat(original_mat);
+	//背景除去結果マスクを取得
+	BGEraser.getOutputMasktMat(original_mask_mat);
+	//元画像の表示画像を作成する
+	makeDrawMatFromOrignalMat();
+	//作業用マスクMatを作成する
+	disp_mask_mat = original_mask_mat.clone();
+	//モードセット
+	BGEraser.rect_or_mask = last_mode;
+	//描画用Matで表示更新
+	updateDispFromDrawMat();
+	//スタックからpopする
+	histStack.pop();
+
+//	//編集結果を無効にしてリセットする
+//	BGEraser.resetState();
+}
+//-------------------------------------------------
+//保存ボタン
+//-------------------------------------------------
+void __fastcall TMainForm::saveBtnClick(TObject *Sender)
+{
+	//背景削除画像の保存
+	BGEraser.saveBGErasedImage("output.png");
+}
+//-------------------------------------------------
+//背景削除表示更新ボタン
+//-------------------------------------------------
+void __fastcall TMainForm::updateBtnClick(TObject *Sender)
+{
+	//モードチェック
+	if(BGEraser.rect_or_mask == TBGEraser::tmNone)
+	{
+		//状態表示
+		dispMode("背景除去範囲を指定してから更新を行ってください");
+		return;
+	}
+	//状態表示
+	dispMode("背景除去画像表示更新中");
+	//現在の値をスタックに積む
+	histStack.push({original_mat.clone(),original_mask_mat.clone(),BGEraser.rect_or_mask});
+	//表示用マスクをオリジナルの大きさにする
+	disp_mask_mat.copyTo(BGEraser.mask);
+	//背景削除を進める
+	if(BGEraser.segmentImage() == false)
+	{
+		//処理が失敗したのでスタックを戻す
+		histStack.pop();
+		//失敗状態表示
+		dispMode("背景除去画像表示更新失敗");
+	}
+	//背景除去結果画像を取得
+	BGEraser.getOutputMat(original_mat);
+	//背景除去結果マスクを取得
+	BGEraser.getOutputMasktMat(original_mask_mat);
+	//元画像の表示画像を作成する
+	makeDrawMatFromOrignalMat();
+	//作業用マスクMatを作成する
+	disp_mask_mat = original_mask_mat.clone();
+	//描画用Matで表示更新
+	updateDispFromDrawMat();
+	//状態表示
+	dispMode("背景除去画像表示更新完了");
+}
 //---------------------------------------------------------------------------
 //終了ボタン
 //---------------------------------------------------------------------------
@@ -466,28 +460,13 @@ void __fastcall TMainForm::EndBtnClick(TObject *Sender)
 {
 	Close();
 }
-//---------------------------------------------------------------------------
-//wstringからstringに変換
-//---------------------------------------------------------------------------
-std::string TMainForm::wstring2string(const std::wstring& wstr)
+//-------------------------------------------------
+//元に戻すボタン
+//-------------------------------------------------
+void __fastcall TMainForm::UndoMemuClick(TObject *Sender)
 {
-	//Unicodeからマルチバイトへの変換
-	int in_length = (int)wstr.length();
-	int out_length = WideCharToMultiByte(CP_ACP,0,wstr.c_str(),in_length,0,0,0,0);
-	std::string result(out_length, '\0');
-	if(out_length > 0)
-	{
-		WideCharToMultiByte(CP_ACP,0,wstr.c_str(),in_length,&result[0],out_length,0,0);
-	}
-	//std::stringへの変換結果を返却
-	return result;
-}
-//---------------------------------------------------------------------------
-
-
-void __fastcall TMainForm::aaaaaa1Click(TObject *Sender)
-{
-//
+    //undo処理
+	undoBtnClick(Sender);
 }
 //---------------------------------------------------------------------------
 

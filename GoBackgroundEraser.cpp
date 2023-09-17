@@ -5,8 +5,8 @@
 #include <tchar.h>
 //---------------------------------------------------------------------------
 USEFORM("OrgImgDispFrm.cpp", OrgImgDispForm);
+USEFORM("MainFrm_.cpp", MainForm_);
 USEFORM("MainFrm.cpp", MainForm);
-USEFORM("Unit1.cpp", Form1);
 //---------------------------------------------------------------------------
 int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 {
@@ -15,7 +15,7 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 		Application->Initialize();
 		Application->MainFormOnTaskBar = true;
 		Application->CreateForm(__classid(TMainForm), &MainForm);
-		Application->CreateForm(__classid(TForm1), &Form1);
+		Application->CreateForm(__classid(TMainForm_), &MainForm_);
 		Application->CreateForm(__classid(TOrgImgDispForm), &OrgImgDispForm);
 		Application->Run();
 	}

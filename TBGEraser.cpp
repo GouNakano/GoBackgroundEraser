@@ -182,21 +182,6 @@ bool TBGEraser::saveBGErasedImage(const std::string& file_name)
 	return true;
 }
 //-------------------------------------------------
-//リセットして最初に戻す
-//-------------------------------------------------
-bool TBGEraser::resetState()
-{
-	rect         = cv::Rect(0,0,1,1);
-	drawing      = false;
-	rect_or_mask = tmRect;
-	value        = DRAW_FOREGROUND;
-	img          = img_org.clone();
-	mask         = cv::Mat::zeros(cv::Size(img.cols,img.rows),CV_8UC1);
-	output       = cv::Mat::zeros(img.size(),CV_8UC1);
-
-	return true;
-}
-//-------------------------------------------------
 //背景指定モードにする
 //-------------------------------------------------
 bool TBGEraser::setSpecifyBackgroundMode()

@@ -2,15 +2,15 @@ object MainForm: TMainForm
   Left = 0
   Top = 0
   Caption = 'GoBackgroundEraser'
-  ClientHeight = 564
-  ClientWidth = 935
+  ClientHeight = 632
+  ClientWidth = 994
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  Menu = MainMenu
+  Menu = MainMenu1
   OldCreateOrder = False
   OnShow = FormShow
   PixelsPerInch = 96
@@ -18,10 +18,11 @@ object MainForm: TMainForm
   object MenuPanel: TPanel
     Left = 0
     Top = 0
-    Width = 935
+    Width = 994
     Height = 103
     Align = alTop
     TabOrder = 0
+    ExplicitWidth = 935
     object updateBtn: TBitBtn
       Left = 432
       Top = 6
@@ -97,11 +98,12 @@ object MainForm: TMainForm
     object Panel2: TPanel
       Left = 1
       Top = 73
-      Width = 933
+      Width = 992
       Height = 29
       Align = alBottom
       BevelOuter = bvLowered
       TabOrder = 8
+      ExplicitWidth = 933
       object ModeLabel: TLabel
         Left = 113
         Top = 7
@@ -144,28 +146,51 @@ object MainForm: TMainForm
   object Panel1: TPanel
     Left = 0
     Top = 103
-    Width = 935
+    Width = 994
     Height = 2
     Align = alTop
     BevelInner = bvLowered
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitWidth = 935
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 545
-    Width = 935
+    Top = 613
+    Width = 994
     Height = 19
     Panels = <>
+    ExplicitTop = 545
+    ExplicitWidth = 935
   end
   object MainPanel: TPanel
     Left = 0
     Top = 105
-    Width = 935
-    Height = 440
+    Width = 994
+    Height = 508
     Align = alClient
     TabOrder = 3
-    OnResize = MainPanelResize
+    ExplicitWidth = 935
+    ExplicitHeight = 440
+  end
+  object MainMenu1: TMainMenu
+    Left = 228
+    Top = 100
+    object N1: TMenuItem
+      Caption = #12501#12449#12452#12523'(&F)'
+      object ZZZZZ1: TMenuItem
+        Caption = 'ZZZZZ'
+        OnClick = ZZZZZ1Click
+      end
+    end
+    object N6: TMenuItem
+      Caption = #32232#38598
+      object UndoMemu: TMenuItem
+        Caption = #20803#12395#25147#12377
+        ShortCut = 16474
+        OnClick = UndoMemuClick
+      end
+    end
   end
   object MainMenu: TMainMenu
     Left = 92
@@ -174,9 +199,8 @@ object MainForm: TMainForm
       Caption = #12501#12449#12452#12523'(&F)'
       object LoadImageMenu: TMenuItem
         Caption = #30011#20687#35501#36796
-        OnClick = LoadImageBtnClick
       end
-      object N1: TMenuItem
+      object MenuItem1: TMenuItem
         Caption = '-'
       end
       object N2: TMenuItem
@@ -188,7 +212,6 @@ object MainForm: TMainForm
       end
       object EndMenu: TMenuItem
         Caption = #32066#20102
-        OnClick = EndBtnClick
       end
     end
     object E1: TMenuItem
@@ -197,14 +220,12 @@ object MainForm: TMainForm
       object undoMenu: TMenuItem
         Caption = #20803#12395#25147#12377
         ShortCut = 16450
-        OnClick = undoBtnClick
       end
       object N5: TMenuItem
         Caption = '-'
       end
       object UpdateMenu: TMenuItem
         Caption = #26356#26032
-        OnClick = updateBtnClick
       end
     end
     object H1: TMenuItem
@@ -215,7 +236,6 @@ object MainForm: TMainForm
       object aaaaaa1: TMenuItem
         Caption = 'aaaaaa'
         ShortCut = 16474
-        OnClick = aaaaaa1Click
       end
     end
   end

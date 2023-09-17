@@ -89,8 +89,6 @@ public:
 	bool segmentImage();
 	//背景除去画像をpngファイルに保存する
 	bool saveBGErasedImage(const std::string& file_name);
-	//リセットして最初に戻す
-	bool resetState();
 	//背景指定モードにする
 	bool setSpecifyBackgroundMode();
 	//背景指定モードにする

@@ -169,6 +169,12 @@
             <Form>MainForm</Form>
             <FormType>dfm</FormType>
             <DependentOn>MainFrm.h</DependentOn>
+            <BuildOrder>48</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="MainFrm_.cpp">
+            <Form>MainForm_</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>MainFrm_.h</DependentOn>
             <BuildOrder>2</BuildOrder>
         </CppCompile>
         <CppCompile Include="OrgImgDispFrm.cpp">
@@ -180,12 +186,6 @@
         <CppCompile Include="TBGEraser.cpp">
             <DependentOn>TBGEraser.h</DependentOn>
             <BuildOrder>3</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="Unit1.cpp">
-            <Form>Form1</Form>
-            <FormType>dfm</FormType>
-            <DependentOn>Unit1.h</DependentOn>
-            <BuildOrder>48</BuildOrder>
         </CppCompile>
         <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\libjpegd.lib" Condition="'$(Platform)'=='Win32'">
             <BuildOrder>4</BuildOrder>
@@ -356,8 +356,8 @@
             <IgnorePath>true</IgnorePath>
         </LibFiles>
         <FormResources Include="OrgImgDispFrm.dfm"/>
+        <FormResources Include="MainFrm_.dfm"/>
         <FormResources Include="MainFrm.dfm"/>
-        <FormResources Include="Unit1.dfm"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
