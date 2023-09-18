@@ -4,6 +4,7 @@
 #include <opencv2/opencv.hpp>
 #include <windows.h>
 #include <stdio.h>
+#include "BGEraserDef.h"
 #include "TBGEraser.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -34,10 +35,10 @@ bool TBGEraser::init()
 {
 	//フラグの設定
 	rect         = cv::Rect(0,0,0,0);
-	drawing      = false;           // 曲線描画のフラグ
-	rect_or_mask = tmNone;          // マウス動作モードのフラグ
-	value        = DRAW_BACKGROUND; // 書き込みモードを背景に初期化
-	thickness    = 3;               // ブラシの太さ
+	drawing      = false;                // 曲線描画のフラグ
+	rect_or_mask = tmNone;               // マウス動作モードのフラグ
+	value        = DRAW_BACKGROUND;      // 書き込みモードを背景に初期化
+	thickness    = BGE::getThickness();  // ブラシの太さ
 	//入出力ウィンドウ
 	cv::namedWindow("output");
 	printf("マウスの右ボタンを使用してオブジェクトの周囲に長方形を描きます。\n");
@@ -310,11 +311,21 @@ bool TBGEraser::updateMaskAndOutputImage()
 	return true;
 }
 //-------------------------------------------------
-//描画幅を取得
+//ブラシの太さを取得
 //-------------------------------------------------
 int TBGEraser::getThickness()
 {
 	return thickness;
+}
+//-------------------------------------------------
+//ブラシの太さをセット
+//-------------------------------------------------
+bool TBGEraser::setThickness(int tn)
+{
+	BGE::setThickness(tn);
+	thickness = tn;
+
+	return true;
 }
 //-------------------------------------------------
 //マスク描画モードの有無

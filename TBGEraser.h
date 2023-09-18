@@ -109,8 +109,10 @@ public:
 	//マスクを更新して出力画像を作成する
 	bool updateMaskAndOutputImage();
 public:
-	//描画幅を取得
+	//ブラシの太さを取得
 	int getThickness();
+	//ブラシの太さをセット
+	bool setThickness(int tn);
 	//マスク描画モードの有無を取得
 	bool getDrawing();
 	//マスク描画モードの有無をセット

@@ -13,14 +13,6 @@
 const wchar_t *INI_DEF_STANDARD = L"STANDARD";  //標準定義
 const wchar_t *INI_DEF_WINPOS   = L"WINPOS";    //ウィンドウの位置
 
-//ドッキング情報
-const wchar_t *INI_DOK_BTOMHEIGHT = L"DOCK_BTOMHEIGHT";  //下パネルの高さ
-const wchar_t *INI_DOK_LEFTWIDTH  = L"DOCK_LEFTWIDTH";   //左パネルの幅
-//表示系
-const wchar_t *INI_MINIMIZERUN       = L"MINIMIZE_RUN";        //最小化して起動
-const wchar_t *INI_MINIMIZETRAYICON  = L"MINIMIZE_TRAY_ICON";  //最小化時タスクトレイアイコンに格納
-const wchar_t *INI_WINME             = L"DESKTOP_DISP_PROC";   //「デスクトップに画面が残る」に対する対応
-
 //ウィンドウの状態(メインウィンドウ)
 const wchar_t *INI_WINLEFT     = L"WIN_LEFT";       //Window-Left
 const wchar_t *INI_WINTOP      = L"WIN_TOP";        //Window-Top
@@ -28,30 +20,40 @@ const wchar_t *INI_WINWIDTH    = L"WIN_WIDTH";      //Window-Width
 const wchar_t *INI_WINHEIGHT   = L"WIN_HEIGHT";     //Window-Height
 const wchar_t *INI_WINMAXSIZE  = L"WIN_MAX";        //Window-Maxsize
 
+//各パラメータ
+const wchar_t *INI_THICKNESS   = L"THICKNESS";      //ブラシの太さ
+
 //iniファイル名
 const wchar_t *INI_INIFILENAME = L"bge.ini";
 
 
-namespace BGE
+//-------------------------------------------------------------
+//実行ファイルのディレクトリを得る
+//-------------------------------------------------------------
+String BGE::getExeDir()
 {
+	//実行ファイルのディレクトリ
+	String exe_dir = ExtractFilePath(ParamStr(0));
 
+	return exe_dir;
+}
 //-------------------------------------------------------------
 //ウィンドウの位置をセット
 //-------------------------------------------------------------
-bool SetWindowPos(TForm *Form,bool IsKeepWindowSize)
+bool BGE::setWindowPos(TForm *Form,bool IsKeepWindowSize)
 {
 	int               WinLeft;
 	int               WinTop;
 	int               WinWidth;
 	int               WinHeight;
 	String            Section;
-	std::unique_ptr<TRegistryIniFile> pIni;
+	std::unique_ptr<TIniFile> pIni;
 
 	//フォームのNameを得る(大文字)
 	String FrmName = Form->Name.UpperCase();
 
 	//フォーム関連関連アクセス
-	pIni.reset(new TRegistryIniFile(INI_DEF_WINPOS));
+	pIni.reset(new TIniFile(getExeDir() + INI_INIFILENAME));
 	Section = INI_DEF_WINPOS;
 
 	//位置を取得
@@ -84,19 +86,18 @@ bool SetWindowPos(TForm *Form,bool IsKeepWindowSize)
 	}
 	return true;
 }
-
 //-------------------------------------------------------------
 //ウィンドウの位置を記録
 //-------------------------------------------------------------
-bool SaveWindowPos(TForm *Form,bool IsTopLeftOnly)
+bool BGE::saveWindowPos(TForm *Form,bool IsTopLeftOnly)
 {
-	String                            Section;
-	std::unique_ptr<TRegistryIniFile> pIni;
+	String                    Section;
+	std::unique_ptr<TIniFile> pIni;
 	//フォームのNameを得る(大文字)
 	String FrmName = Form->Name.UpperCase();
 
 	//フォーム関連関連アクセス
-	pIni.reset(new TRegistryIniFile(INI_DEF_WINPOS));
+	pIni.reset(new TIniFile(getExeDir() + INI_INIFILENAME));
 	Section = INI_DEF_WINPOS;
 
 	//位置を設定
@@ -110,5 +111,39 @@ bool SaveWindowPos(TForm *Form,bool IsTopLeftOnly)
 	}
 	return true;
 }
+//-------------------------------------------------------------
+//ブラシの太さを得る
+//-------------------------------------------------------------
+int BGE::getThickness()
+{
+	int                       thickness;
+	String                    Section;
+	std::unique_ptr<TIniFile> pIni;
 
-} //BGE
+	//フォーム関連関連アクセス
+	pIni.reset(new TIniFile(getExeDir() + INI_INIFILENAME));
+	Section = INI_DEF_STANDARD;
+
+	//ブラシの太さを取得
+	thickness = pIni->ReadInteger(Section,INI_THICKNESS,2);
+
+	return thickness;
+}
+
+//-------------------------------------------------------------
+//ブラシの太さをセット
+//-------------------------------------------------------------
+bool BGE::setThickness(int tn)
+{
+	String                    Section;
+	std::unique_ptr<TIniFile> pIni;
+
+	//フォーム関連関連アクセス
+	pIni.reset(new TIniFile(getExeDir() + INI_INIFILENAME));
+	Section = INI_DEF_STANDARD;
+
+	//ブラシの太さを取得
+	pIni->WriteInteger(Section,INI_THICKNESS,tn);
+
+	return true;
+}

@@ -45,6 +45,8 @@ __published:	// IDE で管理されるコンポーネント
 	TSavePictureDialog *SavePictureDialog;
 	TMenuItem *H1;
 	TMenuItem *N3;
+	TLabel *Label1;
+	TComboBox *ThicknessComboBox;
 	void __fastcall ZZZZZ1Click(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall LoadImageBtnClick(TObject *Sender);
@@ -59,6 +61,7 @@ __published:	// IDE で管理されるコンポーネント
 	void __fastcall UndoMemuClick(TObject *Sender);
 	void __fastcall MainPanelResize(TObject *Sender);
 	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
+	void __fastcall ThicknessComboBoxChange(TObject *Sender);
 private:
 	//マウスイベント
 	static void onmouse(int event,int x,int y,int flags,void *param);
@@ -89,6 +92,8 @@ private:
 	void updateDispFromDrawMat();
 	//表示用画像から元画像への座標変換
 	bool adjustOriginalPointFromDrawPoint(const cv::Point& draw_point,cv::Point& adjust_point);
+	//ブラシの太さのコンボボックスをセット
+	bool setThicknessComboBox();
 	//wstringからstringに変換
 	std::string wstring2string(const std::wstring& wstr);
 public:

@@ -1,6 +1,7 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
+  BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'GoBackgroundEraser'
   ClientHeight = 632
   ClientWidth = 994
@@ -20,9 +21,23 @@ object MainForm: TMainForm
     Left = 0
     Top = 0
     Width = 994
-    Height = 105
+    Height = 133
     Align = alTop
     TabOrder = 0
+    object Label1: TLabel
+      Left = 4
+      Top = 75
+      Width = 61
+      Height = 13
+      AutoSize = False
+      Caption = #12502#12521#12471#12398#22826#12373
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
     object updateBtn: TBitBtn
       Left = 432
       Top = 6
@@ -31,6 +46,7 @@ object MainForm: TMainForm
       Caption = #26356#26032
       TabOrder = 0
       TabStop = False
+      OnClick = updateBtnClick
     end
     object saveBtn: TBitBtn
       Left = 208
@@ -104,12 +120,13 @@ object MainForm: TMainForm
     end
     object Panel2: TPanel
       Left = 1
-      Top = 75
+      Top = 103
       Width = 992
       Height = 29
       Align = alBottom
       BevelOuter = bvLowered
       TabOrder = 8
+      ExplicitTop = 75
       object ModeLabel: TLabel
         Left = 113
         Top = 7
@@ -149,16 +166,41 @@ object MainForm: TMainForm
       TabStop = False
       OnClick = EndBtnClick
     end
+    object ThicknessComboBox: TComboBox
+      Left = 68
+      Top = 71
+      Width = 33
+      Height = 22
+      Style = csDropDownList
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ItemIndex = 0
+      ParentFont = False
+      TabOrder = 10
+      TabStop = False
+      Text = '1'
+      OnChange = ThicknessComboBoxChange
+      Items.Strings = (
+        '1'
+        '2'
+        '3'
+        '4'
+        '5')
+    end
   end
   object Panel1: TPanel
     Left = 0
-    Top = 105
+    Top = 133
     Width = 994
     Height = 2
     Align = alTop
     BevelInner = bvLowered
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 105
   end
   object StatusBar1: TStatusBar
     Left = 0
@@ -169,12 +211,14 @@ object MainForm: TMainForm
   end
   object MainPanel: TPanel
     Left = 0
-    Top = 107
+    Top = 135
     Width = 994
-    Height = 506
+    Height = 478
     Align = alClient
     TabOrder = 3
     OnResize = MainPanelResize
+    ExplicitTop = 107
+    ExplicitHeight = 506
   end
   object MainMenu: TMainMenu
     Left = 244

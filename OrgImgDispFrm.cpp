@@ -26,7 +26,7 @@ void __fastcall TOrgImgDispForm::FormCreate(TObject *Sender)
 	::SetParent(hWnd1,ImageBasePanel->Handle);
 	::ShowWindow(hWnd1_parent,SW_HIDE);
 	//ウィンドウの位置をセット
-	BGE::SetWindowPos(this);
+	BGE::setWindowPos(this);
 }
 //---------------------------------------------------------------------------
 //フォーム表示時
@@ -93,7 +93,7 @@ void TOrgImgDispForm::makeDrawMatFromOrignalMat()
 void __fastcall TOrgImgDispForm::FormCloseQuery(TObject *Sender, bool &CanClose)
 {
 	//ウィンドウの位置を記録
-	BGE::SaveWindowPos(this);
+	BGE::saveWindowPos(this);
 }
 //---------------------------------------------------------------------------
 
