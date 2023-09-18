@@ -55,11 +55,14 @@ public:
 	static const TmaskInf DRAW_RECTANGLE;
 public:
 	//動作モード(初期マスク作成モード、マスク更新モード)
-	enum typMode {tmRect=0,tmMask};
+	enum typMode {tmNone=0,tmRect,tmMask};
 private:
 	cv::Mat    mask2;
 	int        thickness;
 	bool       drawing;
+
+	bool rectangle;
+	bool rect_over;
 public:
 	cv::Mat    mask;
 	cv::Mat    img;
@@ -86,28 +89,30 @@ public:
 	bool segmentImage();
 	//背景除去画像をpngファイルに保存する
 	bool saveBGErasedImage(const std::string& file_name);
-	//リセットして最初に戻す
-	bool resetState();
 	//背景指定モードにする
 	bool setSpecifyBackgroundMode();
 	//背景指定モードにする
 	bool setSpecifyForegroundMode();
 	//出力Matを得る
 	bool getOutputMat(cv::Mat& output_mat);
+	//出力Matをセット
+	bool setOutputMat(cv::Mat& output_mat);
 	//出力マスクを得る
 	bool getOutputMasktMat(cv::Mat& mask_mat);
+	//出力マスクをセット
+	bool setOutputMasktMat(cv::Mat& mask_mat);
 	//元画像Matを得る
 	bool getOriginalMat(cv::Mat& original_mat);
 	//元マスクを得る
 	bool getOriginalMaskMat(cv::Mat& original_mask_mat);
-	//画像の読込
-	bool readImage(const std::string& file_name);
 public:
 	//マスクを更新して出力画像を作成する
 	bool updateMaskAndOutputImage();
 public:
-	//描画幅を取得
+	//ブラシの太さを取得
 	int getThickness();
+	//ブラシの太さをセット
+	bool setThickness(int tn);
 	//マスク描画モードの有無を取得
 	bool getDrawing();
 	//マスク描画モードの有無をセット

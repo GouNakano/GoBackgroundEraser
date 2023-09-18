@@ -44,6 +44,76 @@ public:
 	}
 };
 
+//動作モード(初期マスク作成モード、マスク更新モード)
+enum typBGEMode {tmNone=0,tmRect,tmMask};
+
+//Undoのために蓄える情報の型
+class TUndotiness
+{
+private:
+	cv::Mat     original_mat;
+	cv::Mat     original_mask_mat;
+	typBGEMode  mode;
+private:
+	void _copy(const TUndotiness& him)
+	{
+		original_mat      = him.original_mat.clone();
+		original_mask_mat = him.original_mask_mat.clone();
+		mode              = him.mode;
+	}
+public:
+	//コンストラクタ
+	TUndotiness()
+	{
+		mode = tmNone;
+	}
+	//コピーコンストラクタ
+	TUndotiness(const TUndotiness& him)
+	{
+		_copy(him);
+	}
+	//値セットコンストラクタ
+	TUndotiness(const cv::Mat& disp,const cv::Mat& msk,typBGEMode md)
+	{
+		set(disp,msk,md);
+	}
+	//デストラクタ
+	virtual ~TUndotiness()
+	{
+		original_mat.release();
+		original_mask_mat.release();
+	}
+public:
+	//=演算子
+	TUndotiness& operator = (const TUndotiness& him)
+	{
+		_copy(him);
+
+		return *this;
+	}
+public:
+	//値のセット
+	bool set(const cv::Mat& disp,const cv::Mat& msk,typBGEMode md)
+	{
+		original_mat      = disp.clone();
+		original_mask_mat = msk.clone();
+		mode              = md;
+
+		return true;
+	}
+	//値の取得
+	bool get(cv::Mat& disp,cv::Mat& msk,typBGEMode& md)
+	{
+		disp = original_mat.clone();
+		msk  = original_mask_mat.clone();
+		mode = md;
+
+		return true;
+	}
+
+};
+
+//背景除去クラス
 class TBGEraser
 {
 public:
@@ -53,9 +123,6 @@ public:
 	static const TmaskInf DRAW_FOREGROUND;
 	//変換範囲の矩形の色
 	static const TmaskInf DRAW_RECTANGLE;
-public:
-	//動作モード(初期マスク作成モード、マスク更新モード)
-	enum typMode {tmNone=0,tmRect,tmMask};
 private:
 	cv::Mat    mask2;
 	int        thickness;
@@ -69,7 +136,7 @@ public:
 	cv::Mat    img_org;
 	cv::Mat    output;
 	cv::Rect   rect;
-	typMode    rect_or_mask;
+	typBGEMode rect_or_mask;
 	TmaskInf   value;
 
 private:
@@ -118,5 +185,7 @@ public:
 	//マスク描画モードの有無をセット
 	void setDrawing(bool is_draw);
 };
+
+
 
 #endif

@@ -168,7 +168,7 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 	//各マウスボタンごとの処理
 	if(event == cv::EVENT_LBUTTONDOWN)
 	{
-		if(pMe->rect_or_mask == TBGEraser::tmNone)
+		if(pMe->rect_or_mask == tmNone)
 		{
 			if(pMe->getDrawing() == false)
 			{
@@ -182,7 +182,7 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 				pMe->setDrawing(true);
 			}
 		}
-		else if(pMe->rect_or_mask == TBGEraser::tmMask)
+		else if(pMe->rect_or_mask == tmMask)
 		{
 			//描画中にする
 			pMe->setDrawing(true);
@@ -198,7 +198,7 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 	}
 	else if(event == cv::EVENT_MOUSEMOVE)
 	{
-		if(pMe->rect_or_mask == TBGEraser::tmNone)
+		if(pMe->rect_or_mask == tmNone)
 		{
 			if(pMe->getDrawing() == true)
 			{
@@ -210,7 +210,7 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 				pMainFrm->updateDispFromDrawMat();
 			}
 		}
-		else if(pMe->rect_or_mask == TBGEraser::tmMask)
+		else if(pMe->rect_or_mask == tmMask)
 		{
 			if(pMe->getDrawing() == true)
 			{
@@ -227,12 +227,12 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 	}
 	else if(event == cv::EVENT_LBUTTONUP)
 	{
-		if(pMe->rect_or_mask == TBGEraser::tmNone)
+		if(pMe->rect_or_mask == tmNone)
 		{
 			//描画終了
 			pMe->setDrawing(false);
 			//範囲設定済みフラグにする
-			pMe->rect_or_mask = TBGEraser::tmRect;
+			pMe->rect_or_mask = tmRect;
 			//選択矩形の大きさを補正して渡す
 			cv::Rect sel_rect;
 			cv::Rect adj_rect;
@@ -244,11 +244,11 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 			{
 				cv::rectangle(pMe->img,adj_rect,pMe->DRAW_RECTANGLE.color,2);
 				pMe->rect         = adj_rect;
-				pMe->rect_or_mask = TBGEraser::tmRect;
+				pMe->rect_or_mask = tmRect;
 				pMe->updateMaskAndOutputImage();
 			}
 		}
-		else if(pMe->rect_or_mask == TBGEraser::tmMask)
+		else if(pMe->rect_or_mask == tmMask)
 		{
 			if(pMe->getDrawing() == true)
 			{
@@ -337,7 +337,7 @@ void __fastcall TMainForm::SelRectBtnClick(TObject *Sender)
 	updateDispFromDrawMat();
 
 	//範囲指定に関する値を初期化する
-	BGEraser.rect_or_mask = TBGEraser::tmNone;
+	BGEraser.rect_or_mask = tmNone;
 	BGEraser.rect         = cv::Rect(0,0,0,0);
 	//モード表示
 	dispMode("範囲指定モードに移行しました");
@@ -348,7 +348,7 @@ void __fastcall TMainForm::SelRectBtnClick(TObject *Sender)
 void __fastcall TMainForm::specifyBGBtnClick(TObject *Sender)
 {
 	//モードチェック
-	if(BGEraser.rect_or_mask != TBGEraser::tmMask)
+	if(BGEraser.rect_or_mask != tmMask)
 	{
 		//モード表示
 		dispMode("マスク編集モードではありません、範囲指定を行って更新を先に行ってください");
@@ -367,7 +367,7 @@ void __fastcall TMainForm::specifyBGBtnClick(TObject *Sender)
 void __fastcall TMainForm::specifyFGBtnClick(TObject *Sender)
 {
 	//モードチェック
-	if(BGEraser.rect_or_mask != TBGEraser::tmMask)
+	if(BGEraser.rect_or_mask != tmMask)
 	{
 		//モード表示
 		dispMode("マスク編集モードではありません、範囲指定を行って更新を先に行ってください");
@@ -412,11 +412,14 @@ void __fastcall TMainForm::undoBtnClick(TObject *Sender)
 		return;
 	}
 	//最後にスタックに積んだ要素を得る
-	std::tuple<cv::Mat,cv::Mat,TBGEraser::typMode>& last_stck = histStack.top();
+	TUndotiness last_stck = histStack.top();
 
-	cv::Mat&            last_original_mat      = std::get<0>(last_stck);
-	cv::Mat&            last_original_mask_mat = std::get<1>(last_stck);
-	TBGEraser::typMode& last_mode              = std::get<2>(last_stck);
+	cv::Mat    last_original_mat;
+	cv::Mat    last_original_mask_mat;
+	typBGEMode last_mode;
+
+	last_stck.get(last_original_mat,last_original_mask_mat,last_mode);
+
 	//背景除去結果画像をセット
 	BGEraser.setOutputMat(last_original_mat);
 	//背景除去結果マスクを取得
@@ -464,7 +467,7 @@ void __fastcall TMainForm::saveBtnClick(TObject *Sender)
 void __fastcall TMainForm::updateBtnClick(TObject *Sender)
 {
 	//モードチェック
-	if(BGEraser.rect_or_mask == TBGEraser::tmNone)
+	if(BGEraser.rect_or_mask == tmNone)
 	{
 		//状態表示
 		dispMode("背景除去範囲を指定してから更新を行ってください");
@@ -473,7 +476,8 @@ void __fastcall TMainForm::updateBtnClick(TObject *Sender)
 	//状態表示
 	dispMode("背景除去画像表示更新中");
 	//現在の値をスタックに積む
-	histStack.push({original_mat.clone(),original_mask_mat.clone(),BGEraser.rect_or_mask});
+	TUndotiness undoInf(original_mat,original_mask_mat,BGEraser.rect_or_mask);
+	histStack.push(undoInf);
 	//表示用マスクをオリジナルの大きさにする
 	disp_mask_mat.copyTo(BGEraser.mask);
 	//背景削除を進める

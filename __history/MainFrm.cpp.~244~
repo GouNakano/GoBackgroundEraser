@@ -43,11 +43,30 @@ void __fastcall TMainForm::FormShow(TObject *Sender)
 	//描画用Matで表示更新
 	updateDispFromDrawMat();
 	//ウィンドウの位置をセット
-	BGE::SetWindowPos(this);
+	BGE::setWindowPos(this);
+	//ブラシの太さのコンボボックスをセット
+	setThicknessComboBox();
 	//マウスイベントの送信先設定
 	cv::setMouseCallback("output",TMainForm::onmouse,this);
 	//モード表示
 	dispMode("GoBackgroundEraser起動");
+}
+//-------------------------------------------------
+//ブラシの太さのコンボボックスをセット
+//-------------------------------------------------
+bool TMainForm::setThicknessComboBox()
+{
+	int tn = BGEraser.getThickness();
+	if(tn > 0)
+	{
+		ThicknessComboBox->ItemIndex = tn - 1;
+	}
+	else
+	{
+		ThicknessComboBox->ItemIndex = 1;
+		tn = 2;
+	}
+	return true;
 }
 //-------------------------------------------------
 //画像の表示の大きさに合わせた描画用画像を作成する
@@ -58,9 +77,7 @@ void TMainForm::makeDrawMatFromOrignalMat()
 	if(original_mat.rows > 0 && original_mat.cols > 0)
 	{
 		//親パネルのサイズ
-		int w = MainPanel->Width;
-		int h = MainPanel->Height;
-		win_sz = {w,h};
+		win_sz = {MainPanel->Width,MainPanel->Height};
 		//表示用Matにリサイズ
 		cv::resize(original_mat,disp_mat,win_sz);
 	}
@@ -139,10 +156,19 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 	TMainForm *pMainFrm = static_cast<TMainForm *>(param);
 	TBGEraser *pMe      = static_cast<TBGEraser *>(&pMainFrm->BGEraser);
 
+	//描画用Thicknessを作成
+	double dtn =pMe->getThickness();
+	double disp_thickness = (dtn * static_cast<double>(pMainFrm->disp_mat.cols * pMainFrm->disp_mat.rows))/static_cast<double>(pMainFrm->original_mask_mat.cols * pMainFrm->original_mask_mat.rows);
+	int disp_tn = static_cast<int>(disp_thickness);
+	if(disp_tn < 1)
+	{
+		disp_tn = 1;
+	}
+
 	//各マウスボタンごとの処理
 	if(event == cv::EVENT_LBUTTONDOWN)
 	{
-		if(pMe->rect_or_mask == TBGEraser::tmNone)
+		if(pMe->rect_or_mask == tmNone)
 		{
 			if(pMe->getDrawing() == false)
 			{
@@ -156,12 +182,12 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 				pMe->setDrawing(true);
 			}
 		}
-		else if(pMe->rect_or_mask == TBGEraser::tmMask)
+		else if(pMe->rect_or_mask == tmMask)
 		{
 			//描画中にする
 			pMe->setDrawing(true);
 			//描画更新
-			cv::circle(pMainFrm->disp_mat,cv::Point(x,y),pMe->getThickness(),pMe->value.color,-1);
+			cv::circle(pMainFrm->disp_mat,cv::Point(x,y),disp_tn,pMe->value.color,-1);
 			//マスク更新
 			cv::Point adjust_point;
 			pMainFrm->adjustOriginalPointFromDrawPoint(cv::Point(x,y),adjust_point);
@@ -172,7 +198,7 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 	}
 	else if(event == cv::EVENT_MOUSEMOVE)
 	{
-		if(pMe->rect_or_mask == TBGEraser::tmNone)
+		if(pMe->rect_or_mask == tmNone)
 		{
 			if(pMe->getDrawing() == true)
 			{
@@ -184,12 +210,12 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 				pMainFrm->updateDispFromDrawMat();
 			}
 		}
-		else if(pMe->rect_or_mask == TBGEraser::tmMask)
+		else if(pMe->rect_or_mask == tmMask)
 		{
 			if(pMe->getDrawing() == true)
 			{
 				//描画更新
-				cv::circle(pMainFrm->disp_mat,cv::Point(x,y),pMe->getThickness(),pMe->value.color,-1);
+				cv::circle(pMainFrm->disp_mat,cv::Point(x,y),disp_tn,pMe->value.color,-1);
 				//マスク更新
 				cv::Point adjust_point;
 				pMainFrm->adjustOriginalPointFromDrawPoint(cv::Point(x,y),adjust_point);
@@ -201,12 +227,12 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 	}
 	else if(event == cv::EVENT_LBUTTONUP)
 	{
-		if(pMe->rect_or_mask == TBGEraser::tmNone)
+		if(pMe->rect_or_mask == tmNone)
 		{
 			//描画終了
 			pMe->setDrawing(false);
 			//範囲設定済みフラグにする
-			pMe->rect_or_mask = TBGEraser::tmRect;
+			pMe->rect_or_mask = tmRect;
 			//選択矩形の大きさを補正して渡す
 			cv::Rect sel_rect;
 			cv::Rect adj_rect;
@@ -218,17 +244,17 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 			{
 				cv::rectangle(pMe->img,adj_rect,pMe->DRAW_RECTANGLE.color,2);
 				pMe->rect         = adj_rect;
-				pMe->rect_or_mask = TBGEraser::tmRect;
+				pMe->rect_or_mask = tmRect;
 				pMe->updateMaskAndOutputImage();
 			}
 		}
-		else if(pMe->rect_or_mask == TBGEraser::tmMask)
+		else if(pMe->rect_or_mask == tmMask)
 		{
 			if(pMe->getDrawing() == true)
 			{
 				pMe->setDrawing(false);
 				//描画更新
-				cv::circle(pMainFrm->disp_mat,cv::Point(x,y),pMe->getThickness(),pMe->value.color,-1);
+				cv::circle(pMainFrm->disp_mat,cv::Point(x,y),disp_tn,pMe->value.color,-1);
 				//マスク更新
 				cv::Point adjust_point;
 				pMainFrm->adjustOriginalPointFromDrawPoint(cv::Point(x,y),adjust_point);
@@ -311,7 +337,7 @@ void __fastcall TMainForm::SelRectBtnClick(TObject *Sender)
 	updateDispFromDrawMat();
 
 	//範囲指定に関する値を初期化する
-	BGEraser.rect_or_mask = TBGEraser::tmNone;
+	BGEraser.rect_or_mask = tmNone;
 	BGEraser.rect         = cv::Rect(0,0,0,0);
 	//モード表示
 	dispMode("範囲指定モードに移行しました");
@@ -322,7 +348,7 @@ void __fastcall TMainForm::SelRectBtnClick(TObject *Sender)
 void __fastcall TMainForm::specifyBGBtnClick(TObject *Sender)
 {
 	//モードチェック
-	if(BGEraser.rect_or_mask != TBGEraser::tmMask)
+	if(BGEraser.rect_or_mask != tmMask)
 	{
 		//モード表示
 		dispMode("マスク編集モードではありません、範囲指定を行って更新を先に行ってください");
@@ -341,7 +367,7 @@ void __fastcall TMainForm::specifyBGBtnClick(TObject *Sender)
 void __fastcall TMainForm::specifyFGBtnClick(TObject *Sender)
 {
 	//モードチェック
-	if(BGEraser.rect_or_mask != TBGEraser::tmMask)
+	if(BGEraser.rect_or_mask != tmMask)
 	{
 		//モード表示
 		dispMode("マスク編集モードではありません、範囲指定を行って更新を先に行ってください");
@@ -366,8 +392,11 @@ void __fastcall TMainForm::dispOrigImgBtnClick(TObject *Sender)
 		MessageBoxA(Handle,"画像が読み込まれていません。","GoBackgroundEraser",MB_OK | MB_ICONERROR);
 		return;
 	}
+	//原画のMatを得る
+	cv::Mat first_mat;
+	BGEraser.getOriginalMat(first_mat);
 	//Matのセット
-	OrgImgDispForm->setDisplayMat(original_mat);
+	OrgImgDispForm->setDisplayMat(first_mat);
 	//元画像のウィンドウをモーダレスで表示
 	OrgImgDispForm->Show();
 }
@@ -383,11 +412,14 @@ void __fastcall TMainForm::undoBtnClick(TObject *Sender)
 		return;
 	}
 	//最後にスタックに積んだ要素を得る
-	std::tuple<cv::Mat,cv::Mat,TBGEraser::typMode>& last_stck = histStack.top();
+	TUndotiness last_stck = histStack.top();
 
-	cv::Mat&            last_original_mat      = std::get<0>(last_stck);
-	cv::Mat&            last_original_mask_mat = std::get<1>(last_stck);
-	TBGEraser::typMode& last_mode              = std::get<2>(last_stck);
+	cv::Mat    last_original_mat;
+	cv::Mat    last_original_mask_mat;
+	typBGEMode last_mode;
+
+	last_stck.get(last_original_mat,last_original_mask_mat,last_mode);
+
 	//背景除去結果画像をセット
 	BGEraser.setOutputMat(last_original_mat);
 	//背景除去結果マスクを取得
@@ -499,7 +531,17 @@ void __fastcall TMainForm::MainPanelResize(TObject *Sender)
 void __fastcall TMainForm::FormCloseQuery(TObject *Sender, bool &CanClose)
 {
 	//ウィンドウの位置を記録
-	BGE::SaveWindowPos(this);
+	BGE::saveWindowPos(this);
+}
+//---------------------------------------------------------------------------
+//ブラシの太さコンボボックスに変化があった時
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::ThicknessComboBoxChange(TObject *Sender)
+{
+	//新しいブラシの太さ
+	int new_tn = ThicknessComboBox->ItemIndex + 1;
+	//新しいブラシの太さをセット
+	BGEraser.setThickness(new_tn);
 }
 //---------------------------------------------------------------------------
 

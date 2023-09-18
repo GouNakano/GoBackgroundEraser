@@ -77,9 +77,7 @@ void TMainForm::makeDrawMatFromOrignalMat()
 	if(original_mat.rows > 0 && original_mat.cols > 0)
 	{
 		//親パネルのサイズ
-		int w = MainPanel->Width;
-		int h = MainPanel->Height;
-		win_sz = {w,h};
+		win_sz = {MainPanel->Width,MainPanel->Height};
 		//表示用Matにリサイズ
 		cv::resize(original_mat,disp_mat,win_sz);
 	}
@@ -158,10 +156,19 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 	TMainForm *pMainFrm = static_cast<TMainForm *>(param);
 	TBGEraser *pMe      = static_cast<TBGEraser *>(&pMainFrm->BGEraser);
 
+	//描画用Thicknessを作成
+	double dtn =pMe->getThickness();
+	double disp_thickness = (dtn * static_cast<double>(pMainFrm->disp_mat.cols * pMainFrm->disp_mat.rows))/static_cast<double>(pMainFrm->original_mask_mat.cols * pMainFrm->original_mask_mat.rows);
+	int disp_tn = static_cast<int>(disp_thickness);
+	if(disp_tn < 1)
+	{
+		disp_tn = 1;
+	}
+
 	//各マウスボタンごとの処理
 	if(event == cv::EVENT_LBUTTONDOWN)
 	{
-		if(pMe->rect_or_mask == TBGEraser::tmNone)
+		if(pMe->rect_or_mask == tmNone)
 		{
 			if(pMe->getDrawing() == false)
 			{
@@ -175,12 +182,12 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 				pMe->setDrawing(true);
 			}
 		}
-		else if(pMe->rect_or_mask == TBGEraser::tmMask)
+		else if(pMe->rect_or_mask == tmMask)
 		{
 			//描画中にする
 			pMe->setDrawing(true);
 			//描画更新
-			cv::circle(pMainFrm->disp_mat,cv::Point(x,y),pMe->getThickness(),pMe->value.color,-1);
+			cv::circle(pMainFrm->disp_mat,cv::Point(x,y),disp_tn,pMe->value.color,-1);
 			//マスク更新
 			cv::Point adjust_point;
 			pMainFrm->adjustOriginalPointFromDrawPoint(cv::Point(x,y),adjust_point);
@@ -191,7 +198,7 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 	}
 	else if(event == cv::EVENT_MOUSEMOVE)
 	{
-		if(pMe->rect_or_mask == TBGEraser::tmNone)
+		if(pMe->rect_or_mask == tmNone)
 		{
 			if(pMe->getDrawing() == true)
 			{
@@ -203,12 +210,12 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 				pMainFrm->updateDispFromDrawMat();
 			}
 		}
-		else if(pMe->rect_or_mask == TBGEraser::tmMask)
+		else if(pMe->rect_or_mask == tmMask)
 		{
 			if(pMe->getDrawing() == true)
 			{
 				//描画更新
-				cv::circle(pMainFrm->disp_mat,cv::Point(x,y),pMe->getThickness(),pMe->value.color,-1);
+				cv::circle(pMainFrm->disp_mat,cv::Point(x,y),disp_tn,pMe->value.color,-1);
 				//マスク更新
 				cv::Point adjust_point;
 				pMainFrm->adjustOriginalPointFromDrawPoint(cv::Point(x,y),adjust_point);
@@ -220,12 +227,12 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 	}
 	else if(event == cv::EVENT_LBUTTONUP)
 	{
-		if(pMe->rect_or_mask == TBGEraser::tmNone)
+		if(pMe->rect_or_mask == tmNone)
 		{
 			//描画終了
 			pMe->setDrawing(false);
 			//範囲設定済みフラグにする
-			pMe->rect_or_mask = TBGEraser::tmRect;
+			pMe->rect_or_mask = tmRect;
 			//選択矩形の大きさを補正して渡す
 			cv::Rect sel_rect;
 			cv::Rect adj_rect;
@@ -237,17 +244,17 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 			{
 				cv::rectangle(pMe->img,adj_rect,pMe->DRAW_RECTANGLE.color,2);
 				pMe->rect         = adj_rect;
-				pMe->rect_or_mask = TBGEraser::tmRect;
+				pMe->rect_or_mask = tmRect;
 				pMe->updateMaskAndOutputImage();
 			}
 		}
-		else if(pMe->rect_or_mask == TBGEraser::tmMask)
+		else if(pMe->rect_or_mask == tmMask)
 		{
 			if(pMe->getDrawing() == true)
 			{
 				pMe->setDrawing(false);
 				//描画更新
-				cv::circle(pMainFrm->disp_mat,cv::Point(x,y),pMe->getThickness(),pMe->value.color,-1);
+				cv::circle(pMainFrm->disp_mat,cv::Point(x,y),disp_tn,pMe->value.color,-1);
 				//マスク更新
 				cv::Point adjust_point;
 				pMainFrm->adjustOriginalPointFromDrawPoint(cv::Point(x,y),adjust_point);
@@ -385,8 +392,11 @@ void __fastcall TMainForm::dispOrigImgBtnClick(TObject *Sender)
 		MessageBoxA(Handle,"画像が読み込まれていません。","GoBackgroundEraser",MB_OK | MB_ICONERROR);
 		return;
 	}
+	//原画のMatを得る
+	cv::Mat first_mat;
+	BGEraser.getOriginalMat(first_mat);
 	//Matのセット
-	OrgImgDispForm->setDisplayMat(original_mat);
+	OrgImgDispForm->setDisplayMat(first_mat);
 	//元画像のウィンドウをモーダレスで表示
 	OrgImgDispForm->Show();
 }
@@ -519,6 +529,16 @@ void __fastcall TMainForm::FormCloseQuery(TObject *Sender, bool &CanClose)
 {
 	//ウィンドウの位置を記録
 	BGE::saveWindowPos(this);
+}
+//---------------------------------------------------------------------------
+//ブラシの太さコンボボックスに変化があった時
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::ThicknessComboBoxChange(TObject *Sender)
+{
+	//新しいブラシの太さ
+	int new_tn = ThicknessComboBox->ItemIndex + 1;
+	//新しいブラシの太さをセット
+	BGEraser.setThickness(new_tn);
 }
 //---------------------------------------------------------------------------
 

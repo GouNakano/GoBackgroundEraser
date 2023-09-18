@@ -80,7 +80,7 @@ private:
 	cv::Mat  original_mat;
 	cv::Mat  original_mask_mat;
 	//元に戻すを実現するためのスタック
-	std::stack<std::tuple<cv::Mat,cv::Mat,TBGEraser::typMode>> histStack;
+	std::stack<TUndotiness> histStack;
 private:
 	//モード表示
 	void dispMode(const std::string& mode_str);

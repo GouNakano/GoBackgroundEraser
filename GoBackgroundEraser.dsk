@@ -64,9 +64,9 @@ BottomMiddelPanelData=0000080001020200000009000000446F636B5369746530100000004772
 [View0]
 CustomEditViewType=TEditView
 Module=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
-CursorX=44
-CursorY=399
-TopLine=385
+CursorX=81
+CursorY=1
+TopLine=1
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -81,7 +81,7 @@ TopLine=242
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
+EditViewName=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.h
 
 [Watches]
 Count=0
@@ -221,16 +221,11 @@ MaxLeft=-1
 MaxTop=-1
 ClientWidth=1896
 ClientHeight=3183
-TBDockHeight=9010
+TBDockHeight=5192
 LRDockWidth=1896
 Dockable=1
 StayOnTop=0
 SplitPos=111
-
-[PropInspDesignerSelection]
-ArrangeBy=Name
-SelectedItem=Caption,CustomHint
-ExpandedItems="LiveBinding デザイナ=0",Options=0,OptionsEx=0,Constraints=0,Font=0,Margins=0,StyleElements=0,Anchors=0,BevelEdges=0,LiveBindings=0,Menu=0,Touch=0,BorderIcons=1,CustomTitleBar=0
 
 [frmDesignPreview]
 PercentageSizes=1
@@ -644,7 +639,7 @@ MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
 ClientHeight=4510
-TBDockHeight=9010
+TBDockHeight=4596
 LRDockWidth=2000
 Dockable=1
 StayOnTop=0
@@ -668,7 +663,7 @@ MaxLeft=-1
 MaxTop=-1
 ClientWidth=1896
 ClientHeight=3471
-TBDockHeight=9010
+TBDockHeight=3548
 LRDockWidth=1896
 Dockable=1
 StayOnTop=0
@@ -692,7 +687,7 @@ MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
 ClientHeight=2144
-TBDockHeight=9010
+TBDockHeight=4144
 LRDockWidth=2000
 Dockable=1
 StayOnTop=0
