@@ -13,6 +13,7 @@ object OrgImgDispForm: TOrgImgDispForm
   Font.Style = []
   OldCreateOrder = False
   Position = poDesigned
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
@@ -25,9 +26,5 @@ object OrgImgDispForm: TOrgImgDispForm
     Align = alClient
     TabOrder = 0
     OnResize = ImageBasePanelResize
-    ExplicitLeft = 24
-    ExplicitTop = 40
-    ExplicitWidth = 185
-    ExplicitHeight = 41
   end
 end

@@ -12,6 +12,7 @@ object MainForm: TMainForm
   Font.Style = []
   Menu = MainMenu
   OldCreateOrder = False
+  OnCloseQuery = FormCloseQuery
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -19,7 +20,7 @@ object MainForm: TMainForm
     Left = 0
     Top = 0
     Width = 994
-    Height = 103
+    Height = 105
     Align = alTop
     TabOrder = 0
     object updateBtn: TBitBtn
@@ -29,6 +30,7 @@ object MainForm: TMainForm
       Height = 56
       Caption = #26356#26032
       TabOrder = 0
+      TabStop = False
     end
     object saveBtn: TBitBtn
       Left = 208
@@ -37,6 +39,7 @@ object MainForm: TMainForm
       Height = 25
       Caption = #30011#20687#20445#23384
       TabOrder = 1
+      TabStop = False
       OnClick = saveBtnClick
     end
     object undoBtn: TBitBtn
@@ -46,6 +49,7 @@ object MainForm: TMainForm
       Height = 25
       Caption = #20803#12395#25147#12377
       TabOrder = 2
+      TabStop = False
       OnClick = undoBtnClick
     end
     object specifyBGBtn: TBitBtn
@@ -55,6 +59,7 @@ object MainForm: TMainForm
       Height = 25
       Caption = #32972#26223#25351#23450#12514#12540#12489
       TabOrder = 3
+      TabStop = False
       OnClick = specifyBGBtnClick
     end
     object specifyFGBtn: TBitBtn
@@ -64,6 +69,7 @@ object MainForm: TMainForm
       Height = 25
       Caption = #21069#26223#25351#23450#12514#12540#12489
       TabOrder = 4
+      TabStop = False
       OnClick = specifyFGBtnClick
     end
     object dispOrigImgBtn: TBitBtn
@@ -73,6 +79,7 @@ object MainForm: TMainForm
       Height = 25
       Caption = #20803#30011#20687#12398#34920#31034
       TabOrder = 5
+      TabStop = False
       OnClick = dispOrigImgBtnClick
     end
     object LoadImageBtn: TBitBtn
@@ -82,6 +89,7 @@ object MainForm: TMainForm
       Height = 25
       Caption = #30011#20687#35501#36796
       TabOrder = 6
+      TabStop = False
       OnClick = LoadImageBtnClick
     end
     object SelRectBtn: TBitBtn
@@ -91,11 +99,12 @@ object MainForm: TMainForm
       Height = 25
       Caption = #31684#22258#25351#23450#12514#12540#12489
       TabOrder = 7
+      TabStop = False
       OnClick = SelRectBtnClick
     end
     object Panel2: TPanel
       Left = 1
-      Top = 73
+      Top = 75
       Width = 992
       Height = 29
       Align = alBottom
@@ -137,12 +146,13 @@ object MainForm: TMainForm
       Height = 56
       Caption = #32066#20102
       TabOrder = 9
+      TabStop = False
       OnClick = EndBtnClick
     end
   end
   object Panel1: TPanel
     Left = 0
-    Top = 103
+    Top = 105
     Width = 994
     Height = 2
     Align = alTop
@@ -159,15 +169,16 @@ object MainForm: TMainForm
   end
   object MainPanel: TPanel
     Left = 0
-    Top = 105
+    Top = 107
     Width = 994
-    Height = 508
+    Height = 506
     Align = alClient
     TabOrder = 3
+    OnResize = MainPanelResize
   end
   object MainMenu: TMainMenu
-    Left = 228
-    Top = 100
+    Left = 244
+    Top = 108
     object N1: TMenuItem
       Caption = #12501#12449#12452#12523'(&F)'
       object ZZZZZ1: TMenuItem
@@ -176,7 +187,7 @@ object MainForm: TMainForm
       end
     end
     object N6: TMenuItem
-      Caption = #32232#38598
+      Caption = #32232#38598'(&E)'
       object UndoMemu: TMenuItem
         Caption = #20803#12395#25147#12377
         ShortCut = 16474
@@ -191,14 +202,24 @@ object MainForm: TMainForm
         OnClick = updateBtnClick
       end
     end
+    object H1: TMenuItem
+      Caption = #12504#12523#12503'(&H)'
+      object N3: TMenuItem
+        Caption = #12496#12540#12472#12519#12531#24773#22577'(&A)'
+      end
+    end
   end
   object OpenPictureDialog: TOpenPictureDialog
     Filter = 
-      #12377#12409#12390' (*.gif;*.jpg;*.jpeg;*.png;*.bmp)|*.gif;*.jpg;*.jpeg;*.png;*.' +
-      'bmp|GIF '#30011#20687' (*.gif)|*.gif|JPEG '#12452#12513#12540#12472#12501#12449#12452#12523' (*.jpg)|*.jpg|JPEG '#12452#12513#12540#12472#12501#12449 +
-      #12452#12523' (*.jpeg)|*.jpeg|Portable Network Graphics (*.png)|*.png|'#12499#12483#12488#12510#12483 +
-      #12503' (*.bmp)|*.bmp'
-    Left = 12
-    Top = 118
+      #12377#12409#12390' (*.jpg;*.jpeg;*.png;*.bmp)|*.jpg;*.jpeg;*.png;*.bmp|JPEG '#12452#12513#12540 +
+      #12472#12501#12449#12452#12523' (*.jpg)|*.jpg|JPEG '#12452#12513#12540#12472#12501#12449#12452#12523' (*.jpeg)|*.jpeg|PNG'#12450#12452#12523' (*.png)' +
+      '|*.png|'#12499#12483#12488#12510#12483#12503' (*.bmp)|*.bmp'
+    Left = 164
+    Top = 106
+  end
+  object SavePictureDialog: TSavePictureDialog
+    Filter = 'PNG'#12501#12449#12452#12523' (*.png)|*.png'
+    Left = 364
+    Top = 121
   end
 end

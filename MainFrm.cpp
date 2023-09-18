@@ -1,8 +1,8 @@
 //---------------------------------------------------------------------------
-
 #include <vcl.h>
 #pragma hdrstop
 
+#include "BGEraserDef.h"
 #include "OrgImgDispFrm.h"
 #include "MainFrm.h"
 //---------------------------------------------------------------------------
@@ -20,6 +20,8 @@ void __fastcall TMainForm::ZZZZZ1Click(TObject *Sender)
 //
 }
 //---------------------------------------------------------------------------
+//フォーム表示時
+//-------------------------------------------------
 void __fastcall TMainForm::FormShow(TObject *Sender)
 {
 	//背景除去オブジェクトの初期化
@@ -40,6 +42,8 @@ void __fastcall TMainForm::FormShow(TObject *Sender)
 	disp_mask_mat = original_mask_mat.clone();
 	//描画用Matで表示更新
 	updateDispFromDrawMat();
+	//ウィンドウの位置をセット
+	BGE::SetWindowPos(this);
 	//マウスイベントの送信先設定
 	cv::setMouseCallback("output",TMainForm::onmouse,this);
 	//モード表示
@@ -402,17 +406,28 @@ void __fastcall TMainForm::undoBtnClick(TObject *Sender)
 	updateDispFromDrawMat();
 	//スタックからpopする
 	histStack.pop();
-
-//	//編集結果を無効にしてリセットする
-//	BGEraser.resetState();
 }
 //-------------------------------------------------
 //保存ボタン
 //-------------------------------------------------
 void __fastcall TMainForm::saveBtnClick(TObject *Sender)
 {
+	//画像選択
+	if(SavePictureDialog->Execute(Handle) == false)
+	{
+		return;
+	}
+	//画像ファイルパスを得る
+	std::wstring wfile_name = SavePictureDialog->FileName.c_str();
+	std::string  file_name  = wstring2string(wfile_name);
+
 	//背景削除画像の保存
-	BGEraser.saveBGErasedImage("output.png");
+	if(BGEraser.saveBGErasedImage(file_name) == false)
+	{
+		//状態表示
+		dispMode("背景削除画像の保存に失敗しました");
+		return;
+	}
 }
 //-------------------------------------------------
 //背景削除表示更新ボタン
@@ -460,13 +475,31 @@ void __fastcall TMainForm::EndBtnClick(TObject *Sender)
 {
 	Close();
 }
-//-------------------------------------------------
+//---------------------------------------------------------------------------
 //元に戻すボタン
-//-------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TMainForm::UndoMemuClick(TObject *Sender)
 {
-    //undo処理
+	//undo処理
 	undoBtnClick(Sender);
+}
+//---------------------------------------------------------------------------
+//メインパネルリサイズ
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::MainPanelResize(TObject *Sender)
+{
+	//元画像の表示画像を作成する
+	makeDrawMatFromOrignalMat();
+	//描画用Matで表示更新
+	updateDispFromDrawMat();
+}
+//---------------------------------------------------------------------------
+//フォームを閉じる前
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::FormCloseQuery(TObject *Sender, bool &CanClose)
+{
+	//ウィンドウの位置を記録
+	BGE::SaveWindowPos(this);
 }
 //---------------------------------------------------------------------------
 

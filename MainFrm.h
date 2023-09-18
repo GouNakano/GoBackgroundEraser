@@ -42,6 +42,9 @@ __published:	// IDE で管理されるコンポーネント
 	TMenuItem *UndoMemu;
 	TMenuItem *N2;
 	TMenuItem *UpdateMenu;
+	TSavePictureDialog *SavePictureDialog;
+	TMenuItem *H1;
+	TMenuItem *N3;
 	void __fastcall ZZZZZ1Click(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall LoadImageBtnClick(TObject *Sender);
@@ -54,6 +57,8 @@ __published:	// IDE で管理されるコンポーネント
 	void __fastcall updateBtnClick(TObject *Sender);
 	void __fastcall EndBtnClick(TObject *Sender);
 	void __fastcall UndoMemuClick(TObject *Sender);
+	void __fastcall MainPanelResize(TObject *Sender);
+	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
 private:
 	//マウスイベント
 	static void onmouse(int event,int x,int y,int flags,void *param);

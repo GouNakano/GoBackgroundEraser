@@ -2,6 +2,7 @@
 #include <vcl.h>
 #pragma hdrstop
 
+#include "BGEraserDef.h"
 #include "OrgImgDispFrm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -24,6 +25,8 @@ void __fastcall TOrgImgDispForm::FormCreate(TObject *Sender)
 	hWnd1_parent = ::GetParent(hWnd1);
 	::SetParent(hWnd1,ImageBasePanel->Handle);
 	::ShowWindow(hWnd1_parent,SW_HIDE);
+	//ウィンドウの位置をセット
+	BGE::SetWindowPos(this);
 }
 //---------------------------------------------------------------------------
 //フォーム表示時
@@ -41,6 +44,8 @@ void __fastcall TOrgImgDispForm::FormShow(TObject *Sender)
 bool TOrgImgDispForm::setDisplayMat(const cv::Mat& disp_mat)
 {
 	imageMat = disp_mat.clone();
+
+    return true;
 }
 //---------------------------------------------------------------------------
 //描画用Matで表示更新
@@ -83,3 +88,12 @@ void TOrgImgDispForm::makeDrawMatFromOrignalMat()
 	}
 }
 //---------------------------------------------------------------------------
+//フォームを閉じる前
+//---------------------------------------------------------------------------
+void __fastcall TOrgImgDispForm::FormCloseQuery(TObject *Sender, bool &CanClose)
+{
+	//ウィンドウの位置を記録
+	BGE::SaveWindowPos(this);
+}
+//---------------------------------------------------------------------------
+
