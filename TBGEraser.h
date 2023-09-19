@@ -2,6 +2,7 @@
 #ifndef TBGEraserH
 #define TBGEraserH
 #include <string>
+#include <stack>
 #include <opencv2/opencv.hpp>
 //---------------------------------------------------------------------------
 //マスクに関する情報の型
@@ -130,6 +131,8 @@ private:
 
 	bool rectangle;
 	bool rect_over;
+	//元に戻すを実現するためのスタック
+	std::stack<TUndotiness> histStack;
 public:
 	cv::Mat    mask;
 	cv::Mat    img;
@@ -172,6 +175,10 @@ public:
 	bool getOriginalMat(cv::Mat& original_mat);
 	//元マスクを得る
 	bool getOriginalMaskMat(cv::Mat& original_mask_mat);
+	//Undo情報をPushする
+	bool pushUndoInf();
+	//Undoを実行する
+	bool undo();
 public:
 	//マスクを更新して出力画像を作成する
 	bool updateMaskAndOutputImage();

@@ -15,18 +15,13 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 {
 }
 //---------------------------------------------------------------------------
-void __fastcall TMainForm::ZZZZZ1Click(TObject *Sender)
-{
-//
-}
-//---------------------------------------------------------------------------
 //フォーム表示時
 //-------------------------------------------------
 void __fastcall TMainForm::FormShow(TObject *Sender)
 {
 	//背景除去オブジェクトの初期化
 	BGEraser.init();
-	BGEraser.readImage("messi5.png");
+//	BGEraser.readImage("messi5.png");
 	//ウィンドウの結合
 	hWnd1        = (HWND)cvGetWindowHandle("output");
 	hWnd1_parent = ::GetParent(hWnd1);
@@ -156,6 +151,11 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 	TMainForm *pMainFrm = static_cast<TMainForm *>(param);
 	TBGEraser *pMe      = static_cast<TBGEraser *>(&pMainFrm->BGEraser);
 
+	//画像読み込み済みチェック
+	if(pMainFrm->original_mask_mat.cols == 0 || pMainFrm->original_mask_mat.rows == 0)
+	{
+		return;
+	}
 	//描画用Thicknessを作成
 	double dtn =pMe->getThickness();
 	double disp_thickness = (dtn * static_cast<double>(pMainFrm->disp_mat.cols * pMainFrm->disp_mat.rows))/static_cast<double>(pMainFrm->original_mask_mat.cols * pMainFrm->original_mask_mat.rows);
@@ -282,7 +282,7 @@ void __fastcall TMainForm::LoadImageBtnClick(TObject *Sender)
 	//画像の読込
 	if(BGEraser.readImage(file_name) == false)
 	{
-		MessageBoxA(Handle,"画像の読み込みに失敗しました。","GoBackgroundEraser",MB_OK | MB_ICONERROR);
+		dispMode("画像の読み込みに失敗しました");
 		return;
 	}
 	//元画像を得る
@@ -389,7 +389,7 @@ void __fastcall TMainForm::dispOrigImgBtnClick(TObject *Sender)
 	if(original_mat.empty() == true || original_mat.cols == 0 || original_mat.rows == 0)
 	{
 		//エラー表示
-		MessageBoxA(Handle,"画像が読み込まれていません。","GoBackgroundEraser",MB_OK | MB_ICONERROR);
+		dispMode("画像が読み込まれていません");
 		return;
 	}
 	//原画のMatを得る
@@ -405,25 +405,8 @@ void __fastcall TMainForm::dispOrigImgBtnClick(TObject *Sender)
 //-------------------------------------------------
 void __fastcall TMainForm::undoBtnClick(TObject *Sender)
 {
-	//スタックの数をチェック
-	if(histStack.size() < 1)
-	{
-		//スタックが無いので処理しない
-		return;
-	}
-	//最後にスタックに積んだ要素を得る
-	TUndotiness last_stck = histStack.top();
-
-	cv::Mat    last_original_mat;
-	cv::Mat    last_original_mask_mat;
-	typBGEMode last_mode;
-
-	last_stck.get(last_original_mat,last_original_mask_mat,last_mode);
-
-	//背景除去結果画像をセット
-	BGEraser.setOutputMat(last_original_mat);
-	//背景除去結果マスクを取得
-	BGEraser.setOutputMasktMat(last_original_mask_mat);
+	//BGEraserにUndoを実行する
+	BGEraser.undo();
 	//背景除去結果画像を取得
 	BGEraser.getOutputMat(original_mat);
 	//背景除去結果マスクを取得
@@ -432,12 +415,8 @@ void __fastcall TMainForm::undoBtnClick(TObject *Sender)
 	makeDrawMatFromOrignalMat();
 	//作業用マスクMatを作成する
 	disp_mask_mat = original_mask_mat.clone();
-	//モードセット
-	BGEraser.rect_or_mask = last_mode;
 	//描画用Matで表示更新
 	updateDispFromDrawMat();
-	//スタックからpopする
-	histStack.pop();
 }
 //-------------------------------------------------
 //保存ボタン
@@ -470,21 +449,18 @@ void __fastcall TMainForm::updateBtnClick(TObject *Sender)
 	if(BGEraser.rect_or_mask == tmNone)
 	{
 		//状態表示
-		dispMode("背景除去範囲を指定してから更新を行ってください");
+		dispMode("背景除去範囲を指定してから更新を実行してください");
 		return;
 	}
 	//状態表示
 	dispMode("背景除去画像表示更新中");
 	//現在の値をスタックに積む
-	TUndotiness undoInf(original_mat,original_mask_mat,BGEraser.rect_or_mask);
-	histStack.push(undoInf);
+	BGEraser.pushUndoInf();
 	//表示用マスクをオリジナルの大きさにする
 	disp_mask_mat.copyTo(BGEraser.mask);
 	//背景削除を進める
 	if(BGEraser.segmentImage() == false)
 	{
-		//処理が失敗したのでスタックを戻す
-		histStack.pop();
 		//失敗状態表示
 		dispMode("背景除去画像表示更新失敗");
 	}

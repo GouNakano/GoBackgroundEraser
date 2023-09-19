@@ -362,4 +362,50 @@ bool TBGEraser::setNewValFromVal(const cv::Mat& src,cv::Mat& dst,int new_val,int
 	}
 	return true;
 }
+//-------------------------------------------------
+//Undo情報をPushする
+//-------------------------------------------------
+bool TBGEraser::pushUndoInf()
+{
+	//現在の値をスタックに積む
+	TUndotiness undoInf(output,mask,rect_or_mask);
+	histStack.push(undoInf);
+
+	return true;
+}
+//-------------------------------------------------
+//Undoを実行する
+//-------------------------------------------------
+bool TBGEraser::undo()
+{
+	//スタックの数をチェック
+	if(histStack.size() < 1)
+	{
+		//スタックが無いので処理しない
+		return false;
+	}
+	//最後にスタックに積んだ要素を得る
+	TUndotiness last_stck = histStack.top();
+
+	cv::Mat    last_original_mat;
+	cv::Mat    last_original_mask_mat;
+	typBGEMode last_mode;
+
+	last_stck.get(last_original_mat,last_original_mask_mat,last_mode);
+
+	//背景除去結果画像をセット
+	setOutputMat(last_original_mat);
+	//背景除去結果マスクを取得
+	setOutputMasktMat(last_original_mask_mat);
+	//背景除去結果画像を取得
+	getOutputMat(output);
+	//背景除去結果マスクを取得
+	getOutputMasktMat(mask);
+	//モードセット
+	rect_or_mask = last_mode;
+	//スタックからpopする
+	histStack.pop();
+
+	return false;
+}
 

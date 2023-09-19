@@ -126,7 +126,6 @@ object MainForm: TMainForm
       Align = alBottom
       BevelOuter = bvLowered
       TabOrder = 8
-      ExplicitTop = 75
       object ModeLabel: TLabel
         Left = 113
         Top = 7
@@ -200,7 +199,6 @@ object MainForm: TMainForm
     BevelInner = bvLowered
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 105
   end
   object StatusBar1: TStatusBar
     Left = 0
@@ -217,8 +215,6 @@ object MainForm: TMainForm
     Align = alClient
     TabOrder = 3
     OnResize = MainPanelResize
-    ExplicitTop = 107
-    ExplicitHeight = 506
   end
   object MainMenu: TMainMenu
     Left = 244
@@ -227,7 +223,6 @@ object MainForm: TMainForm
       Caption = #12501#12449#12452#12523'(&F)'
       object ZZZZZ1: TMenuItem
         Caption = 'ZZZZZ'
-        OnClick = ZZZZZ1Click
       end
     end
     object N6: TMenuItem

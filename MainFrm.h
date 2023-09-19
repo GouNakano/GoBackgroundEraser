@@ -47,7 +47,6 @@ __published:	// IDE で管理されるコンポーネント
 	TMenuItem *N3;
 	TLabel *Label1;
 	TComboBox *ThicknessComboBox;
-	void __fastcall ZZZZZ1Click(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall LoadImageBtnClick(TObject *Sender);
 	void __fastcall SelRectBtnClick(TObject *Sender);
@@ -79,8 +78,6 @@ private:
 	cv::Mat  disp_mask_mat;
 	cv::Mat  original_mat;
 	cv::Mat  original_mask_mat;
-	//元に戻すを実現するためのスタック
-	std::stack<TUndotiness> histStack;
 private:
 	//モード表示
 	void dispMode(const std::string& mode_str);
