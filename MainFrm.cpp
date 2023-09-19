@@ -200,7 +200,7 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 	//各マウスボタンごとの処理
 	if(event == cv::EVENT_LBUTTONDOWN)
 	{
-		if(pMe->BGEMode == tmNone)
+		if(pMe->getBGEMode() == tmNone)
 		{
 			if(pMe->getDrawing() == false)
 			{
@@ -214,23 +214,23 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 				pMe->setDrawing(true);
 			}
 		}
-		else if(pMe->BGEMode == tmMask)
+		else if(pMe->getBGEMode() == tmMask)
 		{
 			//描画中にする
 			pMe->setDrawing(true);
 			//描画更新
-			cv::circle(pMainFrm->disp_mat,cv::Point(x,y),disp_tn,pMe->value.color,-1);
+			cv::circle(pMainFrm->disp_mat,cv::Point(x,y),disp_tn,pMe->getMaskInf().color,-1);
 			//マスク更新
 			cv::Point adjust_point;
 			pMainFrm->adjustOriginalPointFromDrawPoint(cv::Point(x,y),adjust_point);
-			cv::circle(pMainFrm->disp_mask_mat,adjust_point,pMe->getThickness(),pMe->value.val,-1);
+			cv::circle(pMainFrm->disp_mask_mat,adjust_point,pMe->getThickness(),pMe->getMaskInf().val,-1);
 			//メイン表示パネルの表示更新
 			pMainFrm->updateDispFromDrawMat();
 		}
 	}
 	else if(event == cv::EVENT_MOUSEMOVE)
 	{
-		if(pMe->BGEMode == tmNone)
+		if(pMe->getBGEMode() == tmNone)
 		{
 			if(pMe->getDrawing() == true)
 			{
@@ -242,16 +242,16 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 				pMainFrm->updateDispFromDrawMat();
 			}
 		}
-		else if(pMe->BGEMode == tmMask)
+		else if(pMe->getBGEMode() == tmMask)
 		{
 			if(pMe->getDrawing() == true)
 			{
 				//描画更新
-				cv::circle(pMainFrm->disp_mat,cv::Point(x,y),disp_tn,pMe->value.color,-1);
+				cv::circle(pMainFrm->disp_mat,cv::Point(x,y),disp_tn,pMe->getMaskInf().color,-1);
 				//マスク更新
 				cv::Point adjust_point;
 				pMainFrm->adjustOriginalPointFromDrawPoint(cv::Point(x,y),adjust_point);
-				cv::circle(pMainFrm->disp_mask_mat,adjust_point,pMe->getThickness(),pMe->value.val,-1);
+				cv::circle(pMainFrm->disp_mask_mat,adjust_point,pMe->getThickness(),pMe->getMaskInf().val,-1);
 				//メイン表示パネルの表示更新
 				pMainFrm->updateDispFromDrawMat();
 			}
@@ -259,12 +259,12 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 	}
 	else if(event == cv::EVENT_LBUTTONUP)
 	{
-		if(pMe->BGEMode == tmNone)
+		if(pMe->getBGEMode() == tmNone)
 		{
 			//描画終了
 			pMe->setDrawing(false);
 			//範囲設定済みフラグにする
-			pMe->BGEMode = tmRect;
+			pMe->setBGEMode(tmRect);
 			//選択矩形の大きさを補正して渡す
 			cv::Rect sel_rect;
 			cv::Rect adj_rect;
@@ -274,23 +274,27 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 			//表示用矩形を元画像の大きさに合わせる
 			if(pMainFrm->adjustRectFromDrawRect(sel_rect,adj_rect) == true)
 			{
-				cv::rectangle(pMe->output,adj_rect,pMe->DRAW_RECTANGLE.color,2);
-				pMe->rect    = adj_rect;
-				pMe->BGEMode = tmRect;
+				cv::Mat output_mat;
+				pMe->getOutputMat(output_mat);
+				cv::rectangle(output_mat,adj_rect,pMe->DRAW_RECTANGLE.color,2);
+				pMe->setOutputMat(output_mat);
+
+				pMe->setSelectRect(adj_rect);
+				pMe->setBGEMode(tmRect);
 				pMe->updateMaskAndOutputImage();
 			}
 		}
-		else if(pMe->BGEMode == tmMask)
+		else if(pMe->getBGEMode() == tmMask)
 		{
 			if(pMe->getDrawing() == true)
 			{
 				pMe->setDrawing(false);
 				//描画更新
-				cv::circle(pMainFrm->disp_mat,cv::Point(x,y),disp_tn,pMe->value.color,-1);
+				cv::circle(pMainFrm->disp_mat,cv::Point(x,y),disp_tn,pMe->getMaskInf().color,-1);
 				//マスク更新
 				cv::Point adjust_point;
 				pMainFrm->adjustOriginalPointFromDrawPoint(cv::Point(x,y),adjust_point);
-				cv::circle(pMainFrm->disp_mask_mat,adjust_point,pMe->getThickness(),pMe->value.val,-1);
+				cv::circle(pMainFrm->disp_mask_mat,adjust_point,pMe->getThickness(),pMe->getMaskInf().val,-1);
 				//メイン表示パネルの表示更新
 				pMainFrm->updateDispFromDrawMat();
 			}
@@ -371,8 +375,8 @@ void __fastcall TMainForm::SelRectBtnClick(TObject *Sender)
 	updateDispFromDrawMat();
 
 	//範囲指定に関する値を初期化する
-	BGEraser.BGEMode = tmNone;
-	BGEraser.rect    = cv::Rect(0,0,0,0);
+	BGEraser.setBGEMode(tmNone);
+	BGEraser.setSelectRect(cv::Rect(0,0,0,0));
 	//モード表示
 	dispMode("範囲指定モードに移行しました");
 }
@@ -382,7 +386,7 @@ void __fastcall TMainForm::SelRectBtnClick(TObject *Sender)
 void __fastcall TMainForm::specifyBGBtnClick(TObject *Sender)
 {
 	//モードチェック
-	if(BGEraser.BGEMode != tmMask)
+	if(BGEraser.getBGEMode() != tmMask)
 	{
 		//モード表示
 		dispMode("マスク編集モードではありません、範囲指定を行って更新を先に行ってください");
@@ -401,7 +405,7 @@ void __fastcall TMainForm::specifyBGBtnClick(TObject *Sender)
 void __fastcall TMainForm::specifyFGBtnClick(TObject *Sender)
 {
 	//モードチェック
-	if(BGEraser.BGEMode != tmMask)
+	if(BGEraser.getBGEMode() != tmMask)
 	{
 		//モード表示
 		dispMode("マスク編集モードではありません、範囲指定を行って更新を先に行ってください");
@@ -451,7 +455,7 @@ void __fastcall TMainForm::undoBtnClick(TObject *Sender)
 	//作業用マスクMatを作成する
 	disp_mask_mat = original_mask_mat.clone();
 	//モードチェック
-	if(BGEraser.BGEMode == tmRect)
+	if(BGEraser.getBGEMode() == tmRect)
 	{
 		//選択範囲を描画用選択範囲に変換する
 		cv::Rect adjust_rect;
@@ -492,7 +496,7 @@ void __fastcall TMainForm::saveBtnClick(TObject *Sender)
 void __fastcall TMainForm::updateBtnClick(TObject *Sender)
 {
 	//モードチェック
-	if(BGEraser.BGEMode == tmNone)
+	if(BGEraser.getBGEMode() == tmNone)
 	{
 		//状態表示
 		dispMode("背景除去範囲を指定してから更新を実行してください");
@@ -503,7 +507,10 @@ void __fastcall TMainForm::updateBtnClick(TObject *Sender)
 	//現在の値をスタックに積む
 	BGEraser.pushUndoInf();
 	//表示用マスクをオリジナルの大きさにする
-	disp_mask_mat.copyTo(BGEraser.mask);
+	cv::Mat mask;
+	BGEraser.getOutputMasktMat(mask);
+	disp_mask_mat.copyTo(mask);
+	BGEraser.setOutputMasktMat(mask);
 	//背景削除を進める
 	if(BGEraser.segmentImage() == false)
 	{

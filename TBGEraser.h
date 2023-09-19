@@ -129,21 +129,19 @@ public:
 	//変換範囲の矩形の色
 	static const TmaskInf DRAW_RECTANGLE;
 private:
-	cv::Mat    mask2;
 	int        thickness;
 	bool       drawing;
-
-	bool rectangle;
-	bool rect_over;
-	//元に戻すを実現するためのスタック
-	std::stack<TUndotiness> histStack;
-public:
+	bool       rectangle;
+	bool       rect_over;
 	cv::Mat    mask;
 	cv::Mat    img_org;
 	cv::Mat    output;
 	cv::Rect   rect;
 	typBGEMode BGEMode;
-	TmaskInf   value;
+	TmaskInf   maskInf;
+	//元に戻すを実現するためのスタック
+	std::stack<TUndotiness> histStack;
+public:
 
 private:
 	//srcの特定の値(v)のピクセルをnew_val、その他は変更しない
@@ -188,6 +186,12 @@ public:
 	bool popUndoInf();
 	//Undoを実行する
 	bool undo();
+	//BGEモードを得る
+	typBGEMode getBGEMode();
+	//BGEモードをセット
+	bool setBGEMode(typBGEMode mde);
+	//マスクに関する情報を得る
+	const TmaskInf& getMaskInf();
 public:
 	//マスクを更新して出力画像を作成する
 	bool updateMaskAndOutputImage();

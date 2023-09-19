@@ -34,11 +34,11 @@ TBGEraser::~TBGEraser()
 bool TBGEraser::init()
 {
 	//フラグの設定
-	rect         = cv::Rect(0,0,0,0);
-	drawing      = false;                // 曲線描画のフラグ
-	BGEMode = tmNone;                    // マウス動作モードのフラグ
-	value        = DRAW_BACKGROUND;      // 書き込みモードを背景に初期化
-	thickness    = BGE::getThickness();  // ブラシの太さ
+	rect      = cv::Rect(0,0,0,0);
+	drawing   = false;                // 曲線描画のフラグ
+	BGEMode   = tmNone;               // マウス動作モードのフラグ
+	maskInf   = DRAW_BACKGROUND;      // 書き込みモードを背景に初期化
+	thickness = BGE::getThickness();  // ブラシの太さ
 	//入出力ウィンドウ
 	cv::namedWindow("output");
 	printf("マウスの右ボタンを使用してオブジェクトの周囲に長方形を描きます。\n");
@@ -60,11 +60,11 @@ bool TBGEraser::readImage(const std::string& file_name)
 	}
 	//画像に対するMatの初期設定
 	rect    = cv::Rect(0,0,0,0);
-	drawing = false;                                   // 曲線描画のフラグ
-	BGEMode = tmNone;                                  // マウス動作モードのフラグ
-	img_org = read_img.clone();                        // 元の画像のコピー
-	mask    = cv::Mat::zeros(read_img.size(),CV_8UC1); // マスクは背景に初期化
-	output  = read_img.clone();                        // 表示される出力画像
+	drawing = false;                                      // 曲線描画のフラグ
+	BGEMode = tmNone;                                     // マウス動作モードのフラグ
+	img_org = read_img.clone();                           // 元の画像のコピー
+	mask    = cv::Mat::ones(read_img.size(),CV_8UC1)*255; // マスクは背景に初期化
+	output  = read_img.clone();                           // 表示される出力画像
 
 	return true;
 }
@@ -134,7 +134,7 @@ bool TBGEraser::saveBGErasedImage(const std::string& file_name)
 		for(int x = 0;x < save_img.cols;x++)
 		{
 			//マスクをチェック
-			if(mask2.at<unsigned char>(y,x) == 0)
+			if(mask.at<unsigned char>(y,x) == 0)
 			{
 				//マスクが黒なので透明にする
 				save_img.at<cv::Vec4b>(y,x) = alpha0;
@@ -188,7 +188,7 @@ bool TBGEraser::saveBGErasedImage(const std::string& file_name)
 bool TBGEraser::setSpecifyBackgroundMode()
 {
 	//背景指定モード
-	value = DRAW_BACKGROUND;
+	maskInf = DRAW_BACKGROUND;
 
 	return true;
 }
@@ -198,7 +198,7 @@ bool TBGEraser::setSpecifyBackgroundMode()
 bool TBGEraser::setSpecifyForegroundMode()
 {
 	//前景指定モード
-	value = DRAW_FOREGROUND;
+	maskInf = DRAW_FOREGROUND;
 
 	return true;
 }
@@ -297,7 +297,7 @@ bool TBGEraser::updateMaskAndOutputImage()
 	if(mask.rows > 0 && mask.cols > 0)
 	{
 		//前景部分を白にしたマスクを作成
-		mask2 = cv::Mat::zeros(mask.size(),CV_8UC1);
+		cv::Mat mask2 = cv::Mat::zeros(mask.size(),CV_8UC1);
 		setNewValFromVal(mask,mask2,255,cv::GC_FGD);     //明らかな前景
 		setNewValFromVal(mask,mask2,255,cv::GC_PR_FGD);  //前景かもしれない
 		//元画像にマスクを適用
@@ -429,6 +429,29 @@ bool TBGEraser::undo()
 	//スタックからpopする
 	histStack.pop();
 
-	return false;
+	return true;
+}
+//-------------------------------------------------
+//BGEモードを得る
+//-------------------------------------------------
+typBGEMode TBGEraser::getBGEMode()
+{
+	return BGEMode;
+}
+//-------------------------------------------------
+//BGEモードをセット
+//-------------------------------------------------
+bool TBGEraser::setBGEMode(typBGEMode mde)
+{
+	BGEMode = mde;
+
+	return true;
+}
+//-------------------------------------------------
+//マスクに関する情報を得る
+//-------------------------------------------------
+const TmaskInf& TBGEraser::getMaskInf()
+{
+	return maskInf;
 }
 

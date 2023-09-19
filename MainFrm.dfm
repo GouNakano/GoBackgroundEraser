@@ -23,7 +23,6 @@ object MainForm: TMainForm
     Height = 133
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 994
     object Label1: TLabel
       Left = 4
       Top = 75
@@ -126,7 +125,6 @@ object MainForm: TMainForm
       Align = alBottom
       BevelOuter = bvLowered
       TabOrder = 8
-      ExplicitWidth = 992
       object ModeLabel: TLabel
         Left = 113
         Top = 7
@@ -200,7 +198,6 @@ object MainForm: TMainForm
     BevelInner = bvLowered
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 994
   end
   object StatusBar1: TStatusBar
     Left = 0
@@ -208,8 +205,6 @@ object MainForm: TMainForm
     Width = 1000
     Height = 19
     Panels = <>
-    ExplicitTop = 613
-    ExplicitWidth = 994
   end
   object MainPanel: TPanel
     Left = 0
@@ -219,8 +214,6 @@ object MainForm: TMainForm
     Align = alClient
     TabOrder = 3
     OnResize = MainPanelResize
-    ExplicitWidth = 994
-    ExplicitHeight = 478
   end
   object MainMenu: TMainMenu
     Left = 244
@@ -270,6 +263,7 @@ object MainForm: TMainForm
     Top = 106
   end
   object SavePictureDialog: TSavePictureDialog
+    DefaultExt = '.png'
     Filter = 'PNG'#12501#12449#12452#12523' (*.png)|*.png'
     Left = 364
     Top = 121
