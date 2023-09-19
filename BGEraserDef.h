@@ -5,6 +5,9 @@
 //---------------------------------------------------------------------------
 class BGE
 {
+public:
+    //システム名
+	static const wchar_t *SYSTEM_NAME;
 private:
 	//実行ファイルのディレクトリを得る
 	static String getExeDir();
@@ -17,6 +20,8 @@ public:
 	static int getThickness();
 	//ブラシの太さをセット
 	static bool setThickness(int tn);
+	//ファイルバージョン情報の取得
+	static String GetFileVer();
 };
 
 #endif

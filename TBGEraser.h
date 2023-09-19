@@ -54,12 +54,14 @@ class TUndotiness
 private:
 	cv::Mat     original_mat;
 	cv::Mat     original_mask_mat;
+	cv::Rect    rect;
 	typBGEMode  mode;
 private:
 	void _copy(const TUndotiness& him)
 	{
 		original_mat      = him.original_mat.clone();
 		original_mask_mat = him.original_mask_mat.clone();
+		rect              = him.rect;
 		mode              = him.mode;
 	}
 public:
@@ -74,9 +76,9 @@ public:
 		_copy(him);
 	}
 	//値セットコンストラクタ
-	TUndotiness(const cv::Mat& disp,const cv::Mat& msk,typBGEMode md)
+	TUndotiness(const cv::Mat& disp,const cv::Mat& msk,const cv::Rect& r,typBGEMode md)
 	{
-		set(disp,msk,md);
+		set(disp,msk,r,md);
 	}
 	//デストラクタ
 	virtual ~TUndotiness()
@@ -94,20 +96,22 @@ public:
 	}
 public:
 	//値のセット
-	bool set(const cv::Mat& disp,const cv::Mat& msk,typBGEMode md)
+	bool set(const cv::Mat& disp,const cv::Mat& msk,const cv::Rect& r,typBGEMode md)
 	{
 		original_mat      = disp.clone();
 		original_mask_mat = msk.clone();
+		rect              = r;
 		mode              = md;
 
 		return true;
 	}
 	//値の取得
-	bool get(cv::Mat& disp,cv::Mat& msk,typBGEMode& md)
+	bool get(cv::Mat& disp,cv::Mat& msk,cv::Rect& r,typBGEMode& md)
 	{
 		disp = original_mat.clone();
 		msk  = original_mask_mat.clone();
-		mode = md;
+		r    = rect;
+		md   = mode;
 
 		return true;
 	}
@@ -135,11 +139,10 @@ private:
 	std::stack<TUndotiness> histStack;
 public:
 	cv::Mat    mask;
-	cv::Mat    img;
 	cv::Mat    img_org;
 	cv::Mat    output;
 	cv::Rect   rect;
-	typBGEMode rect_or_mask;
+	typBGEMode BGEMode;
 	TmaskInf   value;
 
 private:
@@ -166,7 +169,11 @@ public:
 	//出力Matを得る
 	bool getOutputMat(cv::Mat& output_mat);
 	//出力Matをセット
-	bool setOutputMat(cv::Mat& output_mat);
+	bool setOutputMat(const cv::Mat& output_mat);
+	//範囲を取得
+	cv::Rect getSelectRect();
+	//範囲をセット
+	bool setSelectRect(const cv::Rect& r);
 	//出力マスクを得る
 	bool getOutputMasktMat(cv::Mat& mask_mat);
 	//出力マスクをセット
@@ -177,6 +184,8 @@ public:
 	bool getOriginalMaskMat(cv::Mat& original_mask_mat);
 	//Undo情報をPushする
 	bool pushUndoInf();
+	//Undo情報をpopする(undoの実行はキャンセル
+	bool popUndoInf();
 	//Undoを実行する
 	bool undo();
 public:

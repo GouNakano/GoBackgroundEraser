@@ -9,6 +9,9 @@
 #pragma package(smart_init)
 
 
+//システム名
+const wchar_t *BGE::SYSTEM_NAME = L"GoBackgroundEraser";
+
 //IniﾌｧｲﾙSection名
 const wchar_t *INI_DEF_STANDARD = L"STANDARD";  //標準定義
 const wchar_t *INI_DEF_WINPOS   = L"WINPOS";    //ウィンドウの位置
@@ -147,3 +150,84 @@ bool BGE::setThickness(int tn)
 
 	return true;
 }
+//---------------------------------------------------------------------------
+//ファイルバージョン情報の取得
+//-------------------------------------------------------------
+String BGE::GetFileVer()
+{
+	typedef struct
+	{
+		WORD wLanguage;
+		WORD wCodePage;
+	} LANGANDCODEPAGE, *LPLANGANDCODEPAGE;
+
+
+	VS_FIXEDFILEINFO vffi;           // バージョン情報を受け取る構造体
+	wchar_t          ExeName[512];
+	wchar_t          VerOrgStr[512];
+	String           VerStr;
+	String           BuildStr;
+	String           AllVerStr;
+
+	wcscpy(ExeName,Application->ExeName.c_str());
+	unsigned int size = GetFileVersionInfoSizeW(ExeName, 0);
+
+	try
+	{
+		std::unique_ptr<::byte[]> vbuf(new ::byte[size]);
+
+		if (GetFileVersionInfoW(ExeName,0,size,vbuf.get()))
+		{
+			String strwork;
+
+			void     *buf;
+			wchar_t  *pbuf;
+
+			VerQueryValue(vbuf.get(),TEXT("\\"),&buf,&size);   // バージョンを取得
+			CopyMemory( &vffi, buf, sizeof(VS_FIXEDFILEINFO)); //コピー
+
+			LPLANGANDCODEPAGE lplgcode;
+			UINT unLen;
+			BOOL bret = VerQueryValueW(vbuf.get(),L"\\VarFileInfo\\Translation",(LPVOID *)&lplgcode, &unLen);
+
+			if(bret == FALSE)
+			{
+				return "";
+			}
+			for( UINT i = 0;i < unLen / sizeof( LANGANDCODEPAGE); i++)
+			{
+				strwork.sprintf(L"\\StringFileInfo\\%04x%04x\\FileVersion",lplgcode[i].wLanguage, lplgcode[i].wCodePage);
+				VerQueryValueW(vbuf.get(),strwork.c_str(),(LPVOID *)&pbuf, &unLen);
+				if( unLen > 0)
+				{
+					wcscpy(VerOrgStr,pbuf);
+					break;
+				}
+			}
+		}
+	}
+	__finally
+	{
+	}
+
+	//右から.を検索
+	wchar_t *p = wcsrchr(VerOrgStr,L'.');
+	//バージョンの分離
+	if(p != nullptr)
+	{
+		*p       = '\0';
+		VerStr   = VerOrgStr;
+		BuildStr = (p+1);
+	}
+	//表示
+	if(VerStr != "" && BuildStr != "")
+	{
+		AllVerStr = String("Version ") + VerStr + " Build(" + BuildStr +")";
+	}
+	else
+	{
+		AllVerStr = String("Version 0.10");
+	}
+	return AllVerStr;
+}
+

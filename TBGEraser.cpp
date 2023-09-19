@@ -36,7 +36,7 @@ bool TBGEraser::init()
 	//フラグの設定
 	rect         = cv::Rect(0,0,0,0);
 	drawing      = false;                // 曲線描画のフラグ
-	rect_or_mask = tmNone;               // マウス動作モードのフラグ
+	BGEMode = tmNone;                    // マウス動作モードのフラグ
 	value        = DRAW_BACKGROUND;      // 書き込みモードを背景に初期化
 	thickness    = BGE::getThickness();  // ブラシの太さ
 	//入出力ウィンドウ
@@ -51,20 +51,20 @@ bool TBGEraser::init()
 bool TBGEraser::readImage(const std::string& file_name)
 {
 	//画像の読込
-	img = cv::imread(file_name);
+	cv::Mat read_img = cv::imread(file_name);
 	//読み込みチェック
-	if(img.cols == 0 || img.rows == 0)
+	if(read_img.cols == 0 || read_img.rows == 0)
 	{
 		//画像読込失敗
 		return false;
 	}
 	//画像に対するMatの初期設定
-	rect         = cv::Rect(0,0,0,0);
-	drawing      = false;                                               // 曲線描画のフラグ
-	rect_or_mask = tmNone;                                              // マウス動作モードのフラグ
-	img_org      = img.clone();                                         // 元の画像のコピー
-	mask         = cv::Mat::zeros(cv::Size(img.cols,img.rows),CV_8UC1); // マスクは背景に初期化
-	output       = cv::Mat::zeros(img.size(),CV_8UC3);                  // 表示される出力画像
+	rect    = cv::Rect(0,0,0,0);
+	drawing = false;                                   // 曲線描画のフラグ
+	BGEMode = tmNone;                                  // マウス動作モードのフラグ
+	img_org = read_img.clone();                        // 元の画像のコピー
+	mask    = cv::Mat::zeros(read_img.size(),CV_8UC1); // マスクは背景に初期化
+	output  = read_img.clone();                        // 表示される出力画像
 
 	return true;
 }
@@ -73,16 +73,16 @@ bool TBGEraser::readImage(const std::string& file_name)
 //-------------------------------------------------
 bool TBGEraser::segmentImage()
 {
-	if(rect_or_mask == tmRect)
+	if(BGEMode == tmRect)
 	{
 		//矩形領域内の情報を基に初期値を決める
 		cv::Mat bgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
 		cv::Mat fgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
 		cv::grabCut(img_org,mask,rect,bgdmodel,fgdmodel,1,cv::GC_INIT_WITH_RECT);
 		//マスク更新モードに移行
-		rect_or_mask = tmMask;
+		BGEMode = tmMask;
 	}
-	else if(rect_or_mask == tmMask)
+	else if(BGEMode == tmMask)
 	{
 		//マスク更新で背景除去を行う
 		cv::Mat bgdmodel = cv::Mat::zeros(cv::Size(65,1),CV_64FC1);
@@ -116,7 +116,7 @@ bool TBGEraser::saveBGErasedImage(const std::string& file_name)
 		return false;
 	}
 	//保存用Mat
-	cv::Mat save_img = cv::Mat::zeros(img.size(),CV_8UC4);
+	cv::Mat save_img = cv::Mat::zeros(output.size(),CV_8UC4);
 	//透明ピクセル
 	cv::Vec4b alpha0(0,0,0,0);
 	//ピクセル
@@ -126,7 +126,7 @@ bool TBGEraser::saveBGErasedImage(const std::string& file_name)
 	cv::Vec4b src_px4;
 
 	//チャンネル数
-	int ch = img.channels();
+	int ch = output.channels();
 
 	//アルファチャンネル付きピクセルの設定
 	for(int y = 0;y < save_img.rows;y++)
@@ -207,11 +207,6 @@ bool TBGEraser::setSpecifyForegroundMode()
 //-------------------------------------------------
 bool TBGEraser::getOutputMat(cv::Mat& output_mat)
 {
-	//内容の有無チェック
-	if(output.rows == 0 || output.cols == 0)
-	{
-		return false;
-	}
 	//出力Matのコピーをセット
 	output_mat = output.clone();
 
@@ -220,15 +215,26 @@ bool TBGEraser::getOutputMat(cv::Mat& output_mat)
 //-------------------------------------------------
 //出力Matをセット
 //-------------------------------------------------
-bool TBGEraser::setOutputMat(cv::Mat& output_mat)
+bool TBGEraser::setOutputMat(const cv::Mat& output_mat)
 {
-	//内容の有無チェック
-	if(output_mat.rows == 0 || output_mat.cols == 0)
-	{
-		return false;
-	}
 	//出力Matのコピーをセット
 	output = output_mat.clone();
+
+	return true;
+}
+//-------------------------------------------------
+//範囲を取得
+//-------------------------------------------------
+cv::Rect TBGEraser::getSelectRect()
+{
+	return rect;
+}
+//-------------------------------------------------
+//範囲をセット
+//-------------------------------------------------
+bool TBGEraser::setSelectRect(const cv::Rect& r)
+{
+	rect = r;
 
 	return true;
 }
@@ -237,11 +243,6 @@ bool TBGEraser::setOutputMat(cv::Mat& output_mat)
 //-------------------------------------------------
 bool TBGEraser::getOutputMasktMat(cv::Mat& mask_mat)
 {
-	//内容の有無チェック
-	if(mask.rows == 0 || mask.cols == 0)
-	{
-		return false;
-	}
 	//出力Matのコピーをセット
 	mask_mat = mask.clone();
 
@@ -252,11 +253,6 @@ bool TBGEraser::getOutputMasktMat(cv::Mat& mask_mat)
 //-------------------------------------------------
 bool TBGEraser::setOutputMasktMat(cv::Mat& mask_mat)
 {
-	//内容の有無チェック
-	if(mask_mat.rows == 0 || mask_mat.cols == 0)
-	{
-		return false;
-	}
 	//出力Matのコピーをセット
 	mask = mask_mat.clone();
 
@@ -368,8 +364,32 @@ bool TBGEraser::setNewValFromVal(const cv::Mat& src,cv::Mat& dst,int new_val,int
 bool TBGEraser::pushUndoInf()
 {
 	//現在の値をスタックに積む
-	TUndotiness undoInf(output,mask,rect_or_mask);
-	histStack.push(undoInf);
+	if(BGEMode == tmRect)
+	{
+		TUndotiness undoInf(img_org,mask,rect,BGEMode);
+		histStack.push(undoInf);
+	}
+	else
+	{
+		TUndotiness undoInf(output,mask,rect,BGEMode);
+		histStack.push(undoInf);
+	}
+
+	return true;
+}
+//-------------------------------------------------
+//Undo情報をpopする(undoの実行はキャンセル
+//-------------------------------------------------
+bool TBGEraser::popUndoInf()
+{
+	//スタックの数をチェック
+	if(histStack.size() < 1)
+	{
+		//スタックが無いので処理しない
+		return false;
+	}
+	//最後にスタックに積んだ要素をpop
+	histStack.top();
 
 	return true;
 }
@@ -389,20 +409,23 @@ bool TBGEraser::undo()
 
 	cv::Mat    last_original_mat;
 	cv::Mat    last_original_mask_mat;
+	cv::Rect   last_original_rect;
 	typBGEMode last_mode;
 
-	last_stck.get(last_original_mat,last_original_mask_mat,last_mode);
+	last_stck.get(last_original_mat,last_original_mask_mat,last_original_rect,last_mode);
 
 	//背景除去結果画像をセット
 	setOutputMat(last_original_mat);
-	//背景除去結果マスクを取得
+	//背景除去結果マスクをセット
 	setOutputMasktMat(last_original_mask_mat);
+	//範囲をセット
+	setSelectRect(last_original_rect);
 	//背景除去結果画像を取得
 	getOutputMat(output);
 	//背景除去結果マスクを取得
 	getOutputMasktMat(mask);
 	//モードセット
-	rect_or_mask = last_mode;
+	BGEMode = last_mode;
 	//スタックからpopする
 	histStack.pop();
 

@@ -64,24 +64,24 @@ BottomMiddelPanelData=0000080001020200000009000000446F636B5369746530100000004772
 [View0]
 CustomEditViewType=TEditView
 Module=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
-CursorX=44
-CursorY=399
-TopLine=385
+CursorX=1
+CursorY=24
+TopLine=1
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
+EditViewName=Borland.FormDesignerView
 
 [View1]
 CustomEditViewType=TEditView
 Module=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
-CursorX=31
-CursorY=268
-TopLine=242
+CursorX=1
+CursorY=404
+TopLine=371
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
+EditViewName=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.h
 
 [Watches]
 Count=0
@@ -108,9 +108,8 @@ Dockable=1
 StayOnTop=0
 
 [Breakpoints]
-Count=2
+Count=1
 Breakpoint0='D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm_.cpp',488,'',0,1,'',1,0,0,'',1,'','','',0,''
-Breakpoint1='D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp',18,'',0,1,'',1,0,0,'',1,'','','',0,''
 
 [EmbarcaderoWin32Debugger_AddressBreakpoints]
 Count=0
@@ -227,6 +226,11 @@ Dockable=1
 StayOnTop=0
 SplitPos=111
 
+[PropInspDesignerSelection]
+ArrangeBy=Name
+SelectedItem=Name,
+ExpandedItems=Anchors=0,BorderIcons=0,Constraints=0,"LiveBinding デザイナ=0"
+
 [frmDesignPreview]
 PercentageSizes=1
 Create=1
@@ -236,11 +240,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=6394
+Height=2885
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=6394
+ClientHeight=2885
 TBDockHeight=5962
 LRDockWidth=2510
 Dockable=1
@@ -252,8 +256,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=-1528
-Top=245
+Left=0
+Top=0
 Width=276
 Height=365
 MaxLeft=-1
@@ -357,11 +361,11 @@ State=0
 Left=0
 Top=0
 Width=2339
-Height=971
+Height=1212
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2339
-ClientHeight=971
+ClientHeight=1212
 TBDockHeight=2317
 LRDockWidth=2823
 Dockable=1
@@ -422,11 +426,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=6394
+Height=0
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=6394
+ClientHeight=0
 TBDockHeight=4885
 LRDockWidth=7151
 Dockable=1
@@ -438,8 +442,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=380
-Top=817
+Left=0
+Top=0
 Width=2854
 Height=3212
 MaxLeft=-1
@@ -457,8 +461,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=-8
-Top=-124
+Left=-354
+Top=-399
 Width=1849
 Height=3144
 MaxLeft=-1
@@ -607,8 +611,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=0
-Top=28
+Left=8
+Top=8
 Width=3823
 Height=1423
 MaxLeft=-1

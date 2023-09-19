@@ -44,9 +44,11 @@ __published:	// IDE で管理されるコンポーネント
 	TMenuItem *UpdateMenu;
 	TSavePictureDialog *SavePictureDialog;
 	TMenuItem *H1;
-	TMenuItem *N3;
+	TMenuItem *VersionMenu;
 	TLabel *Label1;
 	TComboBox *ThicknessComboBox;
+	TMenuItem *HelpMenu;
+	TMenuItem *N4;
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall LoadImageBtnClick(TObject *Sender);
 	void __fastcall SelRectBtnClick(TObject *Sender);
@@ -61,6 +63,7 @@ __published:	// IDE で管理されるコンポーネント
 	void __fastcall MainPanelResize(TObject *Sender);
 	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
 	void __fastcall ThicknessComboBoxChange(TObject *Sender);
+	void __fastcall VersionMenuClick(TObject *Sender);
 private:
 	//マウスイベント
 	static void onmouse(int event,int x,int y,int flags,void *param);
@@ -85,6 +88,8 @@ private:
 	void makeDrawMatFromOrignalMat();
 	//表示用矩形を元画像の大きさに合わせる
 	bool adjustRectFromDrawRect(const cv::Rect& draw_rect,cv::Rect& adjust_rect);
+	//元画像の矩形を表示用の大きさに合わせる
+	bool adjustDrawRectFromRect(const cv::Rect& rect,cv::Rect& adjust_rect);
 	//描画用Matで表示更新
 	void updateDispFromDrawMat();
 	//表示用画像から元画像への座標変換

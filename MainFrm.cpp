@@ -4,6 +4,7 @@
 
 #include "BGEraserDef.h"
 #include "OrgImgDispFrm.h"
+#include "VersionInf.h"
 #include "MainFrm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -76,6 +77,13 @@ void TMainForm::makeDrawMatFromOrignalMat()
 		//表示用Matにリサイズ
 		cv::resize(original_mat,disp_mat,win_sz);
 	}
+	else
+	{
+		//親パネルのサイズ
+		win_sz = {MainPanel->Width,MainPanel->Height};
+		//表示用Matにリサイズ
+		disp_mat = cv::Mat::zeros(win_sz,CV_8UC3);
+	}
 }
 //-------------------------------------------------
 //描画用Matで表示更新
@@ -142,6 +150,30 @@ bool TMainForm::adjustRectFromDrawRect(const cv::Rect& draw_rect,cv::Rect& adjus
 
 	return true;
 }
+//-------------------------------------------------
+//元画像の矩形を表示用の大きさに合わせる
+//-------------------------------------------------
+bool TMainForm::adjustDrawRectFromRect(const cv::Rect& rect,cv::Rect& adjust_rect)
+{
+	if(original_mat.rows == 0 || original_mat.cols == 0)
+	{
+		return false;
+	}
+	if(rect.width < 1 || rect.height < 1)
+	{
+		return false;
+	}
+	//比率を算出
+	double w_ratio = static_cast<double>(MainPanel->Width)  / static_cast<double>(original_mat.cols);
+	double h_ratio = static_cast<double>(MainPanel->Height) / static_cast<double>(original_mat.rows);
+	//Rect更新
+	adjust_rect.x      = static_cast<int>(rect.x      * w_ratio);
+	adjust_rect.y      = static_cast<int>(rect.y      * h_ratio);
+	adjust_rect.width  = static_cast<int>(rect.width  * w_ratio);
+	adjust_rect.height = static_cast<int>(rect.height * h_ratio);
+
+	return true;
+}
 //---------------------------------------------------------------------------
 //マウスイベント
 //---------------------------------------------------------------------------
@@ -168,7 +200,7 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 	//各マウスボタンごとの処理
 	if(event == cv::EVENT_LBUTTONDOWN)
 	{
-		if(pMe->rect_or_mask == tmNone)
+		if(pMe->BGEMode == tmNone)
 		{
 			if(pMe->getDrawing() == false)
 			{
@@ -182,7 +214,7 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 				pMe->setDrawing(true);
 			}
 		}
-		else if(pMe->rect_or_mask == tmMask)
+		else if(pMe->BGEMode == tmMask)
 		{
 			//描画中にする
 			pMe->setDrawing(true);
@@ -198,7 +230,7 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 	}
 	else if(event == cv::EVENT_MOUSEMOVE)
 	{
-		if(pMe->rect_or_mask == tmNone)
+		if(pMe->BGEMode == tmNone)
 		{
 			if(pMe->getDrawing() == true)
 			{
@@ -210,7 +242,7 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 				pMainFrm->updateDispFromDrawMat();
 			}
 		}
-		else if(pMe->rect_or_mask == tmMask)
+		else if(pMe->BGEMode == tmMask)
 		{
 			if(pMe->getDrawing() == true)
 			{
@@ -227,12 +259,12 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 	}
 	else if(event == cv::EVENT_LBUTTONUP)
 	{
-		if(pMe->rect_or_mask == tmNone)
+		if(pMe->BGEMode == tmNone)
 		{
 			//描画終了
 			pMe->setDrawing(false);
 			//範囲設定済みフラグにする
-			pMe->rect_or_mask = tmRect;
+			pMe->BGEMode = tmRect;
 			//選択矩形の大きさを補正して渡す
 			cv::Rect sel_rect;
 			cv::Rect adj_rect;
@@ -242,13 +274,13 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 			//表示用矩形を元画像の大きさに合わせる
 			if(pMainFrm->adjustRectFromDrawRect(sel_rect,adj_rect) == true)
 			{
-				cv::rectangle(pMe->img,adj_rect,pMe->DRAW_RECTANGLE.color,2);
-				pMe->rect         = adj_rect;
-				pMe->rect_or_mask = tmRect;
+				cv::rectangle(pMe->output,adj_rect,pMe->DRAW_RECTANGLE.color,2);
+				pMe->rect    = adj_rect;
+				pMe->BGEMode = tmRect;
 				pMe->updateMaskAndOutputImage();
 			}
 		}
-		else if(pMe->rect_or_mask == tmMask)
+		else if(pMe->BGEMode == tmMask)
 		{
 			if(pMe->getDrawing() == true)
 			{
@@ -279,6 +311,8 @@ void __fastcall TMainForm::LoadImageBtnClick(TObject *Sender)
 	std::wstring wfile_name = OpenPictureDialog->FileName.c_str();
 	std::string  file_name  = wstring2string(wfile_name);
 
+	//現在の値をスタックに積む
+	BGEraser.pushUndoInf();
 	//画像の読込
 	if(BGEraser.readImage(file_name) == false)
 	{
@@ -337,8 +371,8 @@ void __fastcall TMainForm::SelRectBtnClick(TObject *Sender)
 	updateDispFromDrawMat();
 
 	//範囲指定に関する値を初期化する
-	BGEraser.rect_or_mask = tmNone;
-	BGEraser.rect         = cv::Rect(0,0,0,0);
+	BGEraser.BGEMode = tmNone;
+	BGEraser.rect    = cv::Rect(0,0,0,0);
 	//モード表示
 	dispMode("範囲指定モードに移行しました");
 }
@@ -348,7 +382,7 @@ void __fastcall TMainForm::SelRectBtnClick(TObject *Sender)
 void __fastcall TMainForm::specifyBGBtnClick(TObject *Sender)
 {
 	//モードチェック
-	if(BGEraser.rect_or_mask != tmMask)
+	if(BGEraser.BGEMode != tmMask)
 	{
 		//モード表示
 		dispMode("マスク編集モードではありません、範囲指定を行って更新を先に行ってください");
@@ -367,7 +401,7 @@ void __fastcall TMainForm::specifyBGBtnClick(TObject *Sender)
 void __fastcall TMainForm::specifyFGBtnClick(TObject *Sender)
 {
 	//モードチェック
-	if(BGEraser.rect_or_mask != tmMask)
+	if(BGEraser.BGEMode != tmMask)
 	{
 		//モード表示
 		dispMode("マスク編集モードではありません、範囲指定を行って更新を先に行ってください");
@@ -407,6 +441,7 @@ void __fastcall TMainForm::undoBtnClick(TObject *Sender)
 {
 	//BGEraserにUndoを実行する
 	BGEraser.undo();
+
 	//背景除去結果画像を取得
 	BGEraser.getOutputMat(original_mat);
 	//背景除去結果マスクを取得
@@ -415,6 +450,17 @@ void __fastcall TMainForm::undoBtnClick(TObject *Sender)
 	makeDrawMatFromOrignalMat();
 	//作業用マスクMatを作成する
 	disp_mask_mat = original_mask_mat.clone();
+	//モードチェック
+	if(BGEraser.BGEMode == tmRect)
+	{
+		//選択範囲を描画用選択範囲に変換する
+		cv::Rect adjust_rect;
+		cv::Rect org_r = BGEraser.getSelectRect();
+		adjustDrawRectFromRect(org_r,adjust_rect);
+
+		//選択範囲を描画する
+		cv::rectangle(disp_mat,adjust_rect,TBGEraser::DRAW_RECTANGLE.color,2);
+	}
 	//描画用Matで表示更新
 	updateDispFromDrawMat();
 }
@@ -446,7 +492,7 @@ void __fastcall TMainForm::saveBtnClick(TObject *Sender)
 void __fastcall TMainForm::updateBtnClick(TObject *Sender)
 {
 	//モードチェック
-	if(BGEraser.rect_or_mask == tmNone)
+	if(BGEraser.BGEMode == tmNone)
 	{
 		//状態表示
 		dispMode("背景除去範囲を指定してから更新を実行してください");
@@ -461,6 +507,8 @@ void __fastcall TMainForm::updateBtnClick(TObject *Sender)
 	//背景削除を進める
 	if(BGEraser.segmentImage() == false)
 	{
+		//現在の値をスタックから除去する
+		BGEraser.popUndoInf();
 		//失敗状態表示
 		dispMode("背景除去画像表示更新失敗");
 	}
@@ -519,6 +567,13 @@ void __fastcall TMainForm::ThicknessComboBoxChange(TObject *Sender)
 	int new_tn = ThicknessComboBox->ItemIndex + 1;
 	//新しいブラシの太さをセット
 	BGEraser.setThickness(new_tn);
+}
+//---------------------------------------------------------------------------
+//バージョン情報メニュー
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::VersionMenuClick(TObject *Sender)
+{
+	AboutBox->ShowModal();
 }
 //---------------------------------------------------------------------------
 

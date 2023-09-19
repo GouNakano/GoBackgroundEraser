@@ -177,6 +177,12 @@
             <DependentOn>TBGEraser.h</DependentOn>
             <BuildOrder>3</BuildOrder>
         </CppCompile>
+        <CppCompile Include="VersionInf.cpp">
+            <Form>AboutBox</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>VersionInf.h</DependentOn>
+            <BuildOrder>49</BuildOrder>
+        </CppCompile>
         <LibFiles Include="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\libjpegd.lib" Condition="'$(Platform)'=='Win32'">
             <BuildOrder>4</BuildOrder>
             <IgnorePath>true</IgnorePath>
@@ -347,6 +353,7 @@
         </LibFiles>
         <FormResources Include="OrgImgDispFrm.dfm"/>
         <FormResources Include="MainFrm.dfm"/>
+        <FormResources Include="VersionInf.dfm"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -566,14 +573,14 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile Condition="'$(DynamicRTL)'=='true'" LocalName="$(BDS)\Redist\osx64\libcgcrtl.dylib" Class="DependencyModule">
-                    <Platform Name="OSX64">
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile LocalName="..\..\..\OpenCV-RS64\opencv_3.2.0\build\modules32\lib\opencv_ximgproc320.lib" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile Condition="'$(DynamicRTL)'=='true'" LocalName="$(BDS)\Redist\osx64\libcgcrtl.dylib" Class="DependencyModule">
+                    <Platform Name="OSX64">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

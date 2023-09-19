@@ -6,6 +6,7 @@
 //---------------------------------------------------------------------------
 USEFORM("OrgImgDispFrm.cpp", OrgImgDispForm);
 USEFORM("MainFrm.cpp", MainForm);
+USEFORM("VersionInf.cpp", AboutBox);
 //---------------------------------------------------------------------------
 int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 {
@@ -15,6 +16,7 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 		Application->MainFormOnTaskBar = true;
 		Application->CreateForm(__classid(TMainForm), &MainForm);
 		Application->CreateForm(__classid(TOrgImgDispForm), &OrgImgDispForm);
+		Application->CreateForm(__classid(TAboutBox), &AboutBox);
 		Application->Run();
 	}
 	catch (Exception &exception)
