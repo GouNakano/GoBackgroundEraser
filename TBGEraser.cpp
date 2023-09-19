@@ -134,7 +134,7 @@ bool TBGEraser::saveBGErasedImage(const std::string& file_name)
 		for(int x = 0;x < save_img.cols;x++)
 		{
 			//マスクをチェック
-			if(mask.at<unsigned char>(y,x) == 0)
+			if(mask.at<unsigned char>(y,x) == cv::GC_BGD || mask.at<unsigned char>(y,x) == cv::GC_PR_BGD)
 			{
 				//マスクが黒なので透明にする
 				save_img.at<cv::Vec4b>(y,x) = alpha0;

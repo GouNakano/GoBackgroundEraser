@@ -189,13 +189,14 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 		return;
 	}
 	//描画用Thicknessを作成
-	double dtn =pMe->getThickness();
-	double disp_thickness = (dtn * static_cast<double>(pMainFrm->disp_mat.cols * pMainFrm->disp_mat.rows))/static_cast<double>(pMainFrm->original_mask_mat.cols * pMainFrm->original_mask_mat.rows);
-	int disp_tn = static_cast<int>(disp_thickness);
-	if(disp_tn < 1)
-	{
-		disp_tn = 1;
-	}
+	double disp_tn = pMe->getThickness();
+//	double dtn =pMe->getThickness();
+//	double disp_thickness = (dtn * static_cast<double>(pMainFrm->disp_mat.cols * pMainFrm->disp_mat.rows))/static_cast<double>(pMainFrm->original_mask_mat.cols * pMainFrm->original_mask_mat.rows);
+//	int disp_tn = static_cast<int>(disp_thickness);
+//	if(disp_tn < 1)
+//	{
+//		disp_tn = 1;
+//	}
 
 	//各マウスボタンごとの処理
 	if(event == cv::EVENT_LBUTTONDOWN)

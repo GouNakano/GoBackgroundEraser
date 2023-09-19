@@ -16,20 +16,20 @@ File_13=TSourceModule,'c:\program files (x86)\embarcadero\studio\21.0\include\di
 File_14=TSourceModule,'D:\Users\owner\Documents\Projects10\OpenCV-RS64\opencv_3.2.0\modules\imgproc\src\drawing.cpp',0,1,1835,1,1869,0,0,,
 
 [Modules]
-Module0=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
-Module1=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
+Module0=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
+Module1=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
 Count=2
 EditWindowCount=1
-
-[D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp]
-ModuleType=TSourceModule
 
 [D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp]
 ModuleType=TSourceModule
 
+[D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp]
+ModuleType=TSourceModule
+
 [EditWindow0]
 ViewCount=2
-CurrentEditView=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
+CurrentEditView=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
 View0=0
 View1=1
 PercentageSizes=1
@@ -64,9 +64,9 @@ BottomMiddelPanelData=0000080001020200000009000000446F636B5369746530100000004772
 [View0]
 CustomEditViewType=TEditView
 Module=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\MainFrm.cpp
-CursorX=23
-CursorY=25
-TopLine=1
+CursorX=64
+CursorY=168
+TopLine=167
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -75,13 +75,13 @@ EditViewName=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackground
 [View1]
 CustomEditViewType=TEditView
 Module=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
-CursorX=39
-CursorY=355
-TopLine=355
+CursorX=86
+CursorY=1
+TopLine=1
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.h
+EditViewName=D:\Users\owner\Documents\Projects10\GoBackgroundEraser\GoBackgroundEraser\src\TBGEraser.cpp
 
 [Watches]
 Count=0
@@ -229,7 +229,7 @@ SplitPos=111
 [PropInspDesignerSelection]
 ArrangeBy=Name
 SelectedItem=Caption,
-ExpandedItems=Constraints=0,"LiveBinding デザイナ=0",Options=0,OptionsEx=0,Anchors=0
+ExpandedItems=Anchors=0,Constraints=0,Font=0
 
 [frmDesignPreview]
 PercentageSizes=1
