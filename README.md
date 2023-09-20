@@ -114,6 +114,8 @@ GoBackgroundEraserから簡単な操作で背景を除去するアプリです�
 8. 画像の保存
    修正が終わりましたら、画像保存ボタンクリックかメニューの「ファイル(<ins>F</ins>)-画像保存(<ins>S</ins>)」を選択か、  
    CTRL+Sキー押下で名前を付けて保存ダイアログを表示します。
+
+   ![bge10](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/657f8f58-c7d8-48f5-8814-e58eac1c1e84)
    
     
 
