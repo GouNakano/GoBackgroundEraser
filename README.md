@@ -104,9 +104,17 @@ GoBackgroundEraserから簡単な操作で背景を除去するアプリです�
     ![bge08](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/2088c4af-bd28-492f-bc0f-d8bb2b67a0fb)
 
     修正の設定が終わりましたら、更新ボタンをクリックします。  
-    更新後の画像は以下の様になります。  
-    
+    更新後の画像は以下の様になります。
 
+    ![bge09](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/10fc63d0-ff99-4aa8-bf32-9c1bd3f73efd)
+
+    この様に修正操作を繰り返してマスクを更新して行き、
+    完成を目指す事になります。
+    
+8. 画像の保存
+   修正が終わりましたら、画像保存ボタンクリックかメニューの「ファイル(<ins>F</ins>)-画像保存(<ins>S</ins>)」を選択か、  
+   CTRL+Sキー押下で名前を付けて保存ダイアログを表示します。
+   
     
 
     
