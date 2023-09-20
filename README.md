@@ -17,7 +17,7 @@ GoBackgroundEraserから簡単な操作で背景を除去するアプリです�
    Openv 3.2.0
    C++Builder付属のVCL
 4. 使用動的ライブラリ(.dll,.ocxなど)
-   GoBackgroundEraserのための固有のものは無し。
+   GoBackgroundEraserのための固有のものは無し  
    (単独で動作可能)
 6. 使用言語
    C++(17)
