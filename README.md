@@ -52,6 +52,8 @@ GoBackgroundEraserから簡単な操作で背景を除去するアプリです�
 
    開くボタンをクリックすると、画像ファイル(lena.jpg)読み込まれて、
    GoBackgroundEraserの表示は以下の様になります。
+
+   ![bge03](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/d1deef63-7aea-4621-a269-4595fb6ff243)
    
    
 
