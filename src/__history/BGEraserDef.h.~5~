@@ -1,0 +1,14 @@
+//---------------------------------------------------------------------------
+#ifndef BGEraserDefH
+#define BGEraserDefH
+#include <vcl.h>
+//---------------------------------------------------------------------------
+class BGE
+{
+	//ウィンドウの位置をセット
+	static bool SetWindowPos(TForm *Form,bool IsKeepWindowSize=false);
+	//ウィンドウの位置を記録
+	static bool SaveWindowPos(TForm *Form,bool IsTopLeftOnly=false);
+};
+
+#endif

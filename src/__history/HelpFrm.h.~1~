@@ -1,0 +1,21 @@
+//---------------------------------------------------------------------------
+
+#ifndef HelpFrmH
+#define HelpFrmH
+//---------------------------------------------------------------------------
+#include <System.Classes.hpp>
+#include <Vcl.Controls.hpp>
+#include <Vcl.StdCtrls.hpp>
+#include <Vcl.Forms.hpp>
+//---------------------------------------------------------------------------
+class THelpForm : public TForm
+{
+__published:	// IDE で管理されるコンポーネント
+private:	// ユーザー宣言
+public:		// ユーザー宣言
+	__fastcall THelpForm(TComponent* Owner);
+};
+//---------------------------------------------------------------------------
+extern PACKAGE THelpForm *HelpForm;
+//---------------------------------------------------------------------------
+#endif

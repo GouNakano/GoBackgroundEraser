@@ -1,0 +1,72 @@
+object HelpForm: THelpForm
+  Left = 0
+  Top = 0
+  BorderStyle = bsDialog
+  Caption = #12504#12523#12503
+  ClientHeight = 139
+  ClientWidth = 318
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poMainFormCenter
+  OnKeyDown = FormKeyDown
+  PixelsPerInch = 96
+  TextHeight = 13
+  object BGELabel: TLabel
+    Left = 5
+    Top = 64
+    Width = 305
+    Height = 16
+    Caption = 'https://github.com/GouNakano/GoBackgroundEraser'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlue
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = [fsUnderline]
+    ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
+    OnClick = BGELabelClick
+  end
+  object Shape1: TShape
+    Left = -5
+    Top = 93
+    Width = 340
+    Height = 1
+  end
+  object Memo1: TMemo
+    Left = 5
+    Top = 10
+    Width = 261
+    Height = 49
+    BorderStyle = bsNone
+    Color = clBtnFace
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    Lines.Strings = (
+      'GoBackgroundEraser'#12398#21033#29992#26041#27861#31561#12398#35500#26126#12399#12289
+      #19979#35352#12398#12522#12531#12463#12434#12463#12522#12483#12463#12375#12390#34920#31034#12373#12428#12427#12289
+      'GoBackgroundEraser'#12398'GitHub'#12506#12540#12472#12434#12372#35239#12367#12384#12373#12356
+      #12290)
+    ParentFont = False
+    TabOrder = 0
+  end
+  object OKButton: TButton
+    Left = 210
+    Top = 100
+    Width = 100
+    Height = 34
+    Caption = 'OK'
+    Default = True
+    ModalResult = 1
+    TabOrder = 1
+  end
+end
