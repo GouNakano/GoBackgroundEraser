@@ -116,6 +116,12 @@ GoBackgroundEraserから簡単な操作で背景を除去するアプリです�
    CTRL+Sキー押下で名前を付けて保存ダイアログを表示します。
 
    ![bge10](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/657f8f58-c7d8-48f5-8814-e58eac1c1e84)
+
+   保存後のファイルをエクスプローラで表示すると、
+   背景として指定した領域が透明のpngファイルが作成されているのが分かります。
+
+
+   ![bge11](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/99f58150-8ade-4784-9422-03ab33987567)
    
     
 
