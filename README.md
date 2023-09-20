@@ -24,7 +24,7 @@ GoBackgroundEraserから簡単な操作で背景を除去するアプリです�
    一部にC++Builder独自のC++拡張部分を含む
    
 ## 実行環境
-1. OS
+1. OS  
   Windows10,11
 2. 他に必要なソフト
    無し
