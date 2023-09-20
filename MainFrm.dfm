@@ -220,8 +220,24 @@ object MainForm: TMainForm
     Top = 108
     object N1: TMenuItem
       Caption = #12501#12449#12452#12523'(&F)'
-      object ZZZZZ1: TMenuItem
-        Caption = 'ZZZZZ'
+      object ReadImageMenu: TMenuItem
+        Caption = #30011#20687#35501#36796'(&O)'
+        OnClick = LoadImageBtnClick
+      end
+      object N3: TMenuItem
+        Caption = '-'
+      end
+      object SaveImageMenu: TMenuItem
+        Caption = #30011#20687#20445#23384'(&S)'
+        ShortCut = 16467
+        OnClick = saveBtnClick
+      end
+      object N5: TMenuItem
+        Caption = '-'
+      end
+      object EndMenu: TMenuItem
+        Caption = #32066#20102'(&X)'
+        OnClick = EndBtnClick
       end
     end
     object N6: TMenuItem
@@ -239,11 +255,28 @@ object MainForm: TMainForm
         ShortCut = 13
         OnClick = updateBtnClick
       end
+      object N7: TMenuItem
+        Caption = '-'
+      end
+      object N8: TMenuItem
+        Caption = #32972#26223#25351#23450#12514#12540#12489'(&B)'
+      end
+      object N9: TMenuItem
+        Caption = #21069#22238#25351#23450#12514#12540#12489'(&F)'
+      end
+    end
+    object N10: TMenuItem
+      Caption = #34920#31034'(&V)'
+      object dispOrigImgMenu: TMenuItem
+        Caption = #20803#30011#20687#12398#34920#31034'(&O)'
+        OnClick = dispOrigImgBtnClick
+      end
     end
     object H1: TMenuItem
       Caption = #12504#12523#12503'(&H)'
       object HelpMenu: TMenuItem
         Caption = #12504#12523#12503'(&H)'
+        OnClick = HelpMenuClick
       end
       object N4: TMenuItem
         Caption = '-'

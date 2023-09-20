@@ -13,38 +13,14 @@ __fastcall TAboutBox::TAboutBox(TComponent* AOwner) : TForm(AOwner)
 {
 }
 // ---------------------------------------------------------------------------
-// 機能     ：ﾌｫｰﾑ作成時
-//
-// 関数定義 ：void __fastcall FormCreate(TObject *Sender)
-//
-// ｱｸｾｽﾚﾍﾞﾙ ：__published
-//
-// 引数     ：
-//
-// 戻り値   ：
-//
-// 作成者　 ：
-//
-// 改定者   ：
+//ﾌｫｰﾑ作成時
 // -------------------------------------------------------------
 void __fastcall TAboutBox::FormCreate(TObject *Sender)
 {
 	//
 }
 // ---------------------------------------------------------------------------
-// 機能     ：ﾌｫｰﾑ表示時
-//
-// 関数定義 ：void __fastcall FormShow(TObject *Sender)
-//
-// ｱｸｾｽﾚﾍﾞﾙ ：__published
-//
-// 引数     ：
-//
-// 戻り値   ：
-//
-// 作成者　 ：
-//
-// 改定者   ：
+//ﾌｫｰﾑ表示時
 // -------------------------------------------------------------
 void __fastcall TAboutBox::FormShow(TObject *Sender)
 {
@@ -58,19 +34,7 @@ void __fastcall TAboutBox::FormShow(TObject *Sender)
 	VersionLabel->Caption = file_ver;
 }
 // ---------------------------------------------------------------------------
-// 機能     ：ホームページのラベルクリック
-//
-// 関数定義 ：void __fastcall URLLabelClick(TObject *Sender)
-//
-// ｱｸｾｽﾚﾍﾞﾙ ：__published
-//
-// 引数     ：
-//
-// 戻り値   ：
-//
-// 作成者　 ：
-//
-// 改定者   ：
+//URLのラベルクリック
 // -------------------------------------------------------------
 void __fastcall TAboutBox::URLLabelClick(TObject *Sender)
 {
@@ -79,19 +43,7 @@ void __fastcall TAboutBox::URLLabelClick(TObject *Sender)
 	::ShellExecuteW(Handle, L"open", L->Caption.c_str(), L"", L"", SW_SHOW);
 }
 // ---------------------------------------------------------------------------
-// 機能     ：フォームキープレビュー
-//
-// 関数定義 ：void __fastcall FormKeyPress(TObject *Sender, char &Key)
-//
-// ｱｸｾｽﾚﾍﾞﾙ ：__published
-//
-// 引数     ：
-//
-// 戻り値   ：
-//
-// 作成者　 ：
-//
-// 改定者   ：
+//フォームキープレビュー
 // -------------------------------------------------------------
 void __fastcall TAboutBox::FormKeyPress(TObject *Sender, char &Key)
 {

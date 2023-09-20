@@ -20,7 +20,7 @@ class TMainForm : public TForm
 __published:	// IDE で管理されるコンポーネント
 	TMainMenu *MainMenu;
 	TMenuItem *N1;
-	TMenuItem *ZZZZZ1;
+	TMenuItem *ReadImageMenu;
 	TPanel *MenuPanel;
 	TBitBtn *updateBtn;
 	TBitBtn *saveBtn;
@@ -49,6 +49,15 @@ __published:	// IDE で管理されるコンポーネント
 	TComboBox *ThicknessComboBox;
 	TMenuItem *HelpMenu;
 	TMenuItem *N4;
+	TMenuItem *N3;
+	TMenuItem *SaveImageMenu;
+	TMenuItem *N5;
+	TMenuItem *EndMenu;
+	TMenuItem *N7;
+	TMenuItem *N8;
+	TMenuItem *N9;
+	TMenuItem *N10;
+	TMenuItem *dispOrigImgMenu;
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall LoadImageBtnClick(TObject *Sender);
 	void __fastcall SelRectBtnClick(TObject *Sender);
@@ -64,6 +73,7 @@ __published:	// IDE で管理されるコンポーネント
 	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
 	void __fastcall ThicknessComboBoxChange(TObject *Sender);
 	void __fastcall VersionMenuClick(TObject *Sender);
+	void __fastcall HelpMenuClick(TObject *Sender);
 private:
 	//マウスイベント
 	static void onmouse(int event,int x,int y,int flags,void *param);

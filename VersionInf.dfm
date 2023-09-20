@@ -24,7 +24,7 @@ object AboutBox: TAboutBox
   TextHeight = 12
   object TitleLabel: TLabel
     Left = 8
-    Top = 10
+    Top = 8
     Width = 218
     Height = 19
     AutoSize = False

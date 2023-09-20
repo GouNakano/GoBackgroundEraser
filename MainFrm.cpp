@@ -5,6 +5,7 @@
 #include "BGEraserDef.h"
 #include "OrgImgDispFrm.h"
 #include "VersionInf.h"
+#include "HelpFrm.h"
 #include "MainFrm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -22,7 +23,6 @@ void __fastcall TMainForm::FormShow(TObject *Sender)
 {
 	//背景除去オブジェクトの初期化
 	BGEraser.init();
-//	BGEraser.readImage("messi5.png");
 	//ウィンドウの結合
 	hWnd1        = (HWND)cvGetWindowHandle("output");
 	hWnd1_parent = ::GetParent(hWnd1);
@@ -190,13 +190,6 @@ void TMainForm::onmouse(int event,int x,int y,int flags,void *param)
 	}
 	//描画用Thicknessを作成
 	double disp_tn = pMe->getThickness();
-//	double dtn =pMe->getThickness();
-//	double disp_thickness = (dtn * static_cast<double>(pMainFrm->disp_mat.cols * pMainFrm->disp_mat.rows))/static_cast<double>(pMainFrm->original_mask_mat.cols * pMainFrm->original_mask_mat.rows);
-//	int disp_tn = static_cast<int>(disp_thickness);
-//	if(disp_tn < 1)
-//	{
-//		disp_tn = 1;
-//	}
 
 	//各マウスボタンごとの処理
 	if(event == cv::EVENT_LBUTTONDOWN)
@@ -582,6 +575,13 @@ void __fastcall TMainForm::ThicknessComboBoxChange(TObject *Sender)
 void __fastcall TMainForm::VersionMenuClick(TObject *Sender)
 {
 	AboutBox->ShowModal();
+}
+//---------------------------------------------------------------------------
+//ヘルプメニュー
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::HelpMenuClick(TObject *Sender)
+{
+	HelpForm->ShowModal();
 }
 //---------------------------------------------------------------------------
 
