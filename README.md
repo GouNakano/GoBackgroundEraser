@@ -48,7 +48,10 @@ GoBackgroundEraserから簡単な操作で背景を除去するアプリです�
    画像読込ボタンクリックか、メニューの「ファイル(<ins>F</ins>)-画像読込(<ins>O</ins>)」を選択します。
    開くダイアログで目的の画像のある場所に移動して、bmpかjpegかpngのファイルを指定します。
    この場の説明では、sampleフォルダにあるlena.jpgを指定します。
+
+   ![bge02](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/dc2dc9c3-90bf-4bb5-8766-8e0212e9f6e1)   
    
+
  
 
 　
