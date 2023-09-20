@@ -18,11 +18,30 @@ GoBackgroundEraserから簡単な操作で背景を除去するアプリです�
    C++Builder付属のVCL
 4. 使用動的ライブラリ(.dll,.ocxなど)
    GoBackgroundEraserのための固有のものは無し  
-   (単独で動作可能)
+   (単独で動作可能
 6. 使用言語
    C++(17)
    一部にC++Builder独自のC++拡張部分を含む
-7. 
+   
+## 実行環境
+1. OS
+  Windows10,11
+2. 他に必要なソフト
+   無し
+   
+## 操作方法
+
+1. ダウンロード
+   git cloneやzip形式で本リポジトリをダウンロード出来ます。
+   zip形式でダウンロードした場合は全て展開して下さい。
+   実行に必要な部分だけ必要な場合は、
+   GoBackgroundEraserのGoBackgroundEraserフォルダだけを  
+   ダウンロード後に別の場所にコピーして下さい。
+2. 起動
+   GoBackgroundEraser.exe をダブルクリックして起動してください。
+   起動すると以下の様な画面が表示されます。
+   
+   
    
  
 
