@@ -31,17 +31,17 @@ GoBackgroundEraserから簡単な操作で背景を除去するアプリです�
    
 ## 操作方法
 
-1. ダウンロード
+1. ダウンロード  
    git cloneやzip形式で本リポジトリをダウンロード出来ます。
    zip形式でダウンロードした場合は全て展開して下さい。
    実行に必要な部分だけ必要な場合は、
    GoBackgroundEraserのGoBackgroundEraserフォルダだけを  
    ダウンロード後に別の場所にコピーして下さい。
-2. 起動
+2. 起動  
    GoBackgroundEraser.exe をダブルクリックして起動してください。
    起動すると以下の様な画面が表示されます。
    
-   
+   ![bge01](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/2e69011c-02e9-4d81-89da-ae4bc3bf3812)
    
  
 
