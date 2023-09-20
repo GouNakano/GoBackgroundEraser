@@ -55,6 +55,12 @@ GoBackgroundEraserから簡単な操作で背景を除去するアプリです�
 
    ![bge03](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/d1deef63-7aea-4621-a269-4595fb6ff243)
    
+5. 範囲指定
+   表示されている画像の部分の背景除去処理の対象範囲の左上にマウスポインタを移動します。
+   そこでマウスの左ボタンを押下したまま右下に移動します。
+   対象範囲の右下に達しましたらマウスの左ボタンを解放します。
+   GoBackgroundEraserの表示は以下の様になります。
+
    
 
  
