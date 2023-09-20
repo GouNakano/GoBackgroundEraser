@@ -88,8 +88,8 @@ GoBackgroundEraserから簡単な操作で背景を除去するアプリです�
 
     ![bge06](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/b219de4e-6b58-4e52-ac10-55d102fdd838)
 
-    修正の設定が終わりましたら、更新ボタンをクリックします。
-    更新後の画像は以下の様になります。
+    修正の設定が終わりましたら、更新ボタンをクリックします。  
+    更新後の画像は以下の様になります。  
 
     ![bge07](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/61869984-0cb0-478b-ba37-39fcd45e4f70)
 
@@ -99,6 +99,13 @@ GoBackgroundEraserから簡単な操作で背景を除去するアプリです�
     次に肩の高さの左側に、背景となるべき所が映り込んでいますので、  
     背景指定モードボタンをクリックして、
     補正する所に黒点(線)をマウスで設定します。
+    ※赤丸は位置を強調するために後で追加したもので、実際には描画されません。
+
+    ![bge08](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/2088c4af-bd28-492f-bc0f-d8bb2b67a0fb)
+
+    修正の設定が終わりましたら、更新ボタンをクリックします。  
+    更新後の画像は以下の様になります。  
+    
 
     
 
