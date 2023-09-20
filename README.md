@@ -41,27 +41,27 @@ GoBackgroundEraserから簡単な操作で背景を除去するアプリです�
    GoBackgroundEraser.exe をダブルクリックして起動してください。  
    起動すると以下の様な画面が表示されます。  
    
-   ![bge01](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/2e69011c-02e9-4d81-89da-ae4bc3bf3812)
-   
-4. 画像の読込  
+   ![bge01](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/8a856dd4-99f5-47a3-8ce7-833ac26ff509)
+
+3. 画像の読込  
    画像読込ボタンクリックか、メニューの「ファイル(<ins>F</ins>)-画像読込(<ins>O</ins>)」を選択します。  
    開くダイアログで目的の画像のある場所に移動して、bmpかjpegかpngのファイルを指定します。  
    この場の説明では、sampleフォルダにあるlena.jpgを指定します。  
 
-   ![bge02](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/dc2dc9c3-90bf-4bb5-8766-8e0212e9f6e1)
+   ![bge02](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/249dd183-108f-43f8-b59b-6750649ac4a4)
 
    開くボタンをクリックすると、画像ファイル(lena.jpg)読み込まれて、 
    GoBackgroundEraserの表示は以下の様になります。  
 
-   ![bge03](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/d1deef63-7aea-4621-a269-4595fb6ff243)
+   ![bge03](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/185917e3-6ffd-40dd-82cc-c9d48d813eed)
    
-5. 範囲指定  
+4. 範囲指定  
    表示されている画像の部分の背景除去処理の対象範囲の左上にマウスポインタを移動します。  
    そこでマウスの左ボタンを押下したまま右下に移動します。  
    対象範囲の右下に達しましたらマウスの左ボタンを解放します。  
    GoBackgroundEraserの表示は以下の様になります。  
 
-   ![bge04](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/e4e6c2d2-d508-466b-b0f0-9dd21a854d97)
+   ![bge04](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/b449fadf-41e3-4630-a47a-fd0b18749e9f)
 
    この時の選択範囲は、なるべく目的の前景部分の範囲に絞って設定します。  
    理由は、選択範囲の外側は全て背景として扱われ、  
@@ -77,7 +77,7 @@ GoBackgroundEraserから簡単な操作で背景を除去するアプリです�
    そのため、出力画像はアルファチャンネルを含む４チャンネルのpng画像になります。  
    上記のlena.jpgの場合の初回更新画像は以下の様になります。  
 
-   ![bge05](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/df37ff44-19d4-418e-ba3d-172493b1d139)
+   ![bge05](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/7d17ac19-ff8f-4b2e-90e5-aa081d268703)
 
  6. 修正の操作  
     上記の更新では、帽子の左上の部分が欠けているのが分かります。  
@@ -86,12 +86,12 @@ GoBackgroundEraserから簡単な操作で背景を除去するアプリです�
     帽子の左上の部分の修正では、前景指定モードボタンをクリックして、  
     補正する所に白点(線)をマウスで設定します。  
 
-    ![bge06](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/b219de4e-6b58-4e52-ac10-55d102fdd838)
+    ![bge06](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/30a98e27-f571-44dd-8ee9-e892ff78e7ee)
 
     修正の設定が終わりましたら、更新ボタンをクリックします。  
     更新後の画像は以下の様になります。  
 
-    ![bge07](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/61869984-0cb0-478b-ba37-39fcd45e4f70)
+    ![bge07](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/734fd85e-2265-4385-906f-c7592d1181fb)
 
     更新の結果が想いと異なる場合は、元に戻すかCTRL+Zキー押下で、 
     更新前の状態に戻す事が出来ます。  
@@ -101,27 +101,26 @@ GoBackgroundEraserから簡単な操作で背景を除去するアプリです�
     補正する所に黒点(線)をマウスで設定します。
     ※赤丸は位置を強調するために後で追加したもので、実際には描画されません。
 
-    ![bge08](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/2088c4af-bd28-492f-bc0f-d8bb2b67a0fb)
+    ![bge08](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/9dfdea09-0b9e-4365-be9d-eb4796f0cb2b)
 
     修正の設定が終わりましたら、更新ボタンをクリックします。  
     更新後の画像は以下の様になります。
 
-    ![bge09](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/10fc63d0-ff99-4aa8-bf32-9c1bd3f73efd)
+    ![bge09](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/01503748-34a5-4bee-b494-3e98a6ea8745)
 
     この様に修正操作を繰り返してマスクを更新して行き、
     完成を目指す事になります。
     
-8. 画像の保存
+7. 画像の保存
    修正が終わりましたら、画像保存ボタンクリックかメニューの「ファイル(<ins>F</ins>)-画像保存(<ins>S</ins>)」を選択か、  
    CTRL+Sキー押下で名前を付けて保存ダイアログを表示します。
 
-   ![bge10](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/657f8f58-c7d8-48f5-8814-e58eac1c1e84)
+   ![bge10](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/9ebe94eb-9a3f-4e3d-999a-87f03e4399a2)
 
    保存後のファイルをエクスプローラで表示すると、
    背景として指定した領域が透明のpngファイルが作成されているのが分かります。
 
-
-   ![bge11](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/99f58150-8ade-4784-9422-03ab33987567)
+   ![bge11](https://github.com/GouNakano/GoBackgroundEraser/assets/56259253/c0754c48-b94a-48c6-bc0d-ee1fe0b90a96)
    
     
 
